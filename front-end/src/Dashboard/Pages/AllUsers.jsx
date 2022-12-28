@@ -8,6 +8,7 @@ import {
   Grid,
   Input,
   Snackbar,
+  Switch,
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useReducer, useState } from "react";
@@ -16,22 +17,21 @@ import { LoadingBox, Navbar } from "../Components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { default as NewLink } from "@mui/material/Link";
 import PropTypes from "prop-types";
-import EditIcon from "@mui/icons-material/Edit";
 
 import {
   DataGrid,
   GridToolbar,
   GridCellEditStopReasons,
-  GridRenderCellParams,
 } from "@mui/x-data-grid";
 import SearchIcon from "@mui/icons-material/Search";
+import MuiAlert from "@mui/material/Alert";
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
       return { ...state, loading: true }; //keep the previous value and only update loading to true
     case "FETCH_SUCCESS":
-      return { ...state, news: action.payload, loading: false };
+      return { ...state, user: action.payload, loading: false };
     case "FETCH_FAIL":
       return { ...state, error: action.payload, loading: false };
     default:
@@ -40,12 +40,12 @@ const reducer = (state, action) => {
 };
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
-// const Alert = React.forwardRef(function Alert(props, ref) {
-//   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
-// });
+const label1 = { inputProps: { "aria-label": "Switch demo" } };
 
 const AllUsers = () => {
+  // const Alert = React.forwardRef(function Alert(props, ref) {
+  //   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
+  // });
   const navigate = useNavigate();
   const [CheckVal, newCheckVal] = React.useState([]);
   const [show, newshow] = useState(false);
@@ -84,7 +84,6 @@ const AllUsers = () => {
       field: "checkout",
       headerName: "",
       width: 60,
-
       minHeight: 300,
       renderCell: (cellValues) => {
         const handleClick = (cellValues) => {
@@ -113,41 +112,34 @@ const AllUsers = () => {
         );
       },
     },
-    {
-      field: "user",
-      headerName: "Image",
-      width: 180,
-
-      minHeight: 300,
-      renderCell: (params) => {
-        return (
-          <div>
-            <img
-              style={{ width: "140px", height: "80px" }}
-              src={params.value.image}
-              alt=''
-            />
-          </div>
-        );
-      },
-    },
 
     {
-      field: "title",
-      headerName: "Title",
+      field: "name",
+      headerName: "Name",
       minWidth: 150,
       disableReorder: true,
-      editable: true,
-      valueGetter: (value) => {
-        // console.log(value.id);
-        return value.value;
-      },
+      // valueGetter: (value) => {
+      //   // console.log(value.id);
+      //   return value.value;
+      // },
     },
     {
-      field: "extraDetail",
-      headerName: "Description",
+      field: "email",
+      headerName: "Email",
       width: 300,
-      renderCell: (params) => <ExpandableCell {...params} />,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "phoneno",
+      headerName: "PhoneNo",
+      width: 150,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
     },
     {
       field: "createdAt",
@@ -157,28 +149,41 @@ const AllUsers = () => {
       cellClassName: "font-tabular-nums",
     },
 
-    // {
-    //   field: "updatedAt",
-    //   headerName: "Updated At",
-    //   width: 100,
-    //   valueFormatter: ({ value }) => value.slice(0, 10),
-    // },
     {
-      field: "updatedAt",
-      headerName: "",
-      width: 50,
+      field: "switch",
+      headerName: "switch",
+      width: 70,
       renderCell: (cellValues) => {
         const handleClick = (cellvalues) => {
-          console.log(cellvalues);
-          navigate(`/updatedata/${cellvalues.id}`);
+          if (cellvalues.row.status === "admin") {
+            try {
+              axios.patch(`/api/user/update/${cellvalues.id}`, {
+                status: "user",
+              });
+            } catch (error) {
+              console.log(error);
+            }
+            cellvalues.row.status = "user";
+          } else if (cellvalues.row.status === "user") {
+            try {
+              axios.patch(`/api/user/update/${cellvalues.id}`, {
+                status: "admin",
+              });
+            } catch (error) {
+              console.log(error);
+            }
+            cellvalues.row.status = "admin";
+          }
         };
+
+        // console.log(cellvalues);
+
         return (
-          <EditIcon
+          <Switch
+            {...label1}
             onClick={(event) => {
               handleClick(cellValues);
             }}
-            color='primary'
-            sx={{ cursor: "pointer" }}
           />
         );
       },
@@ -193,7 +198,7 @@ const AllUsers = () => {
           try {
             setOpen(true);
             setStatus("loading");
-            return axios.delete(`/api/news/data/${cellvalues.id}`);
+            axios.delete(`/api/deleteuser/${cellValues.id}`);
           } catch (error) {
             console.log(error);
           }
@@ -218,26 +223,23 @@ const AllUsers = () => {
     setOpen(false);
   };
   const initialstate = {
-    news: [],
+    user: [],
     loading: true,
     error: "",
   };
-  const [{ loading, error, news }, dispatch] = useReducer(
+  const [{ loading, error, user }, dispatch] = useReducer(
     reducer,
     initialstate
   );
-  // const [news, newproducts] = useState([]);
+  // const [user, newproducts] = useState([]);
 
   const DeleteRow = async () => {
     window.location.reload();
-
     try {
       setOpen(true);
       setStatus("loading");
-      // JSON.stringify(CheckVal);
-      // axios.delete(`/api/news/data/id?=$()`)
       CheckVal.map((value) => {
-        return axios.delete(`/api/news/data/${value}`);
+        return axios.delete(`/api/deleteuser/${value}`);
       });
     } catch (error) {
       console.log(error);
@@ -262,16 +264,16 @@ const AllUsers = () => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`/api/news/newsData?q=${searchVal}`);
+        const result = await axios.get(`/api/getallusers?q=${searchVal}`);
         console.log(result);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
-        // newproducts(result.data);
       } catch (error) {
         dispatch({ type: "FETCH_FAIL", payload: error.message });
       }
     };
     fetchData();
   }, [searchVal]);
+
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
       <Grid container>
@@ -350,58 +352,58 @@ const AllUsers = () => {
               paddingTop: "0px !important",
             }}
           >
-            {/* {loading ? (
+            {loading ? (
               <LoadingBox />
             ) : error ? (
               // <MessageBox variant='danger'>{error}</MessageBox>
               <h1>Error Occur</h1>
-            ) : ( */}
-            <DataGrid
-              rows={news}
-              columns={columns}
-              pageSize={6}
-              getRowId={(row) => row._id}
-              getRowHeight={() => "auto"}
-              getEstimatedRowHeight={() => 100}
-              onSortModelChange={(value) => {
-                console.log(value);
-              }}
-              experimentalFeatures={{ newEditingApi: true }}
-              onCellEditStop={(params, event) => {
-                if (params.reason === GridCellEditStopReasons.cellFocusOut) {
-                  event.defaultMuiPrevented = true;
-                  console.log(params.id + "id Value");
+            ) : (
+              <DataGrid
+                rows={user}
+                columns={columns}
+                pageSize={6}
+                getRowId={(row) => row._id}
+                getRowHeight={() => "auto"}
+                getEstimatedRowHeight={() => 100}
+                onSortModelChange={(value) => {
+                  console.log(value);
+                }}
+                experimentalFeatures={{ newEditingApi: true }}
+                onCellEditStop={(params, event) => {
+                  if (params.reason === GridCellEditStopReasons.cellFocusOut) {
+                    event.defaultMuiPrevented = true;
+                    console.log(params.id + "id Value");
+                  }
+                }}
+                components={{
+                  Toolbar: GridToolbar,
+                }}
+                filterModel={filterModel}
+                onFilterModelChange={(newFilterModel) =>
+                  setFilterModel(newFilterModel)
                 }
-              }}
-              components={{
-                Toolbar: GridToolbar,
-              }}
-              filterModel={filterModel}
-              onFilterModelChange={(newFilterModel) =>
-                setFilterModel(newFilterModel)
-              }
-              componentsProps={{
-                toolbar: {
-                  // showQuickFilter: true,
-                  quickFilterProps: { debounceMs: 500 },
-                  headerCheckboxSelectionFilteredOnly: true,
-                },
-              }}
-              sx={{
-                backgroundColor: "white",
-                height: "100%",
-                "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
-                  py: 1,
-                },
-                "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
-                  py: "15px",
-                },
-                "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
-                  py: "22px",
-                },
-              }}
-            />
-            {/* )} */}
+                componentsProps={{
+                  toolbar: {
+                    // showQuickFilter: true,
+                    quickFilterProps: { debounceMs: 500 },
+                    headerCheckboxSelectionFilteredOnly: true,
+                  },
+                }}
+                sx={{
+                  backgroundColor: "white",
+                  height: "100%",
+                  "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
+                    py: 1,
+                  },
+                  "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
+                    py: "15px",
+                  },
+                  "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
+                    py: "22px",
+                  },
+                }}
+              />
+            )}
           </Box>
         </Grid>
       </Grid>

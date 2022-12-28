@@ -2,13 +2,13 @@
 import { Routes, Route } from "react-router-dom";
 
 import React, { Suspense } from "react";
-import { LoadingBox, Sidebar } from "./Components";
-import Addproducts from "./Pages/AddProducts";
+import { LoadingBox, Sidebar } from "./Dashboard/Components";
+import Addproducts from "./Dashboard/Pages/AddProducts";
 
-const Dashboard = React.lazy(() => import("./Pages/Dashboard"));
-const AllUsers = React.lazy(() => import("./Pages/AllUsers"));
-const Stores = React.lazy(() => import("./Pages/Stores"));
-const ViewAccount = React.lazy(() => import("./Pages/ViewAccount"));
+const Dashboard = React.lazy(() => import("./Dashboard/Pages/Dashboard"));
+const AllUsers = React.lazy(() => import("./Dashboard/Pages/AllUsers"));
+const Stores = React.lazy(() => import("./Dashboard/Pages/Stores"));
+const ViewAccount = React.lazy(() => import("./Dashboard/Pages/ViewAccount"));
 
 function App() {
   return (
@@ -22,9 +22,7 @@ function App() {
       >
         <Sidebar />
         <Routes>
-          {/* <Route path='/' element={<Addnews />} /> */}
           <Route path='/dashboard' element={<Dashboard />} />
-          {/* <Route path='/addnews' element={<Addnews />} /> */}
           <Route path='/allusers' element={<AllUsers />} />
           <Route path='/stores' element={<Stores />} />
           <Route path='/viewaccount' element={<ViewAccount />} />

@@ -52,7 +52,7 @@ const Addproducts = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await axios.get("/");
+        const data = await axios.get("/getall");
         console.log(data);
       } catch (error) {
         console.log(error);

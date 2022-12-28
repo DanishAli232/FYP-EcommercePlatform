@@ -259,18 +259,18 @@ const Stores = () => {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch({ type: "FETCH_REQUEST" });
-      try {
-        const result = await axios.get(`/api/news/newsData?q=${searchVal}`);
-        console.log(result);
-        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
-        // newproducts(result.data);
-      } catch (error) {
-        dispatch({ type: "FETCH_FAIL", payload: error.message });
-      }
-    };
-    fetchData();
+    // const fetchData = async () => {
+    //   dispatch({ type: "FETCH_REQUEST" });
+    //   try {
+    //     const result = await axios.get(`/api/news/newsData?q=${searchVal}`);
+    //     console.log(result);
+    //     dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+    //     // newproducts(result.data);
+    //   } catch (error) {
+    //     dispatch({ type: "FETCH_FAIL", payload: error.message });
+    //   }
+    // };
+    // fetchData();
   }, [searchVal]);
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
