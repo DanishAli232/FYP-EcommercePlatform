@@ -24,11 +24,14 @@ const Addproducts = () => {
   const [alertMsg, newalertMsg] = useState("");
   const [severity, newseverity] = useState("");
   const [status, setStatus] = useState(null);
+  const [error, seterror] = useState({});
   const [values, setValues] = useState({
-    title: "",
+    name: "",
+    category: "",
+    price: "",
+    countinstock: "",
+    brand: "",
     description: "",
-    extraDetail: "",
-    website: "",
     image: "",
   });
 
@@ -65,24 +68,26 @@ const Addproducts = () => {
     e.preventDefault();
     setStatus("loading");
     try {
-      // const formData = new FormData();
-      // Object.entries(values).forEach(([key, value]) => {
-      //   console.log("Key Is " + key + " Value Is " + value);
-      //   formData.append(key, value);
-      //   console.log(formData);
-      // });
-      // await axios.post(" /api/users/postdata", formData, {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // });
-      // newalertMsg("Your Data Send SuccessFully");
-      // newseverity("success");
-      // setOpen(true);
+      console.log(values);
+      console.log(Object.entries(values));
+      const formData = new FormData();
+      Object.entries(values).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      await axios.post("/api/addproduct/postdata", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      newalertMsg("Your Data Send SuccessFully");
+      newseverity("success");
+      setOpen(true);
     } catch (err) {
-      // setOpen(true);
-      // newalertMsg(`Sorry! Not Data Send ${err}`);
-      // newseverity("error");
+      console.log(err);
+      setOpen(true);
+      newalertMsg(`Sorry! Not Data Send`);
+      newseverity("error");
+      seterror(err.response.data.errors);
     }
   };
 
@@ -101,8 +106,9 @@ const Addproducts = () => {
               backgroundColor: "white",
               minHeight: "599px",
               marginTop: "89px",
-              marginLeft: { md: "32px", xs: "0px" },
-              marginRight: { md: "32px", xs: "0px" },
+              marginLeft: { md: "33px", xs: "0px" },
+              marginRight: { md: "35px", xs: "0px" },
+              marginBottom: "10px",
               borderRadius: "0.75rem",
               boxShadow:
                 "rgba(255, 255, 255, 0.9) 0rem 0rem 0.0625rem 0.0625rem inset, rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem",
@@ -130,10 +136,12 @@ const Addproducts = () => {
                 >
                   <TextField
                     id='outlined-required'
-                    label='News Title'
-                    value={values.title}
+                    label='Product Name'
+                    value={values.name}
                     onChange={handleChange}
-                    name='title'
+                    name='name'
+                    helperText={error.name}
+                    error={!!error.name}
                     sx={{ width: { md: "400px", xs: "100%" } }}
                   />
                 </Box>
@@ -144,15 +152,75 @@ const Addproducts = () => {
                 >
                   <TextField
                     id='outlined-required'
-                    label='Website'
-                    value={values.website}
+                    label='Price'
+                    type='number'
+                    placeholder='00'
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    value={values.price}
                     onChange={handleChange}
-                    name='website'
+                    name='price'
+                    helperText={error.price}
+                    error={!!error.price}
                     sx={{ width: { md: "400px", xs: "100%" } }}
                   />
                 </Box>
                 <br></br>
-
+                <Box
+                  className='create-2 a'
+                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                >
+                  <TextField
+                    id='outlined-required'
+                    label='CountInStock'
+                    placeholder='00'
+                    helperText={error.countinstock}
+                    error={!!error.countinstock}
+                    type='number'
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    value={values.countinstock}
+                    onChange={handleChange}
+                    name='countinstock'
+                    sx={{ width: { md: "400px", xs: "100%" } }}
+                  />
+                </Box>
+                <br></br>{" "}
+                <Box
+                  className='create-2 a'
+                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                >
+                  <TextField
+                    id='outlined-required'
+                    label='Category'
+                    value={values.category}
+                    defaultValue='Category Name'
+                    onChange={handleChange}
+                    name='category'
+                    helperText={error.category}
+                    error={!!error.category}
+                    sx={{ width: { md: "400px", xs: "100%" } }}
+                  />
+                </Box>
+                <br></br>{" "}
+                <Box
+                  className='create-2 a'
+                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                >
+                  <TextField
+                    id='outlined-required'
+                    label='Brand'
+                    value={values.brand}
+                    onChange={handleChange}
+                    name='brand'
+                    helperText={error.brand}
+                    error={!!error.brand}
+                    sx={{ width: { md: "400px", xs: "100%" } }}
+                  />
+                </Box>
+                <br></br>{" "}
                 {/* <Box className='create-2 a'>
                     <TextField
                       id='outlined-required'
@@ -164,37 +232,6 @@ const Addproducts = () => {
                     />
                   </Box>
                   <br></br> */}
-                <Typography
-                  sx={{
-                    fontSize: "15px",
-                    fontWeight: "500",
-                    color: "rgb(2,2,2,0.65)",
-                  }}
-                >
-                  Short Description
-                </Typography>
-                <Box
-                  className='create-2 a'
-                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
-                >
-                  <TextareaAutosize
-                    maxRows={4}
-                    maxcolumns={4}
-                    className='textArea'
-                    label='Short Description'
-                    aria-label='maximum height'
-                    // placeholder='Start Here'
-                    value={values.description}
-                    name='description'
-                    onChange={handleChange}
-                    style={{
-                      maxWidth: "100%",
-                      width: "100%",
-                      minHeight: "79px",
-                      fontSize: "15px",
-                    }}
-                  />
-                </Box>
                 <br></br>
                 <Typography
                   sx={{
@@ -203,7 +240,7 @@ const Addproducts = () => {
                     color: "rgb(2,2,2,0.65)",
                   }}
                 >
-                  Detailed Description
+                  Description
                 </Typography>
                 <Box
                   className='create-2 a'
@@ -213,10 +250,12 @@ const Addproducts = () => {
                     maxRows={4}
                     maxcolumns={4}
                     className='textArea'
-                    label='Long Description'
+                    label='description'
                     aria-label='maximum height'
-                    value={values.extraDetail}
-                    name='extraDetail'
+                    value={values.description}
+                    name='description'
+                    helperText={error.description}
+                    error={!!error.description}
                     onChange={handleChange}
                     style={{
                       maxWidth: "100%",
@@ -227,7 +266,6 @@ const Addproducts = () => {
                   />
                 </Box>
                 <br></br>
-
                 <Box sx={{ marginBottom: "15px" }}>
                   <Input
                     sx={{ display: "none" }}
@@ -248,8 +286,18 @@ const Addproducts = () => {
                       Upload Image
                     </Button>
                   </label>
+                  <Typography
+                    sx={{
+                      fontSize: "0.75rem",
+                      color: "#d32f2f",
+                      marginLeft: "14px",
+                      marginRight: "14px",
+                      marginTop: "0px",
+                    }}
+                  >
+                    {error.image}
+                  </Typography>
                 </Box>
-
                 {values.image && (
                   <Grid item>
                     <Box>
@@ -261,7 +309,6 @@ const Addproducts = () => {
                     </Box>
                   </Grid>
                 )}
-
                 <Box className='submit'>
                   <Button
                     type='submit'

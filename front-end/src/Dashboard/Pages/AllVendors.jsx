@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoadingBox, Navbar } from "../Components";
+import { LoadingBox, Navbar, Sidebar } from "../Components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { default as NewLink } from "@mui/material/Link";
 import PropTypes from "prop-types";
@@ -42,7 +42,7 @@ const reducer = (state, action) => {
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 const label1 = { inputProps: { "aria-label": "Switch demo" } };
 
-const AllUsers = () => {
+const AllVendors = () => {
   // const Alert = React.forwardRef(function Alert(props, ref) {
   //   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
   // });
@@ -126,7 +126,7 @@ const AllUsers = () => {
     {
       field: "email",
       headerName: "Email",
-      width: 300,
+      width: 200,
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
     {
@@ -138,6 +138,12 @@ const AllUsers = () => {
     {
       field: "status",
       headerName: "Status",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "storename",
+      headerName: "StoreName",
       width: 100,
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
@@ -155,16 +161,7 @@ const AllUsers = () => {
       width: 70,
       renderCell: (cellValues) => {
         const handleClick = (cellvalues) => {
-          if (cellvalues.row.status === "admin") {
-            try {
-              axios.patch(`/api/user/update/${cellvalues.id}`, {
-                status: "user",
-              });
-            } catch (error) {
-              console.log(error);
-            }
-            cellvalues.row.status = "user";
-          } else if (cellvalues.row.status === "user") {
+          if (cellvalues.row.status === "vendor") {
             try {
               axios.patch(`/api/user/update/${cellvalues.id}`, {
                 status: "admin",
@@ -173,6 +170,15 @@ const AllUsers = () => {
               console.log(error);
             }
             cellvalues.row.status = "admin";
+          } else if (cellvalues.row.status === "admin") {
+            try {
+              axios.patch(`/api/user/update/${cellvalues.id}`, {
+                status: "vendor",
+              });
+            } catch (error) {
+              console.log(error);
+            }
+            cellvalues.row.status = "vendor";
           }
         };
 
@@ -198,7 +204,7 @@ const AllUsers = () => {
           try {
             setOpen(true);
             setStatus("loading");
-            axios.delete(`/api/deleteuser/${cellValues.id}`);
+            axios.delete(`/api/deletevendor/${cellValues.id}`);
           } catch (error) {
             console.log(error);
           }
@@ -239,7 +245,7 @@ const AllUsers = () => {
       setOpen(true);
       setStatus("loading");
       CheckVal.map((value) => {
-        return axios.delete(`/api/deleteuser/${value}`);
+        return axios.delete(`/api/deletevendor/${value}`);
       });
     } catch (error) {
       console.log(error);
@@ -264,7 +270,7 @@ const AllUsers = () => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`/api/getallusers?q=${searchVal}`);
+        const result = await axios.get(`/api/getallvendors?q=${searchVal}`);
         console.log(result);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
@@ -277,7 +283,9 @@ const AllUsers = () => {
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
       <Grid container>
-        <Grid item md={2}></Grid>
+        <Grid item md={2}>
+          {" "}
+        </Grid>
         <Grid item md={10}>
           <Navbar />
           <Box
@@ -323,17 +331,17 @@ const AllUsers = () => {
             )}
             <Box sx={{ marginBottom: "10px" }}>
               {/* <TextField
-                onChange={filterResult}
-                value={searchVal}
-                id='standard-basic'
-                label='Search'
-                variant='standard'
-                type='search'
-              /> */}
+                  onChange={filterResult}
+                  value={searchVal}
+                  id='standard-basic'
+                  label='Search'
+                  variant='standard'
+                  type='search'
+                /> */}
               <FormControl fullWidth sx={{ m: 1 }} variant='standard'>
                 {/* <InputLabel htmlFor='standard-adornment-amount'>
-                  Search
-                </InputLabel> */}
+                    Search
+                  </InputLabel> */}
                 <Input
                   id='standard-adornment-amount'
                   value={searchVal}
@@ -416,4 +424,4 @@ const AllUsers = () => {
   );
 };
 
-export default AllUsers;
+export default AllVendors;

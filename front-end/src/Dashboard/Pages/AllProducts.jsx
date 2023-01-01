@@ -17,6 +17,7 @@ import { LoadingBox, Navbar } from "../Components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { default as NewLink } from "@mui/material/Link";
 import PropTypes from "prop-types";
+import EditIcon from "@mui/icons-material/Edit";
 
 import {
   DataGrid,
@@ -42,7 +43,7 @@ const reducer = (state, action) => {
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 const label1 = { inputProps: { "aria-label": "Switch demo" } };
 
-const AllUsers = () => {
+const AllProducts = () => {
   // const Alert = React.forwardRef(function Alert(props, ref) {
   //   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
   // });
@@ -123,21 +124,64 @@ const AllUsers = () => {
       //   return value.value;
       // },
     },
+    // {
+    //   field: "image",
+    //   headerName: "Image",
+    //   width: 180,
+
+    //   minHeight: 300,
+    //   renderCell: (params) => {
+    //     console.log(params);
+    //     return (
+    //       <div>
+    //         <img
+    //           style={{ width: "140px", height: "80px" }}
+    //           src={params.value}
+    //           alt=''
+    //         />
+    //       </div>
+    //     );
+    //   },
+    // },
     {
-      field: "email",
-      headerName: "Email",
-      width: 300,
+      field: "price",
+      headerName: "Price",
+      width: 100,
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
     {
-      field: "phoneno",
-      headerName: "PhoneNo",
+      field: "category",
+      headerName: "Category",
       width: 150,
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
     {
-      field: "status",
-      headerName: "Status",
+      field: "countinstock",
+      headerName: "Remaining",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "brand",
+      headerName: "Brand",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "numReviews",
+      headerName: "Reviews",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "rating",
+      headerName: "Rating",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "description",
+      headerName: "Description",
       width: 100,
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
@@ -148,42 +192,22 @@ const AllUsers = () => {
       valueFormatter: ({ value }) => value.slice(0, 10),
       cellClassName: "font-tabular-nums",
     },
-
     {
-      field: "switch",
-      headerName: "switch",
-      width: 70,
+      field: "updatedAt",
+      headerName: "",
+      width: 50,
       renderCell: (cellValues) => {
         const handleClick = (cellvalues) => {
-          if (cellvalues.row.status === "admin") {
-            try {
-              axios.patch(`/api/user/update/${cellvalues.id}`, {
-                status: "user",
-              });
-            } catch (error) {
-              console.log(error);
-            }
-            cellvalues.row.status = "user";
-          } else if (cellvalues.row.status === "user") {
-            try {
-              axios.patch(`/api/user/update/${cellvalues.id}`, {
-                status: "admin",
-              });
-            } catch (error) {
-              console.log(error);
-            }
-            cellvalues.row.status = "admin";
-          }
+          console.log(cellvalues);
+          navigate(`/updateproduct/${cellvalues.id}`);
         };
-
-        // console.log(cellvalues);
-
         return (
-          <Switch
-            {...label1}
+          <EditIcon
             onClick={(event) => {
               handleClick(cellValues);
             }}
+            color='primary'
+            sx={{ cursor: "pointer" }}
           />
         );
       },
@@ -198,7 +222,7 @@ const AllUsers = () => {
           try {
             setOpen(true);
             setStatus("loading");
-            axios.delete(`/api/deleteuser/${cellValues.id}`);
+            axios.delete(`/api/deleteproduct/${cellValues.id}`);
           } catch (error) {
             console.log(error);
           }
@@ -239,7 +263,7 @@ const AllUsers = () => {
       setOpen(true);
       setStatus("loading");
       CheckVal.map((value) => {
-        return axios.delete(`/api/deleteuser/${value}`);
+        return axios.delete(`/api/deleteproduct/${value}`);
       });
     } catch (error) {
       console.log(error);
@@ -264,7 +288,7 @@ const AllUsers = () => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`/api/getallusers?q=${searchVal}`);
+        const result = await axios.get(`/api/getallproducts?q=${searchVal}`);
         console.log(result);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
@@ -323,17 +347,17 @@ const AllUsers = () => {
             )}
             <Box sx={{ marginBottom: "10px" }}>
               {/* <TextField
-                onChange={filterResult}
-                value={searchVal}
-                id='standard-basic'
-                label='Search'
-                variant='standard'
-                type='search'
-              /> */}
+                  onChange={filterResult}
+                  value={searchVal}
+                  id='standard-basic'
+                  label='Search'
+                  variant='standard'
+                  type='search'
+                /> */}
               <FormControl fullWidth sx={{ m: 1 }} variant='standard'>
                 {/* <InputLabel htmlFor='standard-adornment-amount'>
-                  Search
-                </InputLabel> */}
+                    Search
+                  </InputLabel> */}
                 <Input
                   id='standard-adornment-amount'
                   value={searchVal}
@@ -356,7 +380,7 @@ const AllUsers = () => {
               <LoadingBox />
             ) : error ? (
               // <MessageBox variant='danger'>{error}</MessageBox>
-              <h1>Error Occur</h1>
+              <h2>Error Occur</h2>
             ) : (
               <DataGrid
                 rows={user}
@@ -416,4 +440,4 @@ const AllUsers = () => {
   );
 };
 
-export default AllUsers;
+export default AllProducts;

@@ -344,7 +344,7 @@ const Stores = () => {
           </Box>
           <Box
             sx={{
-              height: 580,
+              height: 538,
               width: "92%",
               padding: { md: "42px", xs: "4px" },
               paddingTop: "0px !important",

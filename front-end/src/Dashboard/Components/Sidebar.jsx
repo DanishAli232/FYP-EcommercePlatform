@@ -50,7 +50,23 @@ const Sidebar = () => {
     borderRadius: "0.75rem",
   });
 
+  const [Allvendors, setAllvendors] = useState({
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+    },
+    backgroundColor: "",
+    borderRadius: "0.75rem",
+  });
+
   const [Allusers, setAllusers] = useState({
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+    },
+    backgroundColor: "",
+    borderRadius: "0.75rem",
+  });
+
+  const [AllProduct, setAllProduct] = useState({
     "&:hover": {
       backgroundColor: "rgba(255, 255, 255, 0.2)",
     },
@@ -80,6 +96,14 @@ const Sidebar = () => {
       ...Addproduct,
       backgroundColor: "",
     });
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAllProduct({
+      ...AllProduct,
+      backgroundColor: "",
+    });
   };
 
   const StoreClicker = () => {
@@ -99,6 +123,14 @@ const Sidebar = () => {
     });
     setAllusers({
       ...Allusers,
+      backgroundColor: "",
+    });
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAllProduct({
+      ...AllProduct,
       backgroundColor: "",
     });
   };
@@ -125,6 +157,14 @@ const Sidebar = () => {
       ...Addproduct,
       backgroundColor: "",
     });
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAllProduct({
+      ...AllProduct,
+      backgroundColor: "",
+    });
   };
 
   const AllusersClicker = () => {
@@ -149,6 +189,46 @@ const Sidebar = () => {
       ...Addproduct,
       backgroundColor: "",
     });
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAllProduct({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+  };
+
+  const AllvendorsClicker = () => {
+    setnavcontent("All Vendors");
+    setDashboard({
+      ...Dashboard,
+      backgroundColor: "",
+    });
+    setStores({
+      ...Stores,
+      backgroundColor: "",
+    });
+    setViewacoount({
+      ...Viewaccount,
+      backgroundColor: "",
+    });
+    setAllusers({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAddproduct({
+      ...Addproduct,
+      backgroundColor: "",
+    });
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "rgba(0, 0, 0, 0.315)",
+    });
+    setAllProduct({
+      ...AllProduct,
+      backgroundColor: "",
+    });
   };
 
   const AddproductClicker = () => {
@@ -169,9 +249,50 @@ const Sidebar = () => {
       ...Allusers,
       backgroundColor: "",
     });
-
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "",
+    });
     setAddproduct({
       ...Addproduct,
+      backgroundColor: "rgba(0, 0, 0, 0.315)",
+    });
+
+    setAllProduct({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+  };
+
+  const AllproductClicker = () => {
+    setnavcontent("All Products");
+    setDashboard({
+      ...Dashboard,
+      backgroundColor: "",
+    });
+    setStores({
+      ...Stores,
+      backgroundColor: "",
+    });
+    setViewacoount({
+      ...Viewaccount,
+      backgroundColor: "",
+    });
+    setAllusers({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAddproduct({
+      ...Addproduct,
+      backgroundColor: "",
+    });
+
+    setAllProduct({
+      ...AllProduct,
       backgroundColor: "rgba(0, 0, 0, 0.315)",
     });
   };
@@ -265,6 +386,53 @@ const Sidebar = () => {
             </ListItem>
           </Link>
 
+          <Link
+            to='/allproducts'
+            style={{ textDecoration: "none", width: "88%" }}
+          >
+            <ListItem
+              // onClick={newsClicker}
+              disablePadding
+              sx={{
+                transition:
+                  "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                "&:hover": {},
+              }}
+            >
+              <ListItemButton sx={AllProduct} onClick={AllproductClicker}>
+                <ListItemIcon sx={{ color: "white" }}>
+                  <FeedIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary='All Products'
+                  sx={{ color: "white", textDecoration: "none" }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+
+          <Link
+            to='/allvendors'
+            style={{ textDecoration: "none", width: "88%" }}
+          >
+            <ListItem
+              disablePadding
+              sx={{
+                transition:
+                  "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+              }}
+            >
+              <ListItemButton sx={Allvendors} onClick={AllvendorsClicker}>
+                <ListItemIcon sx={{ color: "white" }}>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary='All Vendors'
+                  sx={{ color: "white", textDecoration: "none" }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
           <Link to='/allusers' style={{ textDecoration: "none", width: "88%" }}>
             <ListItem
               disablePadding
