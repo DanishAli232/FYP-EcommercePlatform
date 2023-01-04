@@ -113,24 +113,24 @@ const Stores = () => {
         );
       },
     },
-    {
-      field: "user",
-      headerName: "Image",
-      width: 180,
+    // {
+    //   field: "user",
+    //   headerName: "Image",
+    //   width: 180,
 
-      minHeight: 300,
-      renderCell: (params) => {
-        return (
-          <div>
-            <img
-              style={{ width: "140px", height: "80px" }}
-              src={params.value.image}
-              alt=''
-            />
-          </div>
-        );
-      },
-    },
+    //   minHeight: 300,
+    //   renderCell: (params) => {
+    //     return (
+    //       <div>
+    //         <img
+    //           style={{ width: "140px", height: "80px" }}
+    //           src={params.value.image}
+    //           alt=''
+    //         />
+    //       </div>
+    //     );
+    //   },
+    // },
 
     {
       field: "title",

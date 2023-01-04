@@ -4,6 +4,7 @@ import {
   CircularProgress,
   Grid,
   Input,
+  InputAdornment,
   Snackbar,
   TextareaAutosize,
   TextField,
@@ -154,6 +155,11 @@ const Addproducts = () => {
                     id='outlined-required'
                     label='Price'
                     type='number'
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>$</InputAdornment>
+                      ),
+                    }}
                     placeholder='00'
                     InputLabelProps={{
                       shrink: true,

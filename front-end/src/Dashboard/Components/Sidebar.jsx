@@ -15,9 +15,10 @@ import FeedIcon from "@mui/icons-material/Feed";
 import PeopleIcon from "@mui/icons-material/People";
 import { DashboardGlobalContext } from "../Context/DashboardContext";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
+import Person4Icon from "@mui/icons-material/Person4";
 
 const Sidebar = () => {
-  const { setnavcontent } = useContext(DashboardGlobalContext);
+  const { setnavcontent, status } = useContext(DashboardGlobalContext);
   const [Dashboard, setDashboard] = useState({
     "&:hover": {
       backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -318,164 +319,317 @@ const Sidebar = () => {
       <hr />
       {/* <Divider /> */}
       <nav aria-label='main mailbox folders'>
-        <List>
-          <Link
-            to='/dashboard'
-            style={{ textDecoration: "none", width: "88%" }}
-          >
-            <ListItem
-              disablePadding
-              sx={{
-                transition:
-                  "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-              }}
-            >
-              <ListItemButton sx={Dashboard} onClick={DashboardClicker}>
-                <ListItemIcon sx={{ color: "white" }}>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary='Dashboard'
-                  sx={{ color: "white", textDecoration: "none" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link
-            to='/viewaccount'
-            style={{ textDecoration: "none", width: "88%" }}
-          >
-            <ListItem
-              disablePadding
-              sx={{
-                transition:
-                  "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-              }}
-            >
-              <ListItemButton sx={Viewaccount} onClick={ViewAccountClicker}>
-                <ListItemIcon sx={{ color: "white" }}>
-                  <AccountCircleIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary='View Account'
-                  sx={{ color: "white", textDecoration: "none" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
+        <>
+          {status === "admin" && (
+            <List>
+              <Link
+                to='/dashboard'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Dashboard} onClick={DashboardClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Dashboard'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+              <Link
+                to='/viewaccount'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Viewaccount} onClick={ViewAccountClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <AccountCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='View Account'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+              {/* <Link
+                to='/stores'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  // onClick={newsClicker}
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                    "&:hover": {},
+                  }}
+                >
+                  <ListItemButton sx={Stores} onClick={StoreClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <FeedIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Stores'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link> */}
 
-          <Link to='/stores' style={{ textDecoration: "none", width: "88%" }}>
-            <ListItem
-              // onClick={newsClicker}
-              disablePadding
-              sx={{
-                transition:
-                  "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-                "&:hover": {},
-              }}
-            >
-              <ListItemButton sx={Stores} onClick={StoreClicker}>
-                <ListItemIcon sx={{ color: "white" }}>
-                  <FeedIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary='Stores'
-                  sx={{ color: "white", textDecoration: "none" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
+              <Link
+                to='/allproducts'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  // onClick={newsClicker}
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                    "&:hover": {},
+                  }}
+                >
+                  <ListItemButton sx={AllProduct} onClick={AllproductClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <FeedIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='All Products'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
 
-          <Link
-            to='/allproducts'
-            style={{ textDecoration: "none", width: "88%" }}
-          >
-            <ListItem
-              // onClick={newsClicker}
-              disablePadding
-              sx={{
-                transition:
-                  "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-                "&:hover": {},
-              }}
-            >
-              <ListItemButton sx={AllProduct} onClick={AllproductClicker}>
-                <ListItemIcon sx={{ color: "white" }}>
-                  <FeedIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary='All Products'
-                  sx={{ color: "white", textDecoration: "none" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
+              <Link
+                to='/allvendors'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Allvendors} onClick={AllvendorsClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <Person4Icon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='All Vendors'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+              <Link
+                to='/allusers'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Allusers} onClick={AllusersClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <PeopleIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='All Users'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
 
-          <Link
-            to='/allvendors'
-            style={{ textDecoration: "none", width: "88%" }}
-          >
-            <ListItem
-              disablePadding
-              sx={{
-                transition:
-                  "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-              }}
-            >
-              <ListItemButton sx={Allvendors} onClick={AllvendorsClicker}>
-                <ListItemIcon sx={{ color: "white" }}>
-                  <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary='All Vendors'
-                  sx={{ color: "white", textDecoration: "none" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link to='/allusers' style={{ textDecoration: "none", width: "88%" }}>
-            <ListItem
-              disablePadding
-              sx={{
-                transition:
-                  "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-              }}
-            >
-              <ListItemButton sx={Allusers} onClick={AllusersClicker}>
-                <ListItemIcon sx={{ color: "white" }}>
-                  <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary='All Users'
-                  sx={{ color: "white", textDecoration: "none" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
+              <Link
+                to='/addproduct'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Addproduct} onClick={AddproductClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <UploadFileIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Add Product'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            </List>
+          )}
+          {status === "vendor" && (
+            <List>
+              <Link
+                to='/dashboard'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Dashboard} onClick={DashboardClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Dashboard'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+              <Link
+                to='/viewaccount'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Viewaccount} onClick={ViewAccountClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <AccountCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='View Account'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
 
-          <Link
-            to='/addproduct'
-            style={{ textDecoration: "none", width: "88%" }}
-          >
-            <ListItem
-              disablePadding
-              sx={{
-                transition:
-                  "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-              }}
-            >
-              <ListItemButton sx={Addproduct} onClick={AddproductClicker}>
-                <ListItemIcon sx={{ color: "white" }}>
-                  <UploadFileIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary='Add Product'
-                  sx={{ color: "white", textDecoration: "none" }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        </List>
+              <Link
+                to='/allproducts'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  // onClick={newsClicker}
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                    "&:hover": {},
+                  }}
+                >
+                  <ListItemButton sx={AllProduct} onClick={AllproductClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <FeedIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='All Products'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+
+              <Link
+                to='/addproduct'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Addproduct} onClick={AddproductClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <UploadFileIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Add Product'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            </List>
+          )}
+          {status === "user" && (
+            <List>
+              <Link
+                to='/dashboard'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Dashboard} onClick={DashboardClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Dashboard'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+              <Link
+                to='/viewaccount'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Viewaccount} onClick={ViewAccountClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <AccountCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='View Account'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            </List>
+          )}
+        </>
       </nav>
     </Box>
   );
