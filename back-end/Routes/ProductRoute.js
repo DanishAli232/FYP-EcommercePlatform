@@ -1,6 +1,7 @@
 import express from "express";
 import {
     addproduct,
+    allproduct,
     deleteproduct,
     findOneproduct,
     getallproducts,
@@ -52,5 +53,6 @@ ProductRouter.post(
 );
 ProductRouter.patch("/updateproduct", updateproduct);
 ProductRouter.get("/findOneproduct/:id", findOneproduct);
+ProductRouter.get("/allproduct", allproduct);
 
 export default ProductRouter;

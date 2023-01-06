@@ -1,104 +1,44 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "../Components";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import FeedIcon from "@mui/icons-material/Feed";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import PeopleIcon from "@mui/icons-material/People";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true }; //keep the previous value and only update loading to true
-    case "FETCH_SUCCESS":
-      return { ...state, news: action.payload, loading: false };
-    case "FETCH_FAIL":
-      return { ...state, error: action.payload, loading: false };
-    default:
-      return state;
-  }
-};
+import Person4Icon from "@mui/icons-material/Person4";
+import axios from "axios";
 
 const Dashboard = () => {
   // const [displaySideBar, newdisplaySideBar] = useState("none");
   // const [DazeIconDisplay, newDazeIconDisplay] = useState("flex");
   // const [MoveIconDisplay, newMoveIconDisplay] = useState("none");
-  // const [users, newusers] = useState(0);
-  // const [admins, newadmin] = useState(0);
-  // const [likes, newlikes] = useState(0);
+  const [users, newusers] = useState(0);
+  const [admins, newadmin] = useState(0);
+  const [vendors, newvendors] = useState(0);
+  const [products, newproducts] = useState(0);
+
   // const [break1, newbreak1] = useState(true);
 
   // const [show, newshow] = useState(false);
   // const [IconShow, notShow] = useState(true);
 
-  // const initialstate = {
-  //   news: [],
-  //   loading: true,
-  //   error: "",
-  // };
-  // const [{ loading, error, news }, dispatch] = useReducer(
-  //   reducer,
-  //   initialstate
-  // );
+  useEffect(() => {
+    const fetchdata = async () => {
+      let result1;
+      result1 = await axios.get("/api/allvendor");
+      let result2 = await axios.get("/api/alluser");
+      let result3 = await axios.get("/api/allproduct");
+      let result4 = await axios.get("/api/alladmins");
+      const lengthadmins =
+        result4.data.useradmins.length + result4.data.vendoradmins.length;
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     dispatch({ type: "FETCH_REQUEST" });
-  //     try {
-  //       const result1 = await axios.get("http://localhost:5000/news/usercount");
-  //       console.log(result1);
-  //       newusers(result1.data.length);
-  //       const result2 = await axios.get(
-  //         "http://localhost:5000/news/admincount"
-  //       );
-  //       console.log(result2);
-  //       newadmin(result2.data.length);
-  //     } catch (error) {
-  //       // dispatch({ type: "FETCH_FAIL", payload: error.message });
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+      newvendors(result1.data.length);
+      newusers(result2.data.length);
+      newproducts(result3.data.length);
+      newadmin(lengthadmins);
+    };
+    fetchdata();
+  }, []);
 
-  // useEffect(() => {
-  //   const fetchdata = async () => {
-  //     let result3 = "";
-  //     if (break1 === true) {
-  //       result3 = await axios.get("http://localhost:5000/news/getLikes");
-  //       newbreak1(false);
-  //     }
-  //     console.log(result3);
-  //     result3.data.map((value) => {
-  //       return newlikes((prevdata) => {
-  //         return prevdata + value.likes;
-  //       });
-  //     });
-  //   };
-  //   fetchdata();
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchdata = async () => {
-  //     dispatch({ type: "FETCH_REQUEST", loading: true });
-  //     try {
-  //       const result = await axios.get("http://localhost:5000/news/newscount");
-  //       // console.log(result);
-  //       dispatch({
-  //         type: "FETCH_SUCCESS",
-  //         payload: result.data,
-  //         loading: false,
-  //       });
-  //       // newproducts(result.data);
-  //     } catch (error) {
-  //       dispatch({
-  //         type: "FETCH_FAIL",
-  //         payload: error.message,
-  //         loading: false,
-  //       });
-  //     }
-  //   };
-  //   fetchdata();
-  // }, []);
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
       <Grid container>
@@ -154,7 +94,7 @@ const Dashboard = () => {
                       marginTop: "-16px",
                     }}
                   >
-                    <FavoriteIcon sx={{ color: "white" }} />
+                    <Person4Icon sx={{ color: "white" }} />
                   </Box>
 
                   <Box
@@ -183,7 +123,7 @@ const Dashboard = () => {
                       }}
                     >
                       {/* {likes / 2} */}
-                      23
+                      {vendors}
                     </Typography>
                   </Box>
                 </Box>
@@ -278,7 +218,7 @@ const Dashboard = () => {
                         lineHeight: "1.00735em",
                       }}
                     >
-                      3
+                      {admins}
                       {/* {loading2 ? <CircularProgress /> : totaladmins.length} */}
                     </Typography>
                   </Box>
@@ -364,7 +304,7 @@ const Dashboard = () => {
                         fontSize: "0.875rem",
                       }}
                     >
-                      Stores
+                      Products
                     </Typography>
                     <Typography
                       sx={{
@@ -375,7 +315,7 @@ const Dashboard = () => {
                         lineHeight: "1.00735em",
                       }}
                     >
-                      21
+                      {products}
                       {/* {loading ? (
                         <CircularProgress />
                       ) : error ? (
@@ -477,8 +417,7 @@ const Dashboard = () => {
                         lineHeight: "1.00735em",
                       }}
                     >
-                      {/* {users} */}
-                      30
+                      {users}
                     </Typography>
                   </Box>
                 </Box>

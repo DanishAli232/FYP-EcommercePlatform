@@ -410,7 +410,7 @@ const AllProducts = () => {
                   toolbar: {
                     // showQuickFilter: true,
                     quickFilterProps: { debounceMs: 500 },
-                    headerCheckboxSelectionFilteredOnly: true,
+                    headercheckboxselectionfilteredonly: "true",
                   },
                 }}
                 sx={{

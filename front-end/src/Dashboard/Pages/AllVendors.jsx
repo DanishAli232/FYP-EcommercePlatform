@@ -163,7 +163,7 @@ const AllVendors = () => {
         const handleClick = (cellvalues) => {
           if (cellvalues.row.status === "vendor") {
             try {
-              axios.patch(`/api/user/update/${cellvalues.id}`, {
+              axios.patch(`/api/statusupdate/${cellvalues.id}`, {
                 status: "admin",
               });
             } catch (error) {
@@ -172,7 +172,7 @@ const AllVendors = () => {
             cellvalues.row.status = "admin";
           } else if (cellvalues.row.status === "admin") {
             try {
-              axios.patch(`/api/user/update/${cellvalues.id}`, {
+              axios.patch(`/api/statusupdate/${cellvalues.id}`, {
                 status: "vendor",
               });
             } catch (error) {
@@ -394,7 +394,7 @@ const AllVendors = () => {
                   toolbar: {
                     // showQuickFilter: true,
                     quickFilterProps: { debounceMs: 500 },
-                    headerCheckboxSelectionFilteredOnly: true,
+                    headercheckboxselectionfilteredonly: "true",
                   },
                 }}
                 sx={{

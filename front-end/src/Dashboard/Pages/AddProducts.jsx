@@ -69,8 +69,6 @@ const Addproducts = () => {
     e.preventDefault();
     setStatus("loading");
     try {
-      console.log(values);
-      console.log(Object.entries(values));
       const formData = new FormData();
       Object.entries(values).forEach(([key, value]) => {
         formData.append(key, value);
@@ -156,7 +154,7 @@ const Addproducts = () => {
                     label='Price'
                     type='number'
                     InputProps={{
-                      startAdornment: (
+                      endAdornment: (
                         <InputAdornment position='start'>$</InputAdornment>
                       ),
                     }}

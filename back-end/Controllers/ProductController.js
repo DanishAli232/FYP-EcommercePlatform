@@ -66,6 +66,16 @@ export const findOneproduct = async(req, res) => {
     }
 };
 
+export const allproduct = async(req, res) => {
+    const product = await Product.find({});
+    if (product) {
+        res.send(product);
+        console.log(product);
+    } else {
+        res.status(404).send({ message: "Product Not Found" });
+    }
+};
+
 export const addproduct = async(req, res) => {
     console.log(req.body);
     console.log(req.file);

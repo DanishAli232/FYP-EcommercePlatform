@@ -157,7 +157,7 @@ const AllUsers = () => {
         const handleClick = (cellvalues) => {
           if (cellvalues.row.status === "admin") {
             try {
-              axios.patch(`/api/user/update/${cellvalues.id}`, {
+              axios.patch(`/api/statususerupdate/${cellvalues.id}`, {
                 status: "user",
               });
             } catch (error) {
@@ -166,7 +166,7 @@ const AllUsers = () => {
             cellvalues.row.status = "user";
           } else if (cellvalues.row.status === "user") {
             try {
-              axios.patch(`/api/user/update/${cellvalues.id}`, {
+              axios.patch(`/api/statususerupdate/${cellvalues.id}`, {
                 status: "admin",
               });
             } catch (error) {
@@ -386,7 +386,7 @@ const AllUsers = () => {
                   toolbar: {
                     // showQuickFilter: true,
                     quickFilterProps: { debounceMs: 500 },
-                    headerCheckboxSelectionFilteredOnly: true,
+                    headercheckboxselectionfilteredonly: "true",
                   },
                 }}
                 sx={{

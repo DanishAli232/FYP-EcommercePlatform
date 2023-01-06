@@ -16,6 +16,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import { DashboardGlobalContext } from "../Context/DashboardContext";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Person4Icon from "@mui/icons-material/Person4";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Sidebar = () => {
   const { setnavcontent, status } = useContext(DashboardGlobalContext);
@@ -478,6 +479,29 @@ const Sidebar = () => {
                     </ListItemIcon>
                     <ListItemText
                       primary='Add Product'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+
+              <Link
+                to='/logout'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Stores} onClick={StoreClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Logout'
                       sx={{ color: "white", textDecoration: "none" }}
                     />
                   </ListItemButton>
