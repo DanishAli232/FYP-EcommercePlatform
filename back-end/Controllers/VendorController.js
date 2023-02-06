@@ -1,3 +1,4 @@
+import Product from "../Models/productModel.js";
 import Vendor from "../Models/VendorModel.js";
 
 export const getallvendors = async(req, res) => {
@@ -43,8 +44,6 @@ export const allvendors = async(req, res) => {
 
 export const statusupdate = async(req, res) => {
     try {
-        console.log(req.body);
-        console.log(req.params.id);
         const id = req.params.id;
         const statusupdate = await Vendor.findByIdAndUpdate(id, req.body, {
             new: true,
@@ -53,5 +52,24 @@ export const statusupdate = async(req, res) => {
     } catch (error) {
         res.status(404).send(error);
         console.log(error);
+    }
+};
+
+export const allvendorsproducts = async(req, res) => {
+    try {
+        const q = req.query.q;
+        console.log(q);
+        const f = req.query.f;
+        const keys = ["name", "description"];
+        const search = (data) => {
+            return data.filter((item) =>
+                keys.some((key) => item[key].toLowerCase().includes(q))
+            );
+        };
+        // console.log(q);
+        const products = await Product.find({ vendor: f });
+        res.send(search(products));
+    } catch (err) {
+        return res.status(500).json({ error: { message: err.message } });
     }
 };

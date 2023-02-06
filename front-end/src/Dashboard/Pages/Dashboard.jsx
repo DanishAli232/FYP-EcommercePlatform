@@ -1,13 +1,17 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navbar } from "../Components";
 import FeedIcon from "@mui/icons-material/Feed";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import PeopleIcon from "@mui/icons-material/People";
 import Person4Icon from "@mui/icons-material/Person4";
 import axios from "axios";
+import { DashboardGlobalContext } from "../Context/DashboardContext";
+import Alerts from "../Components/Alert";
 
 const Dashboard = () => {
+  const { statuscheck, open1 } = useContext(DashboardGlobalContext);
+
   // const [displaySideBar, newdisplaySideBar] = useState("none");
   // const [DazeIconDisplay, newDazeIconDisplay] = useState("flex");
   // const [MoveIconDisplay, newMoveIconDisplay] = useState("none");
@@ -41,6 +45,8 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
+      {open1 && <Alerts />}
+      {/* <Alerts /> */}
       <Grid container>
         <Grid item md={2}></Grid>
         <Grid item md={10}>
@@ -111,7 +117,11 @@ const Dashboard = () => {
                         fontSize: "0.875rem",
                       }}
                     >
-                      Vendors
+                      {statuscheck === "vendor" ? (
+                        <>Sold Products</>
+                      ) : (
+                        <>Vendors</>
+                      )}
                     </Typography>
                     <Typography
                       sx={{
@@ -123,7 +133,7 @@ const Dashboard = () => {
                       }}
                     >
                       {/* {likes / 2} */}
-                      {vendors}
+                      {statuscheck === "vendor" ? <>0</> : vendors}
                     </Typography>
                   </Box>
                 </Box>
@@ -207,7 +217,7 @@ const Dashboard = () => {
                         fontSize: "0.875rem",
                       }}
                     >
-                      Admins
+                      {statuscheck === "vendor" ? <>Remaining</> : <>Admins</>}
                     </Typography>
                     <Typography
                       sx={{
@@ -218,7 +228,7 @@ const Dashboard = () => {
                         lineHeight: "1.00735em",
                       }}
                     >
-                      {admins}
+                      {statuscheck === "vendor" ? <>0</> : admins}
                       {/* {loading2 ? <CircularProgress /> : totaladmins.length} */}
                     </Typography>
                   </Box>
@@ -256,7 +266,7 @@ const Dashboard = () => {
                 sx={{
                   backgroundColor: "white",
                   width: "141px",
-                  marginBottom: "7px",
+                  marginBottom: "20px",
                   borderRadius: "0.75rem",
                   boxShadow:
                     "rgba(0, 0, 0, 0.1) 0rem 0.25rem 0.375rem -0.0625rem, rgba(0, 0, 0, 0.06) 0rem 0.125rem 0.25rem -0.0625rem",
@@ -315,7 +325,7 @@ const Dashboard = () => {
                         lineHeight: "1.00735em",
                       }}
                     >
-                      {products}
+                      {statuscheck === "vendor" ? <>1</> : products}
                       {/* {loading ? (
                         <CircularProgress />
                       ) : error ? (
@@ -358,7 +368,7 @@ const Dashboard = () => {
                 sx={{
                   backgroundColor: "white",
                   width: "141px",
-                  marginBottom: "7px",
+                  marginBottom: "20px",
                   borderRadius: "0.75rem",
                   boxShadow:
                     "rgba(0, 0, 0, 0.1) 0rem 0.25rem 0.375rem -0.0625rem, rgba(0, 0, 0, 0.06) 0rem 0.125rem 0.25rem -0.0625rem",
@@ -406,7 +416,11 @@ const Dashboard = () => {
                         fontSize: "0.875rem",
                       }}
                     >
-                      Users
+                      {statuscheck === "vendor" ? (
+                        <>Collected Amount</>
+                      ) : (
+                        <>Users</>
+                      )}
                     </Typography>
                     <Typography
                       sx={{
@@ -417,7 +431,7 @@ const Dashboard = () => {
                         lineHeight: "1.00735em",
                       }}
                     >
-                      {users}
+                      {statuscheck === "vendor" ? <>0</> : users}
                     </Typography>
                   </Box>
                 </Box>

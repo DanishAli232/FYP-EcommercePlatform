@@ -17,9 +17,15 @@ import { DashboardGlobalContext } from "../Context/DashboardContext";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Person4Icon from "@mui/icons-material/Person4";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Alerts from "./Alert";
+import { GlobalContext } from "../../Context";
 
 const Sidebar = () => {
-  const { setnavcontent, status } = useContext(DashboardGlobalContext);
+  const { setdashboardOpen } = useContext(GlobalContext);
+
+  const { setnavcontent, statuscheck, setOpen } = useContext(
+    DashboardGlobalContext
+  );
   const [Dashboard, setDashboard] = useState({
     "&:hover": {
       backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -108,16 +114,17 @@ const Sidebar = () => {
     });
   };
 
-  const StoreClicker = () => {
-    setnavcontent("Stores");
-
+  const LogoutClicker = () => {
+    setnavcontent("Dashboard");
+    setOpen(true);
+    // alert("Do you Really want to Logout");
     setDashboard({
       ...Dashboard,
-      backgroundColor: "",
+      backgroundColor: "rgba(0, 0, 0, 0.315)",
     });
     setStores({
       ...Stores,
-      backgroundColor: "rgba(0, 0, 0, 0.315)",
+      backgroundColor: "",
     });
     setViewacoount({
       ...Viewaccount,
@@ -135,12 +142,20 @@ const Sidebar = () => {
       ...AllProduct,
       backgroundColor: "",
     });
+    setAddproduct({
+      ...Addproduct,
+      backgroundColor: "",
+    });
   };
 
   const ViewAccountClicker = () => {
     setnavcontent("View Account");
     setDashboard({
       ...Dashboard,
+      backgroundColor: "",
+    });
+    setAddproduct({
+      ...Addproduct,
       backgroundColor: "",
     });
     setStores({
@@ -171,6 +186,7 @@ const Sidebar = () => {
 
   const AllusersClicker = () => {
     setnavcontent("All Users");
+
     setDashboard({
       ...Dashboard,
       backgroundColor: "",
@@ -306,22 +322,31 @@ const Sidebar = () => {
   return (
     <Box sx={AllStyle.sidebar1}>
       <nav aria-label='secondary mailbox folders'>
+        {/* <Alerts /> */}
         <List>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText
-                primary='ARSTORE'
-                sx={{ textAlign: "center", fontSize: "27px" }}
-              />
-            </ListItemButton>
-          </ListItem>
+          <Link
+            to='/'
+            style={{ textDecoration: "none", color: "white" }}
+            onClick={() => {
+              setdashboardOpen(false);
+            }}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText
+                  primary='ARSTORE'
+                  sx={{ textAlign: "center", fontSize: "27px" }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         </List>
       </nav>
       <hr />
       {/* <Divider /> */}
       <nav aria-label='main mailbox folders'>
         <>
-          {status === "admin" && (
+          {statuscheck === "admin" && (
             <List>
               <Link
                 to='/dashboard'
@@ -380,7 +405,7 @@ const Sidebar = () => {
                     "&:hover": {},
                   }}
                 >
-                  <ListItemButton sx={Stores} onClick={StoreClicker}>
+                  <ListItemButton sx={Stores} onClick={LogoutClicker}>
                     <ListItemIcon sx={{ color: "white" }}>
                       <FeedIcon />
                     </ListItemIcon>
@@ -486,7 +511,7 @@ const Sidebar = () => {
               </Link>
 
               <Link
-                to='/logout'
+                to='/dashboard'
                 style={{ textDecoration: "none", width: "88%" }}
               >
                 <ListItem
@@ -496,7 +521,7 @@ const Sidebar = () => {
                       "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
                   }}
                 >
-                  <ListItemButton sx={Stores} onClick={StoreClicker}>
+                  <ListItemButton sx={Stores} onClick={LogoutClicker}>
                     <ListItemIcon sx={{ color: "white" }}>
                       <LogoutIcon />
                     </ListItemIcon>
@@ -509,7 +534,7 @@ const Sidebar = () => {
               </Link>
             </List>
           )}
-          {status === "vendor" && (
+          {statuscheck === "vendor" && (
             <List>
               <Link
                 to='/dashboard'
@@ -603,9 +628,31 @@ const Sidebar = () => {
                   </ListItemButton>
                 </ListItem>
               </Link>
+              <Link
+                to='/dashboard'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Stores} onClick={LogoutClicker}>
+                    <ListItemIcon sx={{ color: "white", marginLeft: "4px" }}>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Logout'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             </List>
           )}
-          {status === "user" && (
+          {statuscheck === "user" && (
             <List>
               <Link
                 to='/dashboard'
@@ -646,6 +693,28 @@ const Sidebar = () => {
                     </ListItemIcon>
                     <ListItemText
                       primary='View Account'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+              <Link
+                to='/dashboard'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Stores} onClick={LogoutClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Logout'
                       sx={{ color: "white", textDecoration: "none" }}
                     />
                   </ListItemButton>

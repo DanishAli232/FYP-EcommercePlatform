@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
 const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -10,6 +11,7 @@ const productSchema = new mongoose.Schema({
     countinstock: { type: Number, required: true },
     rating: { type: Number, required: true },
     numReviews: { type: Number, required: true },
+    vendor: { type: Schema.Types.ObjectId, ref: "Vendor", required: true },
 }, {
     timestamps: true,
 });

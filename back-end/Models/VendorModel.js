@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
 const vendorSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -8,6 +9,7 @@ const vendorSchema = new mongoose.Schema({
     password: { type: String, required: true },
     status: { type: String, default: "vendor" },
     storename: { type: String, required: true, default: "AR" },
+    products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
 }, {
     timestamps: true,
 });

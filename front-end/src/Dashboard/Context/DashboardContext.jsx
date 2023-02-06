@@ -6,11 +6,19 @@ export const DashboardGlobalContext = React.createContext();
 
 export const DashboardContext = ({ children }) => {
   const [navcontent, setnavcontent] = useState("Dashboard");
-  const [status, setstatus] = useState("admin");
+  const [statuscheck, setstatus] = useState("admin");
+  const [open1, setOpen] = React.useState(false);
 
   return (
     <DashboardGlobalContext.Provider
-      value={{ navcontent, setnavcontent, status, setstatus }}
+      value={{
+        navcontent,
+        setnavcontent,
+        statuscheck,
+        setstatus,
+        setOpen,
+        open1,
+      }}
     >
       {children}
     </DashboardGlobalContext.Provider>

@@ -11,7 +11,7 @@ import {
   Switch,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingBox, Navbar } from "../Components";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,6 +26,7 @@ import {
 } from "@mui/x-data-grid";
 import SearchIcon from "@mui/icons-material/Search";
 import MuiAlert from "@mui/material/Alert";
+import { DashboardGlobalContext } from "../Context/DashboardContext";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -44,6 +45,8 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 const label1 = { inputProps: { "aria-label": "Switch demo" } };
 
 const AllProducts = () => {
+  const { statuscheck } = useContext(DashboardGlobalContext);
+
   // const Alert = React.forwardRef(function Alert(props, ref) {
   //   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
   // });
@@ -286,9 +289,18 @@ const AllProducts = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      let result;
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`/api/getallproducts?q=${searchVal}`);
+        if (statuscheck === "vendor") {
+          let vl = "63adaf89297e1cdd753232d7";
+          result = await axios.get(
+            `/api/allvendorsproduct?q=${searchVal}&f=${vl}`
+          );
+        } else {
+          result = await axios.get(`/api/getallproducts?q=${searchVal}`);
+        }
+
         console.log(result);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {

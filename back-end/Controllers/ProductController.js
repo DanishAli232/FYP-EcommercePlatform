@@ -1,4 +1,5 @@
 import Product from "../Models/productModel.js";
+import Vendor from "../Models/VendorModel.js";
 import { validateProductInput } from "../Validators/validateproductinput.js";
 
 export const getallproducts = async(req, res) => {
@@ -91,21 +92,23 @@ export const addproduct = async(req, res) => {
         }
 
         // const user = await User.findById(req.authUser.id);
+        const vendor = await Vendor.findById({ _id: "63adaf89297e1cdd753232d7" });
 
-        // if (!user) {
-        //     return res.status(404).json({ errors: { message: "User not found" } });
-        // }
+        // 63adaf89297e1cdd753232d7
+        if (!vendor) {
+            return res.status(404).json({ errors: { message: "Vendor not found" } });
+        }
 
         const product = await Product.create({
             ...req.body,
-            // author: req.authUser.id,
+            vendor: "63adaf89297e1cdd753232d7",
             image: req.file.filename,
             rating: 2,
             numReviews: 20,
         });
 
-        // user.products.push(news);
-        // user.save();
+        vendor.products.push(product);
+        vendor.save();
 
         if (!product) {
             return res

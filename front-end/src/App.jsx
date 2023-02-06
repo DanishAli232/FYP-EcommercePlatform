@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
+import { GlobalContext } from "./Context";
 
 import DashboardScreen from "./Dashboard/DashboardScreen";
+import AllDetail from "./Products";
 
 function App() {
+  const { dashboardOpen } = useContext(GlobalContext);
   return (
     <div className='App'>
-      <DashboardScreen />
+      <AllDetail />
+      {dashboardOpen && <DashboardScreen />}
     </div>
   );
 }

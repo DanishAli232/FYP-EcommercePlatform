@@ -1,6 +1,7 @@
 import express from "express";
 import {
     allvendors,
+    allvendorsproducts,
     deletevendor,
     getallvendors,
     statusupdate,
@@ -12,5 +13,6 @@ VendorRouter.get("/getallvendors", getallvendors);
 VendorRouter.delete("/deletevendor/:id", deletevendor);
 VendorRouter.get("/allvendor", allvendors);
 VendorRouter.patch("/statusupdate/:id", statusupdate);
+VendorRouter.get("/allvendorsproduct", allvendorsproducts);
 
 export default VendorRouter;

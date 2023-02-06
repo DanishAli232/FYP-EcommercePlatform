@@ -84,7 +84,7 @@ const Addproducts = () => {
     } catch (err) {
       console.log(err);
       setOpen(true);
-      newalertMsg(`Sorry! Not Data Send`);
+      newalertMsg(`Sorry! ${err.response.data.errors.message}`);
       newseverity("error");
       seterror(err.response.data.errors);
     }
