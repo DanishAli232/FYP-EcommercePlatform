@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -17,8 +17,15 @@ import img3 from "../../Assets/img2.jpg";
 import img4 from "../../Assets/img3.jpg";
 import img5 from "../../Assets/img4.jpg";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Address from "./Components/Address";
+import CheckoutList from "./Components/CheckoutList";
+import AddressForm from "../AddressPage/Address";
+import { GlobalContext } from "../../Context";
+import AddressForm1 from "../AddressPage/AdressForm1";
+import { Link } from "react-router-dom";
 
 const Checkout = () => {
+  const { AddressBoxOpen, AddressFormOpen } = useContext(GlobalContext);
   const cartitems = [
     {
       title: "Rubber Coated Dumbbell Fitness Home Gym Home Exercise Dumbbell",
@@ -52,7 +59,7 @@ const Checkout = () => {
     },
   ];
   return (
-    <Box>
+    <Box sx={{ position: "relative" }}>
       <Navbar />
       <Box
         sx={{
@@ -101,87 +108,16 @@ const Checkout = () => {
                   </Typography>
                 </Box>
               </Box>
-              <Box
-                sx={{
-                  backgroundColor: "white",
-                  display: "flex",
-                  flexDirection: "column",
-                  marginTop: "15px",
-                  padding: "13px",
-                }}
-              >
-                <Typography>Deliver to: Muhammad Danish</Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  {" "}
-                  <Typography sx={{ fontSize: "12px" }}>Home</Typography>
-                  <span
-                    style={{
-                      border: "1px solid black",
-                      height: "12px",
-                      marginX: "6px",
-                    }}
-                  ></span>
-                  <Typography sx={{ fontSize: "12px", color: "#1a1a1a" }}>
-                    +923420285429
-                  </Typography>
-                  <span
-                    style={{
-                      border: "1px solid black",
-                      height: "12px",
-                      marginX: "6px",
-                    }}
-                  ></span>
-                  <Typography
-                    sx={{
-                      fontSize: "12px",
-                      color: "#1a1a1a",
-                    }}
-                  >
-                    Gulshan luqman town 49 tails sargodha, PAF Road, Sargodha,
-                    Punjab
-                  </Typography>
-                  <Button sx={{ fontSize: "12px" }}>Change</Button>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography sx={{ fontSize: "12px" }}>
-                    Bill To Same Address
-                  </Typography>
-                  <Button sx={{ fontSize: "12px" }}>Edit</Button>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography sx={{ fontSize: "12px" }}>
-                    Email To: baclohdanish2020@gmail.com
-                  </Typography>
-                  <Button sx={{ fontSize: "12px" }}>Edit</Button>
-                </Box>
-              </Box>
-              {/* {cartitems.map((item, i) => (
-                  <CartList
-                    key={i}
-                    title={item.title}
-                    storename={item.storename}
-                    price={item.price}
-                    image={item.image}
-                  />
-                ))} */}
+              <Address />
+              {cartitems.map((item, i) => (
+                <CheckoutList
+                  key={i}
+                  title={item.title}
+                  storename={item.storename}
+                  price={item.price}
+                  image={item.image}
+                />
+              ))}
             </Box>
           </Grid>
           <Grid item md={4}>
@@ -313,22 +249,27 @@ const Checkout = () => {
                   Rs. 1599{" "}
                 </Typography>
               </Box>
-              <Button
-                sx={{
-                  backgroundColor: "#f57224",
-                  color: "white",
-                  width: "100%",
-                  "&:hover": {
+              <Link to='/payment'>
+                {" "}
+                <Button
+                  sx={{
                     backgroundColor: "#f57224",
-                  },
-                }}
-              >
-                PLACEHOLDER
-              </Button>
+                    color: "white",
+                    width: "100%",
+                    "&:hover": {
+                      backgroundColor: "#f57224",
+                    },
+                  }}
+                >
+                  PLACEHOLDER
+                </Button>
+              </Link>
             </Box>
           </Grid>
         </Grid>
       </Box>
+      {AddressBoxOpen && <AddressForm />}
+      {AddressFormOpen && <AddressForm1 />}
     </Box>
   );
 };

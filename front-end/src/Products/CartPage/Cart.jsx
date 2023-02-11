@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Navbar from "../../Components/Navbar";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -20,8 +20,12 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Quantity from "../../Components/Quantity";
 import CartList from "./Components/CartList";
 import { Link } from "react-router-dom";
+import { GlobalContext } from "../../Context";
 
 const Cart = () => {
+  const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
+  const { cart } = state;
+  console.log(cart);
   const cartitems = [
     {
       title: "Rubber Coated Dumbbell Fitness Home Gym Home Exercise Dumbbell",
@@ -104,13 +108,14 @@ const Cart = () => {
                   </Typography>
                 </Box>
               </Box>
-              {cartitems.map((item, i) => (
+              {cart.cartItem.map((item, i) => (
                 <CartList
                   key={i}
                   title={item.title}
-                  storename={item.storename}
+                  storename={"Storename"}
                   price={item.price}
                   image={item.image}
+                  quantity={item.quantity}
                 />
               ))}
             </Box>

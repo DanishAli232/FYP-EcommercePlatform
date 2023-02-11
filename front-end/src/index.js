@@ -5,6 +5,7 @@ import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
 import { DashboardContext } from "./Dashboard/Context/DashboardContext";
 import { ContextState } from "./Context";
+import CheckAuth from "./Auth/CheckAuth";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,7 +13,9 @@ root.render(
     <ContextState>
       <DashboardContext>
         <Router>
-          <App />
+          <CheckAuth>
+            <App />
+          </CheckAuth>{" "}
         </Router>{" "}
       </DashboardContext>{" "}
     </ContextState>{" "}

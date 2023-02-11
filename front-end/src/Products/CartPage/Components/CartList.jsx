@@ -5,7 +5,7 @@ import Quantity from "../../../Components/Quantity";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const CartList = ({ title, image, storename, price }) => {
+const CartList = ({ title, image, storename, price, quantity }) => {
   console.log(title);
   return (
     <Box
@@ -52,7 +52,7 @@ const CartList = ({ title, image, storename, price }) => {
               color: "#212121",
             }}
           >
-            {title}
+            {title.length > 70 ? `${title.slice(0, 70)}...` : title}
           </Typography>
         </Box>
         <Box>
@@ -76,7 +76,7 @@ const CartList = ({ title, image, storename, price }) => {
           </Box>
         </Box>
         <Box sx={{ paddingRight: "12px" }}>
-          <Quantity />
+          <Quantity qty={quantity} />
         </Box>
       </Box>
     </Box>

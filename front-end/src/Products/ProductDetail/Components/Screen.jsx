@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../../Context";
 import img from "../../../Assets/img.jpg";
 import Navbar from "../../../Components/Navbar";
@@ -18,15 +18,71 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BrowserNotSupportedIcon from "@mui/icons-material/BrowserNotSupported";
 import ProductSlider from "./ProductSlider";
 import Quantity from "../../../Components/Quantity";
+import axios from "axios";
 
-const Screen = () => {
+const ProductDetail = () => {
+  const [quantity, setquantity] = useState(1);
+  const { state: state1 } = useLocation();
+
+  const navigate = useNavigate();
+  const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
+  const { cart, userInfo } = state;
   const imageRef = useRef(null);
+  console.log(cart.cartid);
   const [imagestyle, setimagestyle] = useState({
     position: "",
     top: "",
   });
-  const [topPosition, settopPosition] = useState(0);
+  // const [topPosition, settopPosition] = useState(0);
+  useEffect(() => {
+    const existItem = cart.cartItem.find((x) => x.id === state1.id);
+    if (existItem) {
+      setquantity(existItem.quantity);
+    }
+  }, [state1, cart.cartItem]);
 
+  useEffect(() => {
+    console.log(quantity);
+  }, [quantity]);
+
+  const addToCartHandler = async () => {
+    const existItem = cart.cartItem.find((x) => x.id === state1.id);
+    console.log(cart.cartItem);
+    console.log(existItem);
+
+    // const { data } = await axios.get(`/api/products/${product._id}`);
+    // if (data.countinstock < quantity) {
+    //   window.alert("Sorry, Product is out of Stock");
+    //   return;
+    // }
+    const products = {
+      product: state1.id,
+      quantity: quantity,
+      totalprice: state1.price,
+    };
+    const _id = userInfo.user._id;
+
+    const { data } = await axios.post("/api/addcartitems", {
+      products,
+      _id,
+    });
+    console.log(data);
+    ctxDispatch({
+      type: "CART_ID",
+      payload: {
+        data,
+      },
+    });
+    ctxDispatch({
+      type: "CART_ADD_ITEM",
+      payload: {
+        ...state1,
+        quantity,
+      },
+    });
+
+    navigate("/cartpage");
+  };
   // useEffect(() => {
   //   settopPosition();
   //   setInterval(() => {
@@ -69,8 +125,6 @@ const Screen = () => {
         "🎧【Steelseries Arctis 1 Mic】: Fit perfectly for Steelseries Arctis 1 1.0 One Raw Wired Wireless Headphones Gaming Headsets",
     },
   ];
-  const {} = useContext(GlobalContext);
-  const [quantity, setquantity] = useState(1);
 
   return (
     <Box sx={{}}>
@@ -91,7 +145,7 @@ const Screen = () => {
                 width: "86%",
                 ...imagestyle,
               }}
-              src={img}
+              src={state1.Image}
               alt='product_img'
             />
 
@@ -110,10 +164,7 @@ const Screen = () => {
           <Grid container>
             <Grid item md={7}>
               <Typography sx={{ fontSize: "24px", lineHeight: "32px" }}>
-                Replacement Game Mic for Steelseries Arctis 1 Headphones | TNE
-                Detachable Microphone Boom for Steelseries Arctis 1 PS4 Pro PS5
-                Xbox One X Computer PC Gaming Headsets 3.5mm Jack Noise
-                Cancelling
+                {state1.title}
               </Typography>
               <Typography
                 sx={{
@@ -126,7 +177,13 @@ const Screen = () => {
               >
                 <Rating Rating={3.5} numReviews={15} />
                 <FavoriteBorderIcon
-                  sx={{ cursor: "pointer", marginRight: "15px" }}
+                  sx={{
+                    cursor: "pointer",
+                    marginRight: "15px",
+                    "&:hover": {
+                      color: "red",
+                    },
+                  }}
                 />
               </Typography>
               <div
@@ -138,7 +195,7 @@ const Screen = () => {
                 }}
               ></div>
               <Typography sx={{ fontSize: "30px", color: "#f85606" }}>
-                Rs. 4000
+                Rs. {state1.price}
               </Typography>
               <div
                 style={{
@@ -167,7 +224,7 @@ const Screen = () => {
                     marginLeft: "20px",
                   }}
                 >
-                  <Quantity />
+                  <Quantity qty={quantity} setqty={setquantity} />
                 </Box>
               </Box>
               <div
@@ -471,6 +528,7 @@ const Screen = () => {
                   }}
                 >
                   <Button
+                    onClick={addToCartHandler}
                     sx={{
                       backgroundColor: "#ffd814",
                       width: "79%",
@@ -525,4 +583,4 @@ const Screen = () => {
   );
 };
 
-export default Screen;
+export default ProductDetail;

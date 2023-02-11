@@ -1,10 +1,9 @@
 import RemoveIcon from "@mui/icons-material/Remove";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/material";
 
-const Quantity = () => {
-  const [quantity, setquantity] = useState(1);
+const Quantity = ({ qty, setqty }) => {
   return (
     <Box
       sx={{
@@ -14,7 +13,7 @@ const Quantity = () => {
         marginLeft: "20px",
       }}
     >
-      {quantity === 1 ? (
+      {qty === 1 ? (
         <RemoveIcon
           disabled
           sx={{
@@ -39,11 +38,11 @@ const Quantity = () => {
             fontSize: "20px",
           }}
           onClick={() => {
-            setquantity(quantity - 1);
+            setqty(qty - 1);
           }}
         />
       )}{" "}
-      {quantity}{" "}
+      {qty}{" "}
       <AddIcon
         sx={{
           marginLeft: "10px",
@@ -55,7 +54,7 @@ const Quantity = () => {
           fontSize: "20px",
         }}
         onClick={() => {
-          setquantity(quantity + 1);
+          setqty(qty + 1);
         }}
       />
     </Box>

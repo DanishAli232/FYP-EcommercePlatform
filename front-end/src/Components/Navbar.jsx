@@ -66,7 +66,9 @@ function Navbar() {
     <Container>
       <Wrapper>
         <Left>
-          <Logo>ARSTORE</Logo>
+          <Link to='/'>
+            <Logo>ARSTORE</Logo>
+          </Link>
         </Left>
         <Center>
           <UlList>
