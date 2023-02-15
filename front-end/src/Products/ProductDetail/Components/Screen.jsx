@@ -23,7 +23,7 @@ import axios from "axios";
 const ProductDetail = () => {
   const [quantity, setquantity] = useState(1);
   const { state: state1 } = useLocation();
-
+  console.log(state1);
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
   const { cart, userInfo } = state;
@@ -34,21 +34,20 @@ const ProductDetail = () => {
     top: "",
   });
   // const [topPosition, settopPosition] = useState(0);
-  useEffect(() => {
-    const existItem = cart.cartItem.find((x) => x.id === state1.id);
-    if (existItem) {
-      setquantity(existItem.quantity);
-    }
-  }, [state1, cart.cartItem]);
+  // useEffect(() => {
+  //   const existItem = cart.cartItem.find((x) => x.id === state1.id);
+  //   if (existItem) {
+  //     setquantity(existItem.quantity);
+  //   }
+  // }, [state1, cart.cartItem]);
 
-  useEffect(() => {
-    console.log(quantity);
-  }, [quantity]);
+  // useEffect(() => {
+  //   console.log(quantity);
+  // }, [quantity]);
 
   const addToCartHandler = async () => {
     const existItem = cart.cartItem.find((x) => x.id === state1.id);
     console.log(cart.cartItem);
-    console.log(existItem);
 
     // const { data } = await axios.get(`/api/products/${product._id}`);
     // if (data.countinstock < quantity) {
@@ -56,23 +55,33 @@ const ProductDetail = () => {
     //   return;
     // }
     const products = {
-      product: state1.id,
+      productid: state1._id,
       quantity: quantity,
       totalprice: state1.price,
     };
     const _id = userInfo.user._id;
+    if (cart.cartid) {
+      const { data } = await axios.patch(
+        `/api/updatecartitems/${cart.cartid.cartId}`,
+        {
+          products,
+        }
+      );
+      console.log(data);
+    } else {
+      const { data } = await axios.post("/api/addcartitems", {
+        products,
+        _id,
+      });
+      console.log(data);
+      ctxDispatch({
+        type: "CART_ID",
+        payload: {
+          data,
+        },
+      });
+    }
 
-    const { data } = await axios.post("/api/addcartitems", {
-      products,
-      _id,
-    });
-    console.log(data);
-    ctxDispatch({
-      type: "CART_ID",
-      payload: {
-        data,
-      },
-    });
     ctxDispatch({
       type: "CART_ADD_ITEM",
       payload: {
@@ -81,7 +90,7 @@ const ProductDetail = () => {
       },
     });
 
-    navigate("/cartpage");
+    // navigate("/cartpage");
   };
   // useEffect(() => {
   //   settopPosition();
@@ -164,7 +173,7 @@ const ProductDetail = () => {
           <Grid container>
             <Grid item md={7}>
               <Typography sx={{ fontSize: "24px", lineHeight: "32px" }}>
-                {state1.title}
+                {state1.name}
               </Typography>
               <Typography
                 sx={{

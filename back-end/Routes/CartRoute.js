@@ -1,28 +1,22 @@
-// const express = require("express");
-// const router = express.Router();
-
-// Bring in Models & Utils
-
-// const Cart = require("../../models/cart");
-// const Product = require("../../models/product");
-// const auth = require("../../middleware/auth");
-// const store = require("../../utils/store");
-
 import express from "express";
 import {
   addcartitems,
+  allcartitems,
+  deletecartitem,
+  deletecartitems,
   updatecartitems,
+  updatequantity,
 } from "../Controllers/CartController.js";
 import checkAuth from "../Utils/checkAuth.js";
 
 var CartRouter = express.Router();
 
-/* GET home page. */
 CartRouter.post("/addcartitems", addcartitems);
-// CartRouter.delete("/deletevendor/:id", deletevendor);
-// CartRouter.get("/allvendor", allvendors);
-CartRouter.patch("/statusupdate/:id", updatecartitems);
-// CartRouter.get("/allvendorsproduct", allvendorsproducts);
+CartRouter.patch("/deletecartitem", deletecartitem);
+CartRouter.delete("/deletecartitems/:id", deletecartitems);
+CartRouter.get("/allcartitems/:id", allcartitems);
+CartRouter.patch("/updatequantity", updatequantity);
+CartRouter.patch("/updatecartitems/:id", updatecartitems);
 
 export default CartRouter;
 

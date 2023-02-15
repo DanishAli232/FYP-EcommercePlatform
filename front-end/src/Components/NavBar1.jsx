@@ -60,7 +60,7 @@ const NavBar1 = () => {
         >
           Login <PersonIcon />
         </Button>
-        <Link to='/cart'>
+        <Link to='/cartpage'>
           <Button
             sx={{
               backgroundColor: "#f0353b",

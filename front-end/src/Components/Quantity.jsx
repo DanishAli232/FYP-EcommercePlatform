@@ -1,9 +1,27 @@
 import RemoveIcon from "@mui/icons-material/Remove";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import axios from "axios";
+import { GlobalContext } from "../Context";
 
-const Quantity = ({ qty, setqty }) => {
+const Quantity = ({ qty, setqty, id, cartid, fetchData }) => {
+  const [getdata, setdata] = useState({});
+  const HandleClick = async (value) => {
+    setqty(value);
+    const { data } = await axios.patch(
+      `/api/updatequantity?i=${id}&c=${cartid}`,
+      {
+        quantity: value,
+      }
+    );
+    if (data) {
+      fetchData();
+    }
+    console.log(data);
+    setdata(getdata);
+  };
+
   return (
     <Box
       sx={{
@@ -38,11 +56,12 @@ const Quantity = ({ qty, setqty }) => {
             fontSize: "20px",
           }}
           onClick={() => {
-            setqty(qty - 1);
+            HandleClick(qty - 1);
+            // setqty(qty - 1);
           }}
         />
-      )}{" "}
-      {qty}{" "}
+      )}
+      {qty}
       <AddIcon
         sx={{
           marginLeft: "10px",
@@ -54,7 +73,8 @@ const Quantity = ({ qty, setqty }) => {
           fontSize: "20px",
         }}
         onClick={() => {
-          setqty(qty + 1);
+          HandleClick(qty + 1);
+          // setqty(qty + 1);
         }}
       />
     </Box>

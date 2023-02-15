@@ -1,6 +1,7 @@
 import { Cart } from "../Models/CartModel.js";
+import { Wishlist } from "../Models/WishModel.js";
 
-export const addcartitems = async (req, res) => {
+export const addwishitems = async (req, res) => {
   console.log(req.body);
   try {
     const user = req.body._id;
@@ -8,7 +9,7 @@ export const addcartitems = async (req, res) => {
 
     // const products = store.caculateItemsSalesTax(items);
 
-    const cart = new Cart({
+    const wish = new Wishlist({
       user,
       products: [
         {
@@ -19,13 +20,13 @@ export const addcartitems = async (req, res) => {
       ],
     });
 
-    const cartDoc = await cart.save();
-    console.log(cartDoc);
+    const wishlist = await wish.save();
+    console.log(wishlist);
     // decreaseQuantity(products);
 
     res.status(200).json({
       success: true,
-      cartId: cartDoc.id,
+      wishId: wishlist.id,
     });
   } catch (error) {
     console.log(error);
@@ -35,19 +36,19 @@ export const addcartitems = async (req, res) => {
   }
 };
 
-export const updatecartitems = async (req, res) => {
+export const updatewishitems = async (req, res) => {
   console.log(req.body);
   try {
     const items = req.body.products;
     const id = req.params.id;
 
-    const cartdata = await Cart.find({
+    const cartdata = await Wishlist.find({
       products: { $elemMatch: { product: items.productid } },
     });
     console.log(cartdata.length);
 
     if (cartdata.length === 0) {
-      const { data } = await Cart.findByIdAndUpdate(
+      const { data } = await Wishlist.findByIdAndUpdate(
         id,
         {
           $push: {
@@ -83,37 +84,34 @@ export const updatecartitems = async (req, res) => {
   }
 };
 
-export const allcartitems = async (req, res) => {
+export const allwishitems = async (req, res) => {
   const id = req.params.id;
   try {
-    const cartdata = await Cart.find({ user: id })
+    const cartdata = await Wishlist.find({ user: id })
       .select("products")
       .populate("products.product");
 
-    res.send(cartdata);
+    res.status(200).send(cartdata);
   } catch (error) {
-    res.status(404).send(error);
+    res.status(404).send("Something Went Wrong");
     console.log(error);
   }
 };
 
-export const deletecartitem = async (req, res) => {
+export const deletewishitem = async (req, res) => {
   try {
+    const p = req.query.i;
     const c = req.query.c;
-    console.log(req.body);
-    let check = req.body.isCheck;
 
-    check.map(async (item, i) => {
-      const data = await Cart.updateOne(
-        { _id: c },
-        { $pull: { products: { product: item } } },
-        { new: true }
-      ).exec();
-      console.log(data);
-    });
-
+    const data = await Wishlist.updateOne(
+      { _id: c },
+      { $pull: { products: { product: p } } },
+      { new: true }
+    ).exec();
+    console.log(data);
     res.status(200).json({
       success: true,
+      message: "Successfully Deleted",
     });
   } catch (error) {
     console.log(error);
@@ -137,27 +135,5 @@ export const deletecartitems = async (req, res) => {
     res.status(400).json({
       message: "Your request could not be processed. Please try again.",
     });
-  }
-};
-
-export const updatequantity = async (req, res) => {
-  console.log(req.body);
-  const q = req.body.quantity;
-  const p = req.query.i;
-
-  const c = req.query.c;
-  try {
-    const data1 = await Cart.updateOne(
-      { _id: c, "products.product": p },
-      { $set: { "products.$.quantity": q } },
-      {
-        new: true,
-      }
-    );
-    console.log(data1);
-    res.send({ message: "Ok Quantity Updated" });
-  } catch (error) {
-    console.log(error);
-    res.send({ message: "Something Went Wrong" });
   }
 };

@@ -25,7 +25,12 @@ const initialstate = {
     cartItem: localStorage.getItem("cartItem")
       ? JSON.parse(localStorage.getItem("cartItem"))
       : [],
-    cartid: null,
+    cartid: localStorage.getItem("cartid")
+      ? JSON.parse(localStorage.getItem("cartid"))
+      : null,
+    wishid: localStorage.getItem("wishid")
+      ? JSON.parse(localStorage.getItem("wishid"))
+      : null,
   },
   paymentMethod: localStorage.getItem("paymentMethod")
     ? localStorage.getItem("paymentMethod")
@@ -61,7 +66,13 @@ const reducer = (state, action) => {
     }
     case "CART_ID": {
       const cartid = action.payload.data;
+      localStorage.setItem("cartid", JSON.stringify(cartid));
       return { ...state, cart: { ...state.cart, cartid } };
+    }
+    case "WISH_ID": {
+      const wishid = action.payload.data;
+      localStorage.setItem("wishid", JSON.stringify(wishid));
+      return { ...state, cart: { ...state.cart, wishid } };
     }
     case "CART_CLEAR":
       return { ...state, cart: { ...state.cart, cartItems: [] } };
@@ -96,13 +107,26 @@ const reducer = (state, action) => {
 };
 
 export const ContextState = ({ children }) => {
+  const [totalprice, settotalprice] = useState(0);
   const [state, dispatch] = useReducer(reducer, initialstate);
   const [dashboardOpen, setdashboardOpen] = useState(false);
   const [AddressBoxOpen, setAddressBoxOpen] = useState(false);
   const [AddressFormOpen, setAddressFormOpen] = useState(false);
+  const [CheckVal, newCheckVal] = useState([]);
+  const [quantity, setquantity] = useState(0);
+
+  const setCartPrice = (cart) => {
+    let tprice = 0;
+    cart.map((item, i) => {
+      tprice += item.product.price * item.quantity;
+      console.log(tprice);
+    });
+    settotalprice(tprice);
+  };
   return (
     <GlobalContext.Provider
       value={{
+        setCartPrice,
         state,
         dispatch,
         dashboardOpen,
@@ -111,6 +135,12 @@ export const ContextState = ({ children }) => {
         setAddressBoxOpen,
         AddressFormOpen,
         setAddressFormOpen,
+        totalprice,
+        quantity,
+        setquantity,
+        settotalprice,
+        CheckVal,
+        newCheckVal,
       }}
     >
       {children}

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { dealItems } from "../../data";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
   flex: 1;
@@ -25,16 +26,25 @@ const Info = styled.div`
 `;
 
 const DealsItem = () => {
+  const [product, setproduct] = useState([]);
+  useEffect(() => {
+    const fetchdata = async () => {
+      const { data } = await axios.get("/api/getproducts");
+      console.log(data);
+      setproduct(data);
+    };
+    fetchdata();
+  }, []);
   const navigate = useNavigate();
   const handleClicker = (item) => {
     navigate(`/productdetail/${item.Desc}`, { state: item });
   };
   return (
     <Container>
-      {dealItems.map((item) => (
-        <Wrapper key={item.id}>
-          <Image src={item.Image} onClick={() => handleClicker(item)} />
-          <Info>{item.Desc}</Info>
+      {product.map((item) => (
+        <Wrapper key={item._id}>
+          <Image src={item.image} onClick={() => handleClicker(item)} />
+          <Info>{item.name}</Info>
         </Wrapper>
       ))}
     </Container>

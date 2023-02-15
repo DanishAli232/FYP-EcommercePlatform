@@ -14,7 +14,9 @@ root.render(
       <DashboardContext>
         <Router>
           <CheckAuth>
-            <App />
+            <React.Fragment>
+              <App />
+            </React.Fragment>{" "}
           </CheckAuth>{" "}
         </Router>{" "}
       </DashboardContext>{" "}
