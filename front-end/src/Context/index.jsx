@@ -37,7 +37,7 @@ const initialstate = {
     : "",
   shippingAddress: localStorage.getItem("shippingAddress")
     ? JSON.parse(localStorage.getItem("shippingAddress"))
-    : {},
+    : null,
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
     : null,
@@ -89,12 +89,10 @@ const reducer = (state, action) => {
         },
       };
     case "SAVE_SHIPPING_ADDRESS":
+      localStorage.setItem("ShippingAddress", JSON.stringify(action.payload));
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          shippingAddress: action.payload,
-        },
+        shippingAddress: action.payload,
       };
     case "SAVE_PAYMENT_METHOD":
       return {
@@ -108,24 +106,47 @@ const reducer = (state, action) => {
 
 export const ContextState = ({ children }) => {
   const [totalprice, settotalprice] = useState(0);
+  const [allprice, setallprice] = useState({
+    withdelivery: 0,
+    withoutdelivery: 0,
+    itemstotal: 0,
+  });
   const [state, dispatch] = useReducer(reducer, initialstate);
   const [dashboardOpen, setdashboardOpen] = useState(false);
   const [AddressBoxOpen, setAddressBoxOpen] = useState(false);
   const [AddressFormOpen, setAddressFormOpen] = useState(false);
+  const [DefaultAddress, setDefaultAddress] = useState({});
+  const [addresslist, setaddresslist] = useState({});
+  const [newAddress, setnewAddress] = useState(false);
   const [CheckVal, newCheckVal] = useState([]);
   const [quantity, setquantity] = useState(0);
 
   const setCartPrice = (cart) => {
     let tprice = 0;
+    let withDeliveryCharges = 0;
+    let alldelivery = 0;
+    let itemstotal = 0;
     cart.map((item, i) => {
       tprice += item.product.price * item.quantity;
-      console.log(tprice);
+      withDeliveryCharges += (item.product.price + 149) * item.quantity;
+      itemstotal += item.product.price * item.quantity;
+      alldelivery += 149;
+    });
+    setallprice({
+      ...allprice,
+      itemstotal: itemstotal,
+      withdelivery: withDeliveryCharges,
+      alldelivery: alldelivery,
     });
     settotalprice(tprice);
   };
+
   return (
     <GlobalContext.Provider
       value={{
+        addresslist,
+        setaddresslist,
+        allprice,
         setCartPrice,
         state,
         dispatch,
@@ -134,12 +155,16 @@ export const ContextState = ({ children }) => {
         AddressBoxOpen,
         setAddressBoxOpen,
         AddressFormOpen,
+        newAddress,
+        setnewAddress,
         setAddressFormOpen,
         totalprice,
         quantity,
         setquantity,
         settotalprice,
         CheckVal,
+        DefaultAddress,
+        setDefaultAddress,
         newCheckVal,
       }}
     >

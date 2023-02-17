@@ -1,11 +1,18 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
 import { GlobalContext } from "../../Context";
 
 const AddressForm1 = () => {
-  const { setAddressBoxOpen, setAddressFormOpen } = useContext(GlobalContext);
+  const {
+    setAddressBoxOpen,
+    setAddressFormOpen,
+    state,
+    dispatch: ctxDispatch,
+    DefaultAddress,
+    newAddress,
+  } = useContext(GlobalContext);
   const [AddressForm, setAddressForm] = useState({
     fullname: "",
     address: "",
@@ -13,13 +20,99 @@ const AddressForm1 = () => {
     landmark: "",
     province: "",
     city: "",
-    labelselect: "",
+    labelselect: "Home",
     area: "",
+    userid: state.userInfo.user._id,
   });
+  const [color, setcolor] = useState({
+    home: "#e5e5e5",
+    office: "white",
+  });
+
+  useEffect(() => {
+    if (state.shippingAddress) {
+      if (newAddress) {
+      } else {
+        const number = parseInt(DefaultAddress.mobilenumber);
+        setAddressForm({
+          fullname: DefaultAddress.fullname,
+          address: DefaultAddress.address,
+          number: number,
+          landmark: DefaultAddress.landmark,
+          province: DefaultAddress.province,
+          city: DefaultAddress.city,
+          labelselect: DefaultAddress.labelselect,
+          area: DefaultAddress.area,
+          userid: state.userInfo.user._id,
+        });
+      }
+    }
+  }, []);
 
   const handleChange = (event) => {
     setAddressForm({ ...AddressForm, [event.target.name]: event.target.value });
   };
+  const SubmitAddress = async () => {
+    if (state.shippingAddress) {
+      if (newAddress) {
+        try {
+          const { data } = await axios.patch(
+            `/api/postnewaddress/${state.shippingAddress.data.addressId}`,
+            AddressForm
+          );
+          console.log(data);
+          // setOpen(true);
+          // setStatus(null);
+          // setmessage(data.message);
+          // setwish(true);
+          // setcolor("red");
+        } catch (error) {
+          // setOpen(true);
+          // setStatus(null);
+          // setmessage(error.message);
+        }
+      } else {
+        try {
+          const { data } = await axios.patch(
+            `/api/updateaddress/${DefaultAddress._id}/${state.shippingAddress.data.addressId}`,
+            AddressForm
+          );
+          console.log(data);
+          // setOpen(true);
+          // setStatus(null);
+          // setmessage(data.message);
+          // setwish(true);
+          // setcolor("red");
+        } catch (error) {
+          // setOpen(true);
+          // setStatus(null);
+          // setmessage(error.message);
+        }
+      }
+    } else {
+      try {
+        const { data } = await axios.post("/api/postaddress", AddressForm);
+        ctxDispatch({
+          type: "SAVE_SHIPPING_ADDRESS",
+          payload: {
+            data,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const labelselect = (data) => {
+    setAddressForm({ ...AddressForm, labelselect: data });
+    if (data === "Home") {
+      setcolor({ home: "#e5e5e5", office: "white" });
+    } else {
+      setcolor({ home: "white", office: "#e5e5e5" });
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -144,7 +237,7 @@ const AddressForm1 = () => {
                     fontSize: "14px",
                     boxSizing: "border-box",
                   }}
-                  value={AddressForm.mobileNo}
+                  value={AddressForm.number}
                   type='number'
                   name='number'
                   id='number'
@@ -411,6 +504,9 @@ const AddressForm1 = () => {
                   }}
                 >
                   <Button
+                    onClick={() => {
+                      labelselect("Home");
+                    }}
                     sx={{
                       boxShadow: "0 2px 8px rgb(0 0 0 / 8%)",
                       width: "145px",
@@ -418,11 +514,15 @@ const AddressForm1 = () => {
                       border: "1px solid #e5e5e5",
                       textAlign: "center",
                       color: "#1a1a1a",
+                      backgroundColor: color.home,
                     }}
                   >
                     Home
                   </Button>
                   <Button
+                    onClick={() => {
+                      labelselect("Office");
+                    }}
                     sx={{
                       boxShadow: "0 2px 8px rgb(0 0 0 / 8%)",
                       width: "145px",
@@ -430,6 +530,7 @@ const AddressForm1 = () => {
                       border: "1px solid #e5e5e5",
                       textAlign: "center",
                       color: "#1a1a1a",
+                      backgroundColor: color.office,
                     }}
                   >
                     Office
@@ -453,6 +554,7 @@ const AddressForm1 = () => {
           >
             {" "}
             <Button
+              onClick={SubmitAddress}
               sx={{
                 fontSize: "12px",
                 background: "#f85606",

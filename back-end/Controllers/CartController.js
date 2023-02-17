@@ -123,19 +123,27 @@ export const deletecartitem = async (req, res) => {
   }
 };
 
-export const deletecartitems = async (req, res) => {
+export const deletesinglecartitem = async (req, res) => {
   try {
-    const id = req.params.id;
-    const deletedata = await Cart.findByIdAndDelete(id);
-    if (deletedata) {
-      res.status(200).json({
-        message: "Your Cart Items Deleted",
-      });
-    }
+    const c = req.query.c;
+    const p = req.query.i;
+    console.log(req.body);
+    let check = req.body.isCheck;
+
+    const data = await Cart.updateOne(
+      { _id: c },
+      { $pull: { products: { product: p } } },
+      { new: true }
+    ).exec();
+    console.log(data);
+
+    res.status(200).json({
+      success: true,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({
-      message: "Your request could not be processed. Please try again.",
+      error: "Your request could not be processed. Please try again.",
     });
   }
 };

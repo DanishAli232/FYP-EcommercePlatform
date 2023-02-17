@@ -1,12 +1,44 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../Context";
 
 const Address = () => {
-  const { setAddressBoxOpen, setAddressFormOpen } = useContext(GlobalContext);
+  const {
+    setAddressBoxOpen,
+    setAddressFormOpen,
+    setaddresslist,
+    dispatch: ctxDispatch,
+    DefaultAddress,
+    setDefaultAddress,
+    setnewAddress,
+    state,
+  } = useContext(GlobalContext);
   const openAdressBox = () => {
     setAddressBoxOpen(true);
   };
+  const fetchData = async () => {
+    const { data: data1 } = await axios.get(
+      `/api/getaddresses/${state.userInfo.user._id}`
+    );
+    console.log(data1);
+    let data = { success: true, addressId: data1[0]._id };
+    ctxDispatch({
+      type: "SAVE_SHIPPING_ADDRESS",
+      payload: {
+        data,
+      },
+    });
+
+    let defaultA = data1[0].addresslist.find((item) => {
+      return (item.isDefault = true);
+    });
+    setDefaultAddress(defaultA);
+    setaddresslist(data1[0].addresslist);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <Box
       sx={{
@@ -18,7 +50,7 @@ const Address = () => {
       }}
     >
       <Typography sx={{ fontSize: "14px", fontWeight: 500, color: "#1a1a1a" }}>
-        Deliver to: Muhammad Danish
+        Deliver to: {DefaultAddress.fullname}
       </Typography>
       <Box
         sx={{
@@ -36,7 +68,7 @@ const Address = () => {
             background: "rgba(0,119,135,.08)",
           }}
         >
-          Home
+          {DefaultAddress.labelselect}
         </Typography>
         <span
           style={{
@@ -47,7 +79,7 @@ const Address = () => {
           }}
         ></span>
         <Typography sx={{ fontSize: "12px", color: "#1a1a1a" }}>
-          +923420285429
+          {DefaultAddress.mobilenumber}
         </Typography>
         <span
           style={{
@@ -63,10 +95,11 @@ const Address = () => {
             color: "#1a1a1a",
           }}
         >
-          Gulshan luqman town 49 tails sargodha, PAF Road, Sargodha, Punjab
+          {`${DefaultAddress.address},${DefaultAddress.city},${DefaultAddress.province}`}
         </Typography>
         <Button
           onClick={() => {
+            setnewAddress(false);
             setAddressFormOpen(true);
           }}
           sx={{ fontSize: "12px" }}
@@ -94,7 +127,7 @@ const Address = () => {
         }}
       >
         <Typography sx={{ fontSize: "12px" }}>
-          Email To: baclohdanish2020@gmail.com
+          Email To: {state.userInfo.user.email}
         </Typography>
         <Button sx={{ fontSize: "12px" }}>Edit</Button>
       </Box>

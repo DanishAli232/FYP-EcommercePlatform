@@ -37,8 +37,9 @@ const CartList = ({
   };
 
   const DeleteItem = async () => {
+    console.log("Delete");
     const { data } = await axios.patch(
-      `/api/deletecartitem?i=${id}&c=${cartid}`
+      `/api/deletesingleitem?i=${id}&c=${cartid}`
     );
     if (data) {
       fetchData();
@@ -234,14 +235,16 @@ const CartList = ({
                 {...label}
                 icon={<DeleteOutlineOutlinedIcon />}
                 checkedIcon={<DeleteOutlineOutlinedIcon />}
-                sx={{
-                  color: color,
-                  // fontSize: "22px",
-                  // cursor: "pointer",
-                  // "&:hover": {
-                  //   color: "red",
-                  // },
-                }}
+                sx={
+                  {
+                    // color: color,
+                    // fontSize: "22px",
+                    // cursor: "pointer",
+                    // "&:hover": {
+                    //   color: "red",
+                    // },
+                  }
+                }
               />
               {/* <DeleteOutlineOutlinedIcon
                 onClick={DeleteItem}

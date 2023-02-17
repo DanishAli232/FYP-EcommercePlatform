@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -23,41 +23,61 @@ import AddressForm from "../AddressPage/Address";
 import { GlobalContext } from "../../Context";
 import AddressForm1 from "../AddressPage/AdressForm1";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import LoadingBox from "../../Components/LoadingBox";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return { ...state, loading: true }; //keep the previous value and only update loading to true
+    case "FETCH_SUCCESS":
+      return { ...state, cartdata: action.payload, loading: false };
+    case "FETCH_FAIL":
+      return { ...state, error: action.payload, loading: false };
+    default:
+      return state;
+  }
+};
 
 const Checkout = () => {
-  const { AddressBoxOpen, AddressFormOpen } = useContext(GlobalContext);
-  const cartitems = [
-    {
-      title: "Rubber Coated Dumbbell Fitness Home Gym Home Exercise Dumbbell",
-      image: img1,
-      storename: "Store Name",
-      price: "499",
-    },
-    {
-      title: "Rubber Coated Dumbbell Fitness Home Gym Home Exercise Dumbbell",
-      image: img2,
-      storename: "Store Name",
-      price: "499",
-    },
-    {
-      title: "Rubber Coated Dumbbell Fitness Home Gym Home Exercise Dumbbell",
-      image: img3,
-      storename: "Store Name",
-      price: "499",
-    },
-    {
-      title: "Rubber Coated Dumbbell Fitness Home Gym Home Exercise Dumbbell",
-      image: img4,
-      storename: "Store Name",
-      price: "499",
-    },
-    {
-      title: "Rubber Coated Dumbbell Fitness Home Gym Home Exercise Dumbbell",
-      image: img5,
-      storename: "Store Name",
-      price: "499",
-    },
-  ];
+  const [cartitems, setcartitems] = useState([]);
+  const [totalitems, settotalitems] = useState(0);
+  const { AddressBoxOpen, AddressFormOpen, setCartPrice, state, allprice } =
+    useContext(GlobalContext);
+  const { cart, userInfo } = state;
+
+  const initialstate = {
+    cartdata: [],
+    loading: true,
+    error: "",
+  };
+
+  const [{ loading, error, cartdata }, dispatch] = useReducer(
+    reducer,
+    initialstate
+  );
+
+  const fetchData = async () => {
+    try {
+      dispatch({ type: "FETCH_REQUEST" });
+      const { data } = await axios.get(
+        `/api/allcartitems/${userInfo.user._id}`
+      );
+
+      console.log(data);
+      setCartPrice(data[0].products);
+      setcartitems(data[0].products);
+      settotalitems(data[0].products.length);
+      dispatch({ type: "FETCH_SUCCESS", payload: data });
+    } catch (error) {
+      dispatch({ type: "FETCH_FAIL", payload: error.message });
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <Box sx={{ position: "relative" }}>
       <Navbar />
@@ -109,7 +129,35 @@ const Checkout = () => {
                 </Box>
               </Box>
               <Address />
-              {cartitems.map((item, i) => (
+              {loading ? (
+                <LoadingBox />
+              ) : error ? (
+                <p>Something Went Wrong</p>
+              ) : (
+                cartitems.map((item, i) => (
+                  <CheckoutList
+                    key={i}
+                    cartid={cart.cartid.cartId}
+                    id={item.product._id}
+                    title={item.product.name}
+                    storename={item.product.brand}
+                    price={item.product.price}
+                    image={item.product.image}
+                    quantity={item.quantity}
+                    fetchData={fetchData}
+                    // CheckVal={CheckVal}
+                    // newCheckVal={newCheckVal}
+                    // state={state}
+                    // dispatch={ctxDispatch}
+                    // setmessage={setmessage}
+                    // setOpen={setOpen}
+                    // handleClick={handleClick}
+                    // setStatus={setStatus}
+                    // isChecked={isCheck.includes(item.product._id)}
+                  />
+                ))
+              )}
+              {/* {cartitems.map((item, i) => (
                 <CheckoutList
                   key={i}
                   title={item.title}
@@ -117,7 +165,7 @@ const Checkout = () => {
                   price={item.price}
                   image={item.image}
                 />
-              ))}
+              ))} */}
             </Box>
           </Grid>
           <Grid item md={4}>
@@ -202,7 +250,9 @@ const Checkout = () => {
                 }}
               >
                 <Typography sx={{ fontSize: "14px" }}>Items Total</Typography>
-                <Typography sx={{ fontSize: "14px" }}>Rs. 1200 </Typography>
+                <Typography sx={{ fontSize: "14px" }}>
+                  Rs. {allprice.itemstotal}
+                </Typography>
               </Box>
               <Box
                 sx={{
@@ -217,7 +267,9 @@ const Checkout = () => {
                 }}
               >
                 <Typography sx={{ fontSize: "14px" }}>Delivery Fee</Typography>
-                <Typography sx={{ fontSize: "14px" }}>Rs. 308 </Typography>
+                <Typography sx={{ fontSize: "14px" }}>
+                  Rs. {allprice.alldelivery}{" "}
+                </Typography>
               </Box>
               <Box
                 sx={{
@@ -232,7 +284,9 @@ const Checkout = () => {
                 }}
               >
                 <Typography sx={{ fontSize: "14px" }}>Total Payment</Typography>
-                <Typography sx={{ fontSize: "14px" }}>Rs. 1500 </Typography>
+                <Typography sx={{ fontSize: "14px" }}>
+                  Rs. {allprice.withdelivery}{" "}
+                </Typography>
               </Box>
 
               <Box
@@ -246,7 +300,7 @@ const Checkout = () => {
               >
                 <Typography>Total</Typography>
                 <Typography sx={{ fontSize: "18px", color: "#f57224" }}>
-                  Rs. 1599{" "}
+                  Rs. {allprice.withdelivery}
                 </Typography>
               </Box>
               <Link to='/payment'>

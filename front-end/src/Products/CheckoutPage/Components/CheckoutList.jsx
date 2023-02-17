@@ -1,12 +1,31 @@
-import { Checkbox, Typography } from "@mui/material";
+import { Checkbox, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import Quantity from "../../../Components/Quantity";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import axios from "axios";
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const CheckoutList = ({ title, image, storename, price }) => {
-  console.log(title);
+const CheckoutList = ({
+  title,
+  image,
+  storename,
+  price,
+  id,
+  cartid,
+  fetchData,
+  quantity,
+}) => {
+  const DeleteItem = async () => {
+    console.log("Delete");
+    const { data } = await axios.patch(
+      `/api/deletesingleitem?i=${id}&c=${cartid}`
+    );
+    if (data) {
+      fetchData();
+    }
+  };
   return (
     <Box
       sx={{
@@ -54,27 +73,42 @@ const CheckoutList = ({ title, image, storename, price }) => {
             {title}
           </Typography>
         </Box>
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
           <Typography sx={{ color: " #f57224" }}>Rs. {price}</Typography>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <DeleteOutlineOutlinedIcon
-              sx={{
-                color: "#757575",
-                paddingLeft: "17px",
-                fontSize: "24px",
-                cursor: "pointer",
-                "&:hover": {
-                  color: "red",
-                },
-              }}
-            />
+          <Box
+            sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}
+          >
+            <Tooltip title='Delete' arrow>
+              <Checkbox
+                onClick={DeleteItem}
+                {...label}
+                icon={<DeleteOutlineOutlinedIcon />}
+                checkedIcon={<DeleteOutlineOutlinedIcon />}
+                sx={
+                  {
+                    // color: color,
+                    // fontSize: "22px",
+                    // cursor: "pointer",
+                    // "&:hover": {
+                    //   color: "red",
+                    // },
+                  }
+                }
+              />
+            </Tooltip>
           </Box>
         </Box>
         <Box sx={{ paddingRight: "12px" }}>
           <Typography
             sx={{ fontSize: "14px", color: "#212121", fontWeight: 400 }}
           >
-            Qty: 2
+            Qty: {quantity}
           </Typography>
         </Box>
       </Box>
@@ -125,7 +159,7 @@ const CheckoutList = ({ title, image, storename, price }) => {
           </Typography>
         </Box>
         <Typography sx={{ color: "#f57224", fontSize: "18px" }}>
-          Rs. 1000
+          Rs. {price * quantity + 150}
         </Typography>
       </Box>
     </Box>

@@ -1,12 +1,21 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { GlobalContext } from "../../Context";
 import { Scrollbars } from "react-custom-scrollbars-2";
+import AddressList from "./Components/AddressList";
 
 const AddressForm = () => {
-  const { setAddressBoxOpen, setAddressFormOpen } = useContext(GlobalContext);
+  const {
+    setAddressBoxOpen,
+    setAddressFormOpen,
+    addresslist,
+    newAddress,
+    setnewAddress,
+  } = useContext(GlobalContext);
+  console.log(addresslist);
+
   return (
     <Box
       sx={{
@@ -24,7 +33,7 @@ const AddressForm = () => {
         <Box
           sx={{
             // width: "730px",
-            // height: "90%",
+            minHeight: "95%",
             backgroundColor: "white",
             border: "1px solid black",
             padding: "10px",
@@ -63,59 +72,16 @@ const AddressForm = () => {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
               alignItems: "center",
               justifyContent: "space-between",
             }}
           >
-            <Box
-              sx={{
-                border: "0.5px solid #007787",
-                width: "400px",
-                padding: "10px",
-                marginTop: "20px",
-                display: "flex",
-                flexDirection: "column",
-                "&:hover": {
-                  boxShadow: "2px 1px 5px 0px #007787",
-                },
-                cursor: "pointer",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography sx={{ fontSize: "15px" }}>
-                  Muhammad Danish
-                </Typography>
-                <Button sx={{ fontSize: "13px" }}>Edit</Button>
-              </Box>
-              <Typography sx={{ fontSize: "13px" }}>
-                (+92) 3420285429
-              </Typography>
-              <Typography sx={{ fontSize: "13px", marginTop: "5px" }}>
-                Punjab,Sargodha,PAF Road, Gulshan Luqman Town 49 Tails Sargodha
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "12px",
-                  color: "#007787",
-                  padding: "2px 6px",
-                  width: "35px",
-                  background: "rgba(0,119,135,.08)",
-                  marginTop: "10px",
-                }}
-              >
-                Home
-              </Typography>
-            </Box>
+            {addresslist.map((list, i) => (
+              <AddressList {...list} key={i} />
+            ))}
           </Box>
-          <Box sx={{ position: "relative", height: "380px" }}>
+          <Box sx={{ marginTop: "80px" }}>
             {" "}
             <Box
               sx={{
@@ -125,11 +91,14 @@ const AddressForm = () => {
                 justifyContent: "space-between",
                 position: "absolute",
                 bottom: 0,
-                width: "100%",
+                width: "95%",
+                paddingBottom: "20px",
+                marginTop: "30px",
               }}
             >
               <Box
                 onClick={() => {
+                  setnewAddress(true);
                   setAddressFormOpen(true);
                   setAddressBoxOpen(false);
                 }}
