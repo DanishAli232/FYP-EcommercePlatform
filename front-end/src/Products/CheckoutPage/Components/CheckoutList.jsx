@@ -16,14 +16,29 @@ const CheckoutList = ({
   cartid,
   fetchData,
   quantity,
+  setStatus,
+  setseverity,
+  setOpen,
+  setmessage,
 }) => {
   const DeleteItem = async () => {
     console.log("Delete");
-    const { data } = await axios.patch(
-      `/api/deletesingleitem?i=${id}&c=${cartid}`
-    );
-    if (data) {
-      fetchData();
+    try {
+      const { data } = await axios.patch(
+        `/api/deletesingleitem?i=${id}&c=${cartid}`
+      );
+      if (data) {
+        setOpen(true);
+        setStatus(null);
+        setmessage("Your Product Deleted Succussfully");
+        setseverity("success");
+        fetchData();
+      }
+    } catch (error) {
+      setOpen(true);
+      setStatus(null);
+      setmessage("Something Went Wrong");
+      setseverity("error");
     }
   };
   return (

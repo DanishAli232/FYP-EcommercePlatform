@@ -9,9 +9,11 @@ import {
   Snackbar,
   TextField,
 } from "@mui/material";
+import FacebookLogin from "react-facebook-login";
 import axios from "axios";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { GlobalContext } from "../Context";
 
 function SigninInScreen() {
@@ -51,6 +53,56 @@ function SigninInScreen() {
     }
   };
 
+  const [user, setUser] = useState([]);
+  const [profile, setProfile] = useState([]);
+
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => {
+      console.log(codeResponse);
+      setUser(codeResponse);
+    },
+    onError: (error) => console.log("Login Failed:", error),
+  });
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setProfile(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
+
+  // log out function to log the user out of google and set the profile array to null
+  const logOut = () => {
+    googleLogout();
+    setProfile(null);
+  };
+
+  const [login1, setLogin] = useState(false);
+  const [data, setData] = useState({});
+  const [picture, setPicture] = useState("");
+
+  const responseFacebook = (response) => {
+    console.log(response);
+    setData(response);
+    setPicture(response.picture.data.url);
+    if (response.accessToken) {
+      setLogin(true);
+    } else {
+      setLogin(false);
+    }
+  };
   const action = (
     <React.Fragment>
       <IconButton
@@ -109,6 +161,45 @@ function SigninInScreen() {
             </Button>
           </Grid>
         </Grid>
+
+        <h2>React Google Login</h2>
+        <br />
+        <br />
+        {profile ? (
+          <div>
+            {/* <img src={profile.picture} alt='user image' /> */}
+            <h3>User Logged in</h3>
+            <p>Name: {profile.name}</p>
+            <p>Email Address: {profile.email}</p>
+            <br />
+            <br />
+            <button onClick={logOut}>Log out</button>
+          </div>
+        ) : (
+          <button onClick={() => login()}>Sign in with Google 🚀 </button>
+        )}
+
+        <h2>Facebook Login</h2>
+        {!login1 && (
+          <FacebookLogin
+            sx={{ width: "100px" }}
+            appId='504485341863215'
+            autoLoad={true}
+            fields='name,email,picture'
+            // scope='public_profile,user_friends'
+            callback={responseFacebook}
+            icon='fa-facebook'
+            cssClass='facebookBtn'
+          />
+        )}
+        {login1 && <img src={picture} alt='' />}
+
+        {login1 && (
+          <div>
+            <p>{data.name}</p>
+            <p>{data.email}</p>
+          </div>
+        )}
 
         <Snackbar
           open={!!error.message}

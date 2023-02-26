@@ -38,6 +38,7 @@ const Cart = () => {
   const [message, setmessage] = useState("");
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
+  const [wishitems, setwishitems] = useState({});
 
   const {
     setCartPrice,
@@ -58,6 +59,12 @@ const Cart = () => {
     reducer,
     initialstate
   );
+
+  const fetchWishData = async () => {
+    const { data } = await axios.get(`/api//allwishitems/${userInfo.user._id}`);
+    setwishitems(data[0].products);
+    console.log(data[0].products);
+  };
 
   const fetchData = async () => {
     try {
@@ -118,6 +125,7 @@ const Cart = () => {
   };
 
   useEffect(() => {
+    fetchWishData();
     fetchData();
   }, []);
 
@@ -147,7 +155,7 @@ const Cart = () => {
   return (
     <Box>
       <Navbar />
-      {status === "loading" && <CircularProgress sx={{ ml: 1 }} size='16px' />}
+      {/* {status === "loading" && <CircularProgress sx={{ ml: 1 }} size='16px' />} */}
       <Box
         sx={{
           paddingX: "39px",
@@ -246,6 +254,7 @@ const Cart = () => {
                     setmessage={setmessage}
                     setOpen={setOpen}
                     handleClick={handleClick}
+                    wishitems={wishitems}
                     setStatus={setStatus}
                     isChecked={isCheck.includes(item.product._id)}
                   />

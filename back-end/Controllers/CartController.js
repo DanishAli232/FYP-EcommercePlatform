@@ -40,7 +40,7 @@ export const updatecartitems = async (req, res) => {
   try {
     const items = req.body.products;
     const id = req.params.id;
-
+    console.log(items, id);
     const cartdata = await Cart.find({
       products: { $elemMatch: { product: items.productid } },
     });

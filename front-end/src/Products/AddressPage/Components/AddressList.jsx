@@ -1,19 +1,90 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import axios from "axios";
+import React, { useContext, useEffect } from "react";
+import { GlobalContext } from "../../../Context";
 
 const AddressList = ({
   fullname,
   address,
   mobilenumber,
+  setOpen,
+  setStatus,
+  setmessage,
+  setseverity,
   landmark,
   province,
   city,
   labelselect,
   area,
   isDefault,
+  _id,
 }) => {
+  const {
+    state,
+    fetchAddresses,
+    addresslist,
+    adddress,
+    setadddress,
+    setnewAddress,
+    setAddressFormOpen,
+    setDefaultAddress,
+    DefaultAddress,
+    setaddresslist,
+    dispatch,
+  } = useContext(GlobalContext);
+  let defaultA;
+  const changeDefault = async () => {
+    setStatus("loading");
+    try {
+      const { data2 } = await axios.patch(
+        `/api/updatedefaultaddress/${_id}/${state.shippingAddress.data.addressId}`,
+        {
+          isDefault: true,
+        }
+      );
+      console.log(data2);
+
+      const { data: data1 } = await axios.get(
+        `/api/getaddressesbyid/${state.shippingAddress.data.addressId}`
+      );
+      console.log(data1);
+
+      defaultA = {
+        fullname,
+        address,
+        mobilenumber,
+        landmark,
+        province,
+        city,
+        labelselect,
+        area,
+        isDefault,
+        _id,
+      };
+      console.log(defaultA);
+
+      setDefaultAddress(defaultA);
+      setaddresslist(data1[0].addresslist);
+
+      setOpen(true);
+      setStatus(null);
+      setmessage("Your Default Address Change");
+      setseverity("success");
+    } catch (error) {
+      setOpen(true);
+      setStatus(null);
+      setmessage("Something Went Wrong");
+      setseverity("error");
+    }
+  };
+  useEffect(() => {
+    console.log({ isDefault, fullname });
+    console.log(addresslist);
+  }, [isDefault]);
+
   return (
     <Box
+      onClick={changeDefault}
       sx={{
         border: "0.5px solid #007787",
         width: "400px",
@@ -37,7 +108,30 @@ const AddressList = ({
         }}
       >
         <Typography sx={{ fontSize: "15px" }}>{fullname}</Typography>
-        <Button sx={{ fontSize: "13px" }}>Edit</Button>
+        <Button
+          sx={{ fontSize: "13px" }}
+          onClick={() => {
+            setnewAddress(false);
+            setAddressFormOpen(true);
+            setadddress({
+              ...adddress,
+              addresslist: {
+                fullname,
+                address,
+                mobilenumber,
+                landmark,
+                province,
+                city,
+                labelselect,
+                area,
+                isDefault,
+                _id,
+              },
+            });
+          }}
+        >
+          Edit
+        </Button>
       </Box>
       <Typography sx={{ fontSize: "13px" }}>{mobilenumber}</Typography>
       <Typography sx={{ fontSize: "13px", marginTop: "5px" }}>

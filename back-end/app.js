@@ -11,6 +11,8 @@ import ProductRouter from "./Routes/ProductRoute.js";
 import CartRouter from "./Routes/CartRoute.js";
 import WishRouter from "./Routes/WishlistRoute.js";
 import AddressRouter from "./Routes/Address.Route.js";
+import StripeRouter from "./Routes/StripeRoute.js";
+import OrderRouter from "./Routes/OrderRoute.js";
 
 var app = express();
 
@@ -29,7 +31,9 @@ app.use("/api", VendorRouter);
 app.use("/api", CartRouter);
 app.use("/api", WishRouter);
 app.use("/api", AddressRouter);
+app.use("/api", StripeRouter);
+app.use("/api", OrderRouter);
 app.use("/", DemoRouter);
-app.use("/", handle404);
+app.use("*", handle404);
 
 export default app;

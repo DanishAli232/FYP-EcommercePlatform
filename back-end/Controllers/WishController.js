@@ -63,12 +63,10 @@ export const updatewishitems = async (req, res) => {
           new: true,
         }
       ).exec();
-      if (data) {
-        res.status(200).json({
-          success: true,
-          data,
-        });
-      }
+      res.status(200).json({
+        success: true,
+        data,
+      });
     } else {
       res.status(200).json({
         success: true,
@@ -87,9 +85,8 @@ export const updatewishitems = async (req, res) => {
 export const allwishitems = async (req, res) => {
   const id = req.params.id;
   try {
-    const cartdata = await Wishlist.find({ user: id })
-      .select("products")
-      .populate("products.product");
+    const cartdata = await Wishlist.find({ user: id }).select("products");
+    // .populate("products.product");
 
     res.status(200).send(cartdata);
   } catch (error) {
@@ -111,7 +108,7 @@ export const deletewishitem = async (req, res) => {
     console.log(data);
     res.status(200).json({
       success: true,
-      message: "Successfully Deleted",
+      message: "Successfully Removed",
     });
   } catch (error) {
     console.log(error);

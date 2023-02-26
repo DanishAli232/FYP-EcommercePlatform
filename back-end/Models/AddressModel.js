@@ -38,7 +38,6 @@ const addressSchema = new mongoose.Schema(
         },
         isDefault: {
           type: Boolean,
-          default: true,
         },
       },
     ],

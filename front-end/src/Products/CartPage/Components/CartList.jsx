@@ -15,6 +15,7 @@ const CartList = ({
   image,
   storename,
   price,
+  wishitems,
   quantity,
   id,
   cartid,
@@ -35,9 +36,7 @@ const CartList = ({
   const fetchData1 = () => {
     fetchData();
   };
-
   const DeleteItem = async () => {
-    console.log("Delete");
     const { data } = await axios.patch(
       `/api/deletesingleitem?i=${id}&c=${cartid}`
     );
@@ -52,14 +51,29 @@ const CartList = ({
     totalprice: price,
   };
   const _id = state.userInfo.user._id;
+
+  useEffect(() => {
+    let vl = null;
+    if (wishitems) {
+      vl = wishitems.find((items, i) => {
+        return items.product === id;
+      });
+      if (vl) {
+        setwish(true);
+        setcolor("red");
+      } else {
+      }
+    }
+  }, []);
+
   const AddtoWishlist = async () => {
     setStatus("loading");
     if (wish) {
-      console.log("yes1");
       try {
         const { data } = await axios.patch(
           `/api/deletewishitem?i=${id}&c=${state.cart.wishid.wishId}`
         );
+
         setStatus(null);
         setOpen(true);
         setwish(false);
@@ -71,19 +85,18 @@ const CartList = ({
       }
     } else {
       if (state.cart.wishid) {
-        console.log("yes2");
         try {
+          console.log("yes322");
           const { data } = await axios.patch(
             `/api/updatewishitems/${state.cart.wishid.wishId}`,
             {
               products,
             }
           );
-          console.log(data);
 
           setOpen(true);
           setStatus(null);
-          setmessage(data.message);
+          setmessage("Item added to Wishlist");
           setwish(true);
           setcolor("red");
         } catch (error) {
@@ -92,7 +105,6 @@ const CartList = ({
           setmessage(error.message);
         }
       } else {
-        console.log("yes3");
         try {
           const { data } = await axios.post("/api/addwishitems", {
             products,
@@ -103,7 +115,6 @@ const CartList = ({
           setwish(true);
           setmessage(data.message);
           setcolor("red");
-          console.log(data);
           dispatch({
             type: "WISH_ID",
             payload: {
@@ -113,7 +124,6 @@ const CartList = ({
         } catch (error) {
           setStatus(null);
           setmessage(error.message);
-          console.log(error);
         }
       }
     }
@@ -134,9 +144,6 @@ const CartList = ({
   //   }
   // };
 
-  useEffect(() => {
-    console.log(CheckVal);
-  }, [CheckVal]);
   return (
     <Box
       sx={{
@@ -206,15 +213,13 @@ const CartList = ({
               <Checkbox
                 onClick={AddtoWishlist}
                 {...label}
+                checked={wish}
                 icon={<FavoriteBorder />}
                 checkedIcon={<Favorite />}
                 sx={{
-                  color: color,
-                  // fontSize: "22px",
-                  // cursor: "pointer",
-                  // "&:hover": {
-                  //   color: "red",
-                  // },
+                  "&.Mui-checked": {
+                    color: "red",
+                  },
                 }}
               />
               {/* <FavoriteBorderIcon

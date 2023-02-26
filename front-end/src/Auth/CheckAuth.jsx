@@ -7,13 +7,13 @@ const CheckAuth = ({ children }) => {
   const navigate = useNavigate();
   const { state } = useContext(GlobalContext);
   console.log(state);
-  useEffect(() => {
-    if (state.userInfo !== null) {
-      navigate("/");
-    } else {
-      navigate("/signin");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (state.userInfo !== null) {
+  //     navigate("/");
+  //   } else {
+  //     navigate("/signin");
+  //   }
+  // }, []);
 
   return <>{children}</>;
 };

@@ -10,6 +10,8 @@ import Home from "./HomePage/Home";
 import ProductDetail from "./ProductDetail/Components/Screen";
 import SigninInScreen from "../Auth/Login";
 import SignupScreen from "../Auth/Register";
+import CheckoutSuccess from "./PaymentPage/Components/CheckoutSuccess";
+import NotFound from "../Components/NotFound";
 
 const AllDetail = () => {
   return (
@@ -29,6 +31,8 @@ const AllDetail = () => {
           <Route path='/payment' element={<Payment />} />
           <Route path='/signin' element={<SigninInScreen />} />
           <Route path='/signup' element={<SignupScreen />} />
+          <Route path='/checkout-success' element={<CheckoutSuccess />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </Suspense>
     </div>

@@ -4,13 +4,16 @@ import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import { GlobalContext } from "../../Context";
 
-const AddressForm1 = () => {
+const AddressForm1 = ({ setStatus, setOpen, setmessage, setseverity }) => {
   const {
     setAddressBoxOpen,
     setAddressFormOpen,
     state,
     dispatch: ctxDispatch,
+    setadddress,
+    adddress,
     DefaultAddress,
+    setDefaultAddress,
     newAddress,
   } = useContext(GlobalContext);
   const [AddressForm, setAddressForm] = useState({
@@ -30,19 +33,21 @@ const AddressForm1 = () => {
   });
 
   useEffect(() => {
+    console.log(adddress);
     if (state.shippingAddress) {
       if (newAddress) {
       } else {
-        const number = parseInt(DefaultAddress.mobilenumber);
+        console.log(adddress);
+        const number = parseInt(adddress.addresslist.mobilenumber);
         setAddressForm({
-          fullname: DefaultAddress.fullname,
-          address: DefaultAddress.address,
+          fullname: adddress.addresslist.fullname,
+          address: adddress.addresslist.address,
           number: number,
-          landmark: DefaultAddress.landmark,
-          province: DefaultAddress.province,
-          city: DefaultAddress.city,
-          labelselect: DefaultAddress.labelselect,
-          area: DefaultAddress.area,
+          landmark: adddress.addresslist.landmark,
+          province: adddress.addresslist.province,
+          city: adddress.addresslist.city,
+          labelselect: adddress.addresslist.labelselect,
+          area: adddress.addresslist.area,
           userid: state.userInfo.user._id,
         });
       }
@@ -55,52 +60,54 @@ const AddressForm1 = () => {
   const SubmitAddress = async () => {
     if (state.shippingAddress) {
       if (newAddress) {
+        setStatus("loading");
         try {
           const { data } = await axios.patch(
             `/api/postnewaddress/${state.shippingAddress.data.addressId}`,
             AddressForm
           );
           console.log(data);
-          // setOpen(true);
-          // setStatus(null);
-          // setmessage(data.message);
-          // setwish(true);
-          // setcolor("red");
+          setOpen(true);
+          setStatus(null);
+          setmessage("New Address Added");
+          setseverity("success");
         } catch (error) {
-          // setOpen(true);
-          // setStatus(null);
-          // setmessage(error.message);
+          setOpen(true);
+          setStatus(null);
+          setmessage("something Went Wrong");
+          setseverity("error");
         }
       } else {
         try {
           const { data } = await axios.patch(
-            `/api/updateaddress/${DefaultAddress._id}/${state.shippingAddress.data.addressId}`,
+            `/api/updateaddress/${adddress.addresslist._id}/${state.shippingAddress.data.addressId}`,
             AddressForm
           );
-          console.log(data);
-          // setOpen(true);
-          // setStatus(null);
-          // setmessage(data.message);
-          // setwish(true);
-          // setcolor("red");
+          setDefaultAddress(AddressForm);
+          setOpen(true);
+          setStatus(null);
+          setmessage("Your Address Updated");
+          setseverity("success");
         } catch (error) {
-          // setOpen(true);
-          // setStatus(null);
-          // setmessage(error.message);
+          setOpen(true);
+          setStatus(null);
+          setseverity("error");
+          setmessage("Something Went Wrong");
         }
       }
-    } else {
-      try {
-        const { data } = await axios.post("/api/postaddress", AddressForm);
-        ctxDispatch({
-          type: "SAVE_SHIPPING_ADDRESS",
-          payload: {
-            data,
-          },
-        });
-      } catch (error) {
-        console.log(error);
-      }
+      // } else {
+      //   try {
+      //     const { data } = await axios.post("/api/postaddress", AddressForm);
+      //     ctxDispatch({
+      //       type: "SAVE_SHIPPING_ADDRESS",
+      //       payload: {
+      //         data,
+      //       },
+      //     });
+
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
     }
   };
 

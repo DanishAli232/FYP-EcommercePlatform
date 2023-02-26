@@ -6,7 +6,7 @@ import { GlobalContext } from "../../Context";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import AddressList from "./Components/AddressList";
 
-const AddressForm = () => {
+const AddressForm = (props) => {
   const {
     setAddressBoxOpen,
     setAddressFormOpen,
@@ -78,7 +78,7 @@ const AddressForm = () => {
             }}
           >
             {addresslist.map((list, i) => (
-              <AddressList {...list} key={i} />
+              <AddressList {...list} key={i} {...props} />
             ))}
           </Box>
           <Box sx={{ marginTop: "80px" }}>
@@ -122,7 +122,7 @@ const AddressForm = () => {
                 </Typography>
               </Box>
 
-              <Button
+              {/* <Button
                 sx={{
                   fontSize: "12px",
                   background: "#f85606",
@@ -134,7 +134,7 @@ const AddressForm = () => {
                 }}
               >
                 Confirm
-              </Button>
+              </Button> */}
             </Box>
           </Box>
         </Box>

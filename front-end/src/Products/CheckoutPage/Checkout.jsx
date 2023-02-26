@@ -1,9 +1,11 @@
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
   Container,
   Grid,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useReducer, useState } from "react";
@@ -40,10 +42,21 @@ const reducer = (state, action) => {
 };
 
 const Checkout = () => {
-  const [cartitems, setcartitems] = useState([]);
   const [totalitems, settotalitems] = useState(0);
-  const { AddressBoxOpen, AddressFormOpen, setCartPrice, state, allprice } =
-    useContext(GlobalContext);
+  const [open, setOpen] = React.useState(false);
+  const [status, setStatus] = useState(null);
+  const [message, setmessage] = useState("");
+  const [severity, setseverity] = useState("success");
+
+  const {
+    AddressBoxOpen,
+    AddressFormOpen,
+    setCartPrice,
+    state,
+    allprice,
+    cartitems,
+    setcartitems,
+  } = useContext(GlobalContext);
   const { cart, userInfo } = state;
 
   const initialstate = {
@@ -56,6 +69,14 @@ const Checkout = () => {
     reducer,
     initialstate
   );
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setStatus(null);
+    setOpen(false);
+  };
 
   const fetchData = async () => {
     try {
@@ -145,15 +166,10 @@ const Checkout = () => {
                     image={item.product.image}
                     quantity={item.quantity}
                     fetchData={fetchData}
-                    // CheckVal={CheckVal}
-                    // newCheckVal={newCheckVal}
-                    // state={state}
-                    // dispatch={ctxDispatch}
-                    // setmessage={setmessage}
-                    // setOpen={setOpen}
-                    // handleClick={handleClick}
-                    // setStatus={setStatus}
-                    // isChecked={isCheck.includes(item.product._id)}
+                    setseverity={setseverity}
+                    setmessage={setmessage}
+                    setOpen={setOpen}
+                    setStatus={setStatus}
                   />
                 ))
               )}
@@ -322,8 +338,27 @@ const Checkout = () => {
           </Grid>
         </Grid>
       </Box>
-      {AddressBoxOpen && <AddressForm />}
-      {AddressFormOpen && <AddressForm1 />}
+      {AddressBoxOpen && (
+        <AddressForm
+          setOpen={setOpen}
+          setStatus={setStatus}
+          setmessage={setmessage}
+          setseverity={setseverity}
+        />
+      )}
+      {AddressFormOpen && (
+        <AddressForm1
+          setOpen={setOpen}
+          setStatus={setStatus}
+          setmessage={setmessage}
+          setseverity={setseverity}
+        />
+      )}
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

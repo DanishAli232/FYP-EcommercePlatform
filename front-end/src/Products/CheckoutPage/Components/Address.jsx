@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../Context";
 
 const Address = () => {
+  let defaultA;
   const {
     setAddressBoxOpen,
     setAddressFormOpen,
@@ -12,33 +13,25 @@ const Address = () => {
     DefaultAddress,
     setDefaultAddress,
     setnewAddress,
+    fetchAddresses,
     state,
+    setadddress,
+    adddress,
   } = useContext(GlobalContext);
+  const [EmailInput, setEmailInput] = useState(false);
+  const [InputChange, setInputChange] = useState({
+    email: state.userInfo.user.email,
+  });
+
   const openAdressBox = () => {
     setAddressBoxOpen(true);
   };
-  const fetchData = async () => {
-    const { data: data1 } = await axios.get(
-      `/api/getaddresses/${state.userInfo.user._id}`
-    );
-    console.log(data1);
-    let data = { success: true, addressId: data1[0]._id };
-    ctxDispatch({
-      type: "SAVE_SHIPPING_ADDRESS",
-      payload: {
-        data,
-      },
-    });
-
-    let defaultA = data1[0].addresslist.find((item) => {
-      return (item.isDefault = true);
-    });
-    setDefaultAddress(defaultA);
-    setaddresslist(data1[0].addresslist);
-  };
+  defaultA = { ...DefaultAddress };
+  console.log(defaultA);
   useEffect(() => {
-    fetchData();
+    fetchAddresses();
   }, []);
+
   return (
     <Box
       sx={{
@@ -101,6 +94,7 @@ const Address = () => {
           onClick={() => {
             setnewAddress(false);
             setAddressFormOpen(true);
+            setadddress({ ...adddress, addresslist: defaultA });
           }}
           sx={{ fontSize: "12px" }}
         >
@@ -126,10 +120,46 @@ const Address = () => {
           alignItems: "center",
         }}
       >
-        <Typography sx={{ fontSize: "12px" }}>
-          Email To: {state.userInfo.user.email}
+        <Typography
+          sx={{
+            fontSize: "12px",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          Email To:
+          {EmailInput ? (
+            <>
+              <input
+                style={{ marginLeft: "8px", outline: "none", padding: "5px" }}
+                type='text'
+                name='email'
+                onChange={(event) => {
+                  setInputChange(() => ({
+                    ...InputChange,
+                    [event.target.name]: event.target.value,
+                  }));
+                }}
+                value={InputChange.email}
+              />
+            </>
+          ) : (
+            <p style={{ marginLeft: "10px" }}>{InputChange.email}</p>
+          )}
         </Typography>
-        <Button sx={{ fontSize: "12px" }}>Edit</Button>
+        {EmailInput ? (
+          <Button
+            sx={{ fontSize: "12px" }}
+            onClick={() => setEmailInput(false)}
+          >
+            Save
+          </Button>
+        ) : (
+          <Button sx={{ fontSize: "12px" }} onClick={() => setEmailInput(true)}>
+            Edit
+          </Button>
+        )}
       </Box>
     </Box>
   );

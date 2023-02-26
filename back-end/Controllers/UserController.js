@@ -2,6 +2,9 @@ import User from "../Models/userModel.js";
 import Vendor from "../Models/VendorModel.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../Utils/generateToken.js";
+import crypto from "crypto";
+import Token from "../Models/TokenModel.js";
+import { sendEmail } from "../Utils/sendEmail.js";
 import {
   validateLoginInput,
   validateRegisterInput,
@@ -107,16 +110,51 @@ export const addUser = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(values.password, salt);
 
     const newUser = await User.create({ ...values, password: hashedPassword });
+    console.log(newUser);
+    const token = await new Token({
+      userId: newUser._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    }).save();
 
-    const token = generateToken(newUser);
-
-    if (newUser) {
-      return res
-        .status(201)
-        .json({ user: { ...newUser._doc, password: null }, token });
-    }
+    const url = `${process.env.BASE_URL}users/${newUser._id}/verify/${token.token}`;
+    console.log(url);
+    const emailverify = await sendEmail(newUser.email, "Verify Email", url);
+    console.log(emailverify);
+    res
+      .status(201)
+      .send({ message: "An Email sent to your account please verify" });
   } catch (err) {
     return res.status(500).json({ errors: { message: err.message } });
+  }
+};
+
+export const Emailverify = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.id });
+    if (!user) return res.status(400).send({ message: "Invalid link" });
+
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    });
+    if (!token) return res.status(400).send({ message: "Invalid link" });
+
+    let newUser = await User.updateOne({ _id: user._id, verified: true });
+    await token.remove();
+    const token1 = generateToken(newUser);
+
+    // res.status(200).send({ message: "Email verified successfully", user: {
+
+    // }});
+    if (newUser) {
+      return res.status(201).json({
+        message: "Email verified successfully",
+        user: { ...newUser._doc, password: null },
+        token1,
+      });
+    }
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 

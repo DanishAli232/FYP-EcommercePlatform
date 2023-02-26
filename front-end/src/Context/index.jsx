@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import axios from "axios";
 import React, { createContext, useContext, useReducer, useState } from "react";
 import { useEffect } from "react";
 
@@ -117,9 +118,33 @@ export const ContextState = ({ children }) => {
   const [AddressFormOpen, setAddressFormOpen] = useState(false);
   const [DefaultAddress, setDefaultAddress] = useState({});
   const [addresslist, setaddresslist] = useState({});
+  const [cartitems, setcartitems] = useState([]);
+  const [adddress, setadddress] = useState({
+    addresslist: {},
+  });
   const [newAddress, setnewAddress] = useState(false);
   const [CheckVal, newCheckVal] = useState([]);
   const [quantity, setquantity] = useState(0);
+
+  const fetchAddresses = async () => {
+    console.log("yes");
+    const { data: data1 } = await axios.get(
+      `/api/getaddresses/${state.userInfo.user._id}`
+    );
+    console.log(data1);
+    let data = { success: true, addressId: data1[0]._id };
+    dispatch({
+      type: "SAVE_SHIPPING_ADDRESS",
+      payload: {
+        data,
+      },
+    });
+    let defaultA = data1[0].addresslist.find((item) => {
+      return (item.isDefault = true);
+    });
+    setDefaultAddress(defaultA);
+    setaddresslist(data1[0].addresslist);
+  };
 
   const setCartPrice = (cart) => {
     let tprice = 0;
@@ -146,8 +171,13 @@ export const ContextState = ({ children }) => {
       value={{
         addresslist,
         setaddresslist,
+        cartitems,
+        setcartitems,
         allprice,
+        adddress,
+        setadddress,
         setCartPrice,
+        fetchAddresses,
         state,
         dispatch,
         dashboardOpen,
