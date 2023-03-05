@@ -9,6 +9,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.1",
     "@mui/x-data-grid": "^5.17.17",
+    "@paypal/react-paypal-js": "^7.8.2",
     "@react-oauth/google": "^0.8.0",
     "@stripe/react-stripe-js": "^1.16.5",
     "@stripe/stripe-js": "^1.47.0",
@@ -20,8 +21,9 @@
     "babel-polyfill": "^6.26.0",
     "dotenv": "^16.0.3",
     "draft-js": "^0.11.7",
-    "framer-motion": "^7.0.0",
+    "framer-motion": "^7.10.3",
     "jwt-decode": "^3.1.2",
+    "material-ui-popup-state": "^5.0.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-custom-scrollbars-2": "^4.5.0",
@@ -38,7 +40,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

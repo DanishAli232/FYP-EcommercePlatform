@@ -24,6 +24,9 @@ import COD from "./Components/COD";
 import JazzCash from "./Components/JazzCash";
 import Card from "./Components/Card";
 import HBL from "./Components/HBL";
+import paypal from "../../Assets/paypal.png";
+import NavBar1 from "../../Components/NavBar1";
+import Paypal from "./Components/paypal";
 
 const Payment = () => {
   const { allprice, state, cartitems } = useContext(GlobalContext);
@@ -56,11 +59,11 @@ const Payment = () => {
 
   return (
     <Box sx={{ position: "relative" }}>
-      <Navbar />
+      <NavBar1 />
       <Box
         sx={{
           paddingX: "39px",
-          marginTop: "30px",
+          // marginTop: "30px",
           backgroundColor: "#f4f4f4",
           minHeight: "100vh",
           paddingBottom: "40px",
@@ -121,11 +124,11 @@ const Payment = () => {
                     }}
                   >
                     <img
-                      src={easypaisa}
+                      src={paypal}
                       alt=''
                       style={{ width: "111px", height: "27px" }}
                     />
-                    <Typography>Easypaisa</Typography>
+                    <Typography>Paypal</Typography>
                   </Box>
                 </Box>
                 <Box
@@ -252,7 +255,7 @@ const Payment = () => {
                       alt=''
                       style={{ width: "47px", height: "37px" }}
                     />
-                    <Typography>Credit/Cebit Caed</Typography>
+                    <Typography>Credit/Debit Card</Typography>
                   </Box>
                 </Box>
                 <Box
@@ -298,12 +301,10 @@ const Payment = () => {
                 </Box>
               </Box>
               {openBox.COD && <COD />}
-              {openBox.Easypaisa && <COD />}
+              {openBox.Easypaisa && <Paypal />}
               {openBox.JazzCash && <JazzCash />}
               {openBox.Card && <Card />}
               {openBox.HBL && <HBL />}
-
-              <PayButton cartItems={cartitems} />
             </Box>
           </Grid>
 

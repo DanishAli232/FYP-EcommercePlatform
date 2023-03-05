@@ -170,7 +170,7 @@ const CheckoutList = ({
             </Typography>
           </Box>
           <Typography sx={{ fontSize: "13px" }}>
-            Recieve by 8 Feb-11 Feb
+            Recieve in next five days
           </Typography>
         </Box>
         <Typography sx={{ color: "#f57224", fontSize: "18px" }}>

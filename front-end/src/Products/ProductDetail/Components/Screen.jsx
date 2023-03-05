@@ -25,7 +25,13 @@ const ProductDetail = () => {
   const { state: state1 } = useLocation();
   console.log(state1);
   const navigate = useNavigate();
-  const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
+  const {
+    state,
+    dispatch: ctxDispatch,
+    DefaultAddress,
+    fetchAddresses,
+    fetchcartItems,
+  } = useContext(GlobalContext);
   const { cart, userInfo } = state;
   const imageRef = useRef(null);
   console.log(cart.cartid);
@@ -33,6 +39,10 @@ const ProductDetail = () => {
     position: "",
     top: "",
   });
+
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
   // const [topPosition, settopPosition] = useState(0);
   // useEffect(() => {
   //   const existItem = cart.cartItem.find((x) => x.id === state1.id);
@@ -74,21 +84,20 @@ const ProductDetail = () => {
         _id,
       });
       console.log(data);
+      fetchcartItems();
       ctxDispatch({
-        type: "CART_ID",
+        type: "CART_ADD_ITEM",
         payload: {
-          data,
+          products,
         },
       });
+      // ctxDispatch({
+      //   type: "CART_ID",
+      //   payload: {
+      //     data,
+      //   },
+      // });
     }
-
-    ctxDispatch({
-      type: "CART_ADD_ITEM",
-      payload: {
-        ...state1,
-        quantity,
-      },
-    });
 
     // navigate("/cartpage");
   };
@@ -154,7 +163,7 @@ const ProductDetail = () => {
                 width: "86%",
                 ...imagestyle,
               }}
-              src={state1.Image}
+              src={state1.image}
               alt='product_img'
             />
 
@@ -316,10 +325,55 @@ const ProductDetail = () => {
                   >
                     <LocationOnOutlinedIcon sx={{ color: "#757575" }} />
                     <Typography sx={{ paddingLeft: "8px", fontSize: "14px" }}>
-                      Sindh, Karachi - Gulshan-e-Iqbal, Block 15
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        {" "}
+                        <Typography
+                          sx={{
+                            fontSize: "12px",
+                            color: "#007787",
+                            padding: "2px 6px",
+                            background: "rgba(0,119,135,.08)",
+                          }}
+                        >
+                          {DefaultAddress.labelselect}
+                        </Typography>
+                        <span
+                          style={{
+                            height: "19px",
+                            margin: "0px 8px",
+                            backgroundColor: "#e5e5e5",
+                            width: ".5px",
+                          }}
+                        ></span>
+                        <Typography sx={{ fontSize: "12px", color: "#1a1a1a" }}>
+                          {DefaultAddress.mobilenumber}
+                        </Typography>
+                        <span
+                          style={{
+                            height: "19px",
+                            margin: "0px 8px",
+                            backgroundColor: "#e5e5e5",
+                            width: ".5px",
+                          }}
+                        ></span>
+                        <Typography
+                          sx={{
+                            fontSize: "12px",
+                            color: "#1a1a1a",
+                          }}
+                        >
+                          {`${DefaultAddress.address},${DefaultAddress.city},${DefaultAddress.province}`}
+                        </Typography>
+                      </Box>
                     </Typography>
                   </Box>
-                  <Typography
+                  {/* <Typography
                     sx={{
                       color: "#1a9cb7",
                       fontSize: "13px",
@@ -327,7 +381,7 @@ const ProductDetail = () => {
                     }}
                   >
                     Change
-                  </Typography>
+                  </Typography> */}
                 </Box>
                 <div
                   style={{

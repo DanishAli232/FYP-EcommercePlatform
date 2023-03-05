@@ -95,19 +95,27 @@ const AddressForm1 = ({ setStatus, setOpen, setmessage, setseverity }) => {
           setmessage("Something Went Wrong");
         }
       }
-      // } else {
-      //   try {
-      //     const { data } = await axios.post("/api/postaddress", AddressForm);
-      //     ctxDispatch({
-      //       type: "SAVE_SHIPPING_ADDRESS",
-      //       payload: {
-      //         data,
-      //       },
-      //     });
-
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
+    } else {
+      try {
+        const { data } = await axios.post("/api/postaddress", AddressForm);
+        ctxDispatch({
+          type: "SAVE_SHIPPING_ADDRESS",
+          payload: {
+            data,
+          },
+        });
+        // setDefaultAddress(data);
+        setOpen(true);
+        setStatus(null);
+        setmessage("Your Address added");
+        setseverity("success");
+      } catch (error) {
+        console.log(error);
+        setOpen(true);
+        setStatus(null);
+        setseverity("error");
+        setmessage("Something Went Wrong");
+      }
     }
   };
 

@@ -8,7 +8,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 const Container = styled.div`
   display: flex;
   height: 60vh;
-  width: 100vw;
+
   background-color: white;
   margin: 10px;
   overflow: hidden;
@@ -16,14 +16,14 @@ const Container = styled.div`
 `;
 const Wrapper = styled.div`
   display: flex;
-  height: 100%;
   width: 100%;
   margin: 40px;
+  align-items: center;
 `;
 const Vendor = styled.div`
   align-items: center;
   width: 49%;
-  height: 80%;
+  height: 260px;
   display: flex;
   position: relative;
   margin: 15px 20px 10px 20px;
@@ -56,21 +56,33 @@ const InfoContainer = styled.div`
   border-radius: 10px;
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   position: absolute;
 `;
 const Title = styled.h1`
   color: white;
-  margin-top: 50px;
+  margin: 0px 0px 0px 20px;
+  font-size: 28px;
 `;
 const Button1 = styled.button`
   border: 1px solid white;
+  cursor: pointer;
   border-radius: 5px;
   background: transparent;
   color: white;
-  font-size: 25px;
+  font-size: 21px;
   font-weight: 500;
-  margin: 20px;
-  padding: 15px 35px 15px 35px;
+  width: 198px;
+  margin: 9px 20px;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background: #ef233c;
+    border: #ef233c;
+  }
 `;
 
 const Vendors = () => {
@@ -86,11 +98,16 @@ const Vendors = () => {
             <Title>KHAADI</Title>
             <Button1>
               Shop Now
-              <ArrowForwardIcon />
+              <ArrowForwardIcon sx={{ marginLeft: "13px" }} />
             </Button1>
           </InfoContainer>
         </Vendor>
-        <Vendor>
+
+        <Vendor
+          onMouseOver={() => {
+            console.log("okk");
+          }}
+        >
           <ImageContainer>
             <Image src='assets/images/necklace.jpeg' />
           </ImageContainer>
@@ -98,7 +115,7 @@ const Vendors = () => {
           <InfoContainer>
             <Title>LIME LIGHT</Title>
             <Button1>
-              Shop Now <ArrowForwardIcon />
+              Shop Now <ArrowForwardIcon sx={{ marginLeft: "13px" }} />
             </Button1>
           </InfoContainer>
         </Vendor>

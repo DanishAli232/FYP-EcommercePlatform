@@ -27,6 +27,7 @@ import AddressForm1 from "../AddressPage/AdressForm1";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import LoadingBox from "../../Components/LoadingBox";
+import NavBar1 from "../../Components/NavBar1";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -101,11 +102,11 @@ const Checkout = () => {
 
   return (
     <Box sx={{ position: "relative" }}>
-      <Navbar />
+      <NavBar1 />
       <Box
         sx={{
           paddingX: "39px",
-          marginTop: "30px",
+          // marginTop: "30px",
           backgroundColor: "#f4f4f4",
           minHeight: "100vh",
           paddingBottom: "40px",

@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import axios from "axios";
 import React, { createContext, useContext, useReducer, useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // import jwtDecode from "jwt-decode";
 
@@ -48,13 +49,13 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "CART_ADD_ITEM":
       const newItem = action.payload;
-      const existItem = state.cart.cartItem.find(
-        (item) => item.id === newItem.id
-      );
       console.log(newItem);
+      const existItem = state.cart.cartItem.find(
+        (item) => item.productid === newItem.productid
+      );
       const cartItem = existItem
         ? state.cart.cartItem.map((item) =>
-            item.id === existItem.id ? newItem : item
+            item.productid === existItem.productid ? newItem : item
           )
         : [...state.cart.cartItem, newItem];
       localStorage.setItem("cartItem", JSON.stringify(cartItem));
@@ -66,7 +67,8 @@ const reducer = (state, action) => {
       return { ...state, cart: { ...state.cart, cartItem } };
     }
     case "CART_ID": {
-      const cartid = action.payload.data;
+      const cartid = action.payload.cartid;
+      console.log(cartid);
       localStorage.setItem("cartid", JSON.stringify(cartid));
       return { ...state, cart: { ...state.cart, cartid } };
     }
@@ -83,10 +85,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         userInfo: null,
+        shippingAddress: null,
+        paymentMethod: null,
         cart: {
           cartItem: [],
-          shippingAddress: {},
-          paymentMethod: "",
+          cartid: null,
+          wishid: null,
         },
       };
     case "SAVE_SHIPPING_ADDRESS":
@@ -106,6 +110,7 @@ const reducer = (state, action) => {
 };
 
 export const ContextState = ({ children }) => {
+  const navigate = useNavigate();
   const [totalprice, settotalprice] = useState(0);
   const [allprice, setallprice] = useState({
     withdelivery: 0,
@@ -116,7 +121,7 @@ export const ContextState = ({ children }) => {
   const [dashboardOpen, setdashboardOpen] = useState(false);
   const [AddressBoxOpen, setAddressBoxOpen] = useState(false);
   const [AddressFormOpen, setAddressFormOpen] = useState(false);
-  const [DefaultAddress, setDefaultAddress] = useState({});
+  const [DefaultAddress, setDefaultAddress] = useState([]);
   const [addresslist, setaddresslist] = useState({});
   const [cartitems, setcartitems] = useState([]);
   const [adddress, setadddress] = useState({
@@ -139,11 +144,61 @@ export const ContextState = ({ children }) => {
         data,
       },
     });
+
+    // });
     let defaultA = data1[0].addresslist.find((item) => {
       return (item.isDefault = true);
     });
     setDefaultAddress(defaultA);
     setaddresslist(data1[0].addresslist);
+  };
+
+  const fetchcartItems = async () => {
+    console.log("yes");
+    try {
+      const { data } = await axios.get(
+        `/api/allcartitems/${state.userInfo.user._id}`
+      );
+      console.log(data[0]);
+      let cartid = {
+        success: true,
+        cartId: data[0]._id,
+      };
+      dispatch({
+        type: "CART_ID",
+        payload: {
+          cartid,
+        },
+      });
+      console.log(cartid);
+      setcartitems(data[0].products);
+
+      return data;
+    } catch (error) {}
+
+    // console.log(data1);
+    // let data = { success: true, addressId: data1[0]._id };
+    // dispatch({
+    //   type: "SAVE_SHIPPING_ADDRESS",
+    //   payload: {
+    //     data,
+  };
+
+  const SignOut = () => {
+    localStorage.removeItem("cartItem");
+    localStorage.removeItem("cartid");
+    localStorage.removeItem("wishid");
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
+
+    setcartitems([]);
+    setDefaultAddress([]);
+    setaddresslist({});
+    dispatch({
+      type: "USER_SIGNOUT",
+    });
+    navigate("/signin");
   };
 
   const setCartPrice = (cart) => {
@@ -173,9 +228,11 @@ export const ContextState = ({ children }) => {
         setaddresslist,
         cartitems,
         setcartitems,
+        SignOut,
         allprice,
         adddress,
         setadddress,
+        fetchcartItems,
         setCartPrice,
         fetchAddresses,
         state,

@@ -7,22 +7,25 @@ import { DashboardContext } from "./Dashboard/Context/DashboardContext";
 import { ContextState } from "./Context";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import CheckAuth from "./Auth/CheckAuth";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <GoogleOAuthProvider clientId='227793295238-gljju5k00hmeo2q6ngsol47u0gicpc42.apps.googleusercontent.com'>
     <React.StrictMode>
-      <ContextState>
-        <DashboardContext>
-          <Router>
+      <Router>
+        <ContextState>
+          <DashboardContext>
             <CheckAuth>
               <React.Fragment>
-                <App />
+                <PayPalScriptProvider deferLoading={true}>
+                  <App />
+                </PayPalScriptProvider>{" "}
               </React.Fragment>{" "}
             </CheckAuth>{" "}
-          </Router>{" "}
-        </DashboardContext>{" "}
-      </ContextState>{" "}
+          </DashboardContext>{" "}
+        </ContextState>{" "}
+      </Router>{" "}
     </React.StrictMode>{" "}
   </GoogleOAuthProvider>
 );

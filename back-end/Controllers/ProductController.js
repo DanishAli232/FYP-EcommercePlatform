@@ -41,10 +41,18 @@ export const deleteproduct = async (req, res) => {
 };
 
 export const getproducts = async (req, res) => {
+  const protocol = req.protocol;
+  const host = req.hostname;
+  const port = process.env.PORT || 5000;
+  let avatarUrl = `${protocol}://${host}:${port}/uploads/`;
   try {
     // console.log(q);
     const products = await Product.find({});
-    res.send(products);
+    var sortedArr = products.map((x) => {
+      return { ...x._doc, image: avatarUrl + x.image };
+    });
+
+    res.send(sortedArr);
   } catch (err) {
     return res.status(500).json({ error: { message: err.message } });
   }

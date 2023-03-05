@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { GlobalContext } from "../../Context";
 import axios from "axios";
 import LoadingBox from "../../Components/LoadingBox";
+import NavBar1 from "../../Components/NavBar1";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,17 +32,19 @@ const reducer = (state, action) => {
 };
 
 const Cart = () => {
-  const [cartitems, setcartitems] = useState([]);
   const [totalitems, settotalitems] = useState(0);
   const [open, setOpen] = React.useState(false);
   const [status, setStatus] = useState(null);
   const [message, setmessage] = useState("");
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
-  const [wishitems, setwishitems] = useState({});
+  const [wishitems, setwishitems] = useState([]);
 
   const {
+    cartitems,
+    setcartitems,
     setCartPrice,
+    fetchcartItems,
     state,
     dispatch: ctxDispatch,
     totalprice,
@@ -54,29 +57,35 @@ const Cart = () => {
     loading: true,
     error: "",
   };
-
+  console.log(userInfo.user._id);
   const [{ loading, error, cartdata }, dispatch] = useReducer(
     reducer,
     initialstate
   );
 
   const fetchWishData = async () => {
+    try {
+    } catch (error) {}
     const { data } = await axios.get(`/api//allwishitems/${userInfo.user._id}`);
-    setwishitems(data[0].products);
-    console.log(data[0].products);
+    console.log(data);
+    if (data) {
+      console.log(data);
+      setwishitems(data[0].products);
+    }
   };
 
   const fetchData = async () => {
     try {
       newCheckVal([]);
       dispatch({ type: "FETCH_REQUEST" });
-      const { data } = await axios.get(
-        `/api/allcartitems/${userInfo.user._id}`
-      );
+      // const { data } = await axios.get(
+      //   `/api/allcartitems/${userInfo.user._id}`
+      // );
+      const data = await fetchcartItems();
 
       console.log(data);
       setCartPrice(data[0].products);
-      setcartitems(data[0].products);
+
       settotalitems(data[0].products.length);
       dispatch({ type: "FETCH_SUCCESS", payload: data });
     } catch (error) {
@@ -154,12 +163,12 @@ const Cart = () => {
 
   return (
     <Box>
-      <Navbar />
+      <NavBar1 />
       {/* {status === "loading" && <CircularProgress sx={{ ml: 1 }} size='16px' />} */}
       <Box
         sx={{
           paddingX: "39px",
-          marginTop: "30px",
+          // marginTop: "30px",
           backgroundColor: "#f4f4f4",
           minHeight: "100vh",
           paddingBottom: "40px",
@@ -240,6 +249,7 @@ const Cart = () => {
                   <CartList
                     key={i}
                     cartid={cart.cartid.cartId}
+                    // cartid={23}
                     id={item.product._id}
                     name={item.product.name}
                     storename={item.product.brand}

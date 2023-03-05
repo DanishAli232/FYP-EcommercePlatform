@@ -44,7 +44,20 @@ const PayButton = ({ cartItems }) => {
 
   return (
     <>
-      <Button onClick={() => handleCheckout()}>Check out</Button>
+      <Button
+        onClick={() => handleCheckout()}
+        sx={{
+          backgroundColor: "#f57224",
+          marginTop: "20px",
+          color: "white",
+          width: "30%",
+          "&:hover": {
+            backgroundColor: "#f57224",
+          },
+        }}
+      >
+        Payment
+      </Button>
     </>
   );
 };

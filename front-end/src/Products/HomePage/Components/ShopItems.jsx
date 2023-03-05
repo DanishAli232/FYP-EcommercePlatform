@@ -1,0 +1,85 @@
+import { Box, Grid, Typography } from "@mui/material";
+import React, { useState } from "react";
+import shirt3 from "../../../Assets/shirt3.jpg";
+
+import { motion } from "framer-motion";
+import {
+  fadeIn,
+  imgVariants,
+  staggerContainer,
+} from "../../../FramerMotion/motion";
+import ShopItemsDes from "./ShopItemsDes";
+
+const productitems = [
+  {
+    img: shirt3,
+    price: "899.99",
+    title: "Checkered Casual Shirt",
+  },
+  {
+    img: shirt3,
+    price: "899.99",
+    title: "Checkered Casual Shirt",
+  },
+  {
+    img: shirt3,
+    price: "899.99",
+    title: "Checkered Casual Shirt",
+  },
+  {
+    img: shirt3,
+    price: "899.99",
+    title: "Checkered Casual Shirt",
+  },
+];
+const ShopItems = () => {
+  return (
+    <motion.div
+      variants={staggerContainer}
+      initial='hidden'
+      whileHover='hover'
+      whileInView='show'
+      viewport={{ once: false, amount: 0.25 }}
+    >
+      <Box sx={{ background: "#fbfbfb", padding: "60px 69px" }}>
+        <motion.div variants={fadeIn("up", "tween", 0.2, 1)}>
+          <Typography
+            variant='h3'
+            sx={{
+              fontSize: "32px",
+              lineHeight: "46px",
+              fontWeight: 700,
+              color: "#3c3c40",
+            }}
+          >
+            Shop With Us
+          </Typography>
+          <Typography
+            vatiant='p'
+            sx={{ fontSize: "18px", lineHeight: "28px", color: "#888" }}
+          >
+            Handpicked Favourites just for you
+          </Typography>
+        </motion.div>
+
+        <Box sx={{ marginTop: "2rem" }}>
+          <Grid
+            container
+            spacing={2}
+            rowSpacing={4}
+            columnSpacing={2}
+            sx={{ marginBottom: "20px" }}
+          >
+            {productitems.map((item) => (
+              <Grid width='100%' item key={item._id} sm={4} md={3} lg={3}>
+                <ShopItemsDes {...item} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Box>
+    </motion.div>
+  );
+};
+
+export default ShopItems;

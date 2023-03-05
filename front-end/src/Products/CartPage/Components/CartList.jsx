@@ -54,7 +54,8 @@ const CartList = ({
 
   useEffect(() => {
     let vl = null;
-    if (wishitems) {
+    console.log(wishitems);
+    if (wishitems.length !== 0) {
       vl = wishitems.find((items, i) => {
         return items.product === id;
       });
@@ -68,23 +69,23 @@ const CartList = ({
 
   const AddtoWishlist = async () => {
     setStatus("loading");
-    if (wish) {
-      try {
-        const { data } = await axios.patch(
-          `/api/deletewishitem?i=${id}&c=${state.cart.wishid.wishId}`
-        );
+    if (state.cart.wishid) {
+      if (wish) {
+        try {
+          const { data } = await axios.patch(
+            `/api/deletewishitem?i=${id}&c=${state.cart.wishid.wishId}`
+          );
 
-        setStatus(null);
-        setOpen(true);
-        setwish(false);
-        setmessage(data.message);
-        setcolor("#757575");
-      } catch (error) {
-        setOpen(true);
-        setmessage(error.message);
-      }
-    } else {
-      if (state.cart.wishid) {
+          setStatus(null);
+          setOpen(true);
+          setwish(false);
+          setmessage(data.message);
+          setcolor("#757575");
+        } catch (error) {
+          setOpen(true);
+          setmessage(error.message);
+        }
+      } else {
         try {
           console.log("yes322");
           const { data } = await axios.patch(
@@ -104,29 +105,49 @@ const CartList = ({
           setStatus(null);
           setmessage(error.message);
         }
-      } else {
-        try {
-          const { data } = await axios.post("/api/addwishitems", {
-            products,
-            _id,
-          });
-          setOpen(true);
-          setStatus(null);
-          setwish(true);
-          setmessage(data.message);
-          setcolor("red");
-          dispatch({
-            type: "WISH_ID",
-            payload: {
-              data,
-            },
-          });
-        } catch (error) {
-          setStatus(null);
-          setmessage(error.message);
-        }
+      }
+    } else {
+      try {
+        const { data } = await axios.post("/api/addwishitems", {
+          products,
+          _id,
+        });
+        setOpen(true);
+        setStatus(null);
+        setwish(true);
+        setmessage(data.message);
+        setcolor("red");
+        dispatch({
+          type: "WISH_ID",
+          payload: {
+            data,
+          },
+        });
+      } catch (error) {
+        setStatus(null);
+        setmessage(error.message);
       }
     }
+    // if (wish) {
+    //   try {
+    //     const { data } = await axios.patch(
+    //       `/api/deletewishitem?i=${id}&c=${state.cart.wishid.wishId}`
+    //     );
+
+    //     setStatus(null);
+    //     setOpen(true);
+    //     setwish(false);
+    //     setmessage(data.message);
+    //     setcolor("#757575");
+    //   } catch (error) {
+    //     setOpen(true);
+    //     setmessage(error.message);
+    //   }
+    // } else {
+    //   if (state.cart.wishid) {
+    //   } else {
+    //   }
+    // }
   };
 
   // const handleClick = (itemid) => {

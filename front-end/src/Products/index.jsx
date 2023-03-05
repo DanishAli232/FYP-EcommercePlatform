@@ -1,7 +1,7 @@
 // import './App.css';
 import { Routes, Route } from "react-router-dom";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useContext } from "react";
 import { LoadingBox } from "../Dashboard/Components";
 import Cart from "./CartPage/Cart";
 import Checkout from "./CheckoutPage/Checkout";
@@ -12,8 +12,14 @@ import SigninInScreen from "../Auth/Login";
 import SignupScreen from "../Auth/Register";
 import CheckoutSuccess from "./PaymentPage/Components/CheckoutSuccess";
 import NotFound from "../Components/NotFound";
+import ConfirmEmail from "../Auth/ConfirmEmail";
+import EmailConfirmation from "../Auth/EmailConfirmation";
+import Home1 from "./HomePage/Home1";
+import { GlobalContext } from "../Context";
 
 const AllDetail = () => {
+  const { dashboardOpen } = useContext(GlobalContext);
+
   return (
     <div className=''>
       <Suspense
@@ -32,7 +38,11 @@ const AllDetail = () => {
           <Route path='/signin' element={<SigninInScreen />} />
           <Route path='/signup' element={<SignupScreen />} />
           <Route path='/checkout-success' element={<CheckoutSuccess />} />
-          <Route path='*' element={<NotFound />} />
+          {/* <Route path='/email/:id/verify/:token' element={<ConfirmEmail />} /> */}
+          <Route path='/confirmemail' element={<ConfirmEmail />} />
+          <Route path='/emailconfirmation' element={<EmailConfirmation />} />
+          <Route path='/home1' element={<Home1 />} />
+          {dashboardOpen === false && <Route path='*' element={<NotFound />} />}
         </Routes>
       </Suspense>
     </div>

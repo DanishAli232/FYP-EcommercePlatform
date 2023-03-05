@@ -3,17 +3,20 @@ import styled from "styled-components";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { sliderItems } from "../../data";
+import { Box, Typography } from "@mui/material";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 
 const Container = styled.div`
-  height: 80vh;
-  width: 100vw;
-  margin-top: 30px;
+  height: 60vh;
+
   overflow: hidden;
   position: relative;
 `;
 const Wrapper = styled.div`
   height: 100%;
-  width: 100%;
+  width: 102%;
   display: flex;
   transition: opacity ease-in-out 0.4s;
   transform: translateX(${(props) => props.slideIndex * -100}vw);
@@ -38,20 +41,26 @@ const InfoContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 const Image = styled.img`
   height: 100%;
   width: 100vw;
 `;
 const Title = styled.h1`
-  font-size: 50px;
+  font-size: 45px;
   color: white;
-  padding-top: 40px;
+  margin: 0px 0px;
 `;
 const Desc = styled.p`
-  margin: 40px 0px;
-  font-size: 22px;
-  letter-spacing: 3px;
+  margin: 10px 0px 30px 0px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
   color: white;
 `;
 const Button = styled.button`
@@ -59,16 +68,21 @@ const Button = styled.button`
   font-size: 20px;
   background-color: #f0353b;
   cursor: pointer;
+  display: flex;
+  letter-spacing: 3px;
+  flex-direction: row;
+  align-items: center;
   color: white;
   border: none;
   border-radius: 5px;
+  &:hover {
+    color: #fff;
+    background-color: #d90429;
+    border-color: #d90429;
+  }
 `;
 
 const Arrow = styled.div`
-  background-color: white;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -93,29 +107,63 @@ export const Slider = () => {
     }
   };
   return (
-    <Container>
-      <Arrow direction='left' onClick={() => Clickhandler("left")}>
-        <ArrowLeftIcon />
-      </Arrow>
+    <Box sx={{ width: "100%" }}>
+      <Container>
+        <Arrow direction='left' onClick={() => Clickhandler("left")}>
+          <KeyboardArrowLeftIcon
+            sx={{
+              color: "white",
+              fontSize: "35px",
+              background: "#00000030",
+              borderRadius: "8px",
+              "&:hover": {
+                background: "#0000009e",
+              },
+            }}
+          />
+        </Arrow>
 
-      <Wrapper slideIndex={slideIndex}>
-        {sliderItems.map((item) => (
-          <Slide key={item.id}>
-            <ImgContainer>
-              <Image src={item.Image} />
-            </ImgContainer>
-            <InfoContainer>
-              <Title>{item.title}</Title>
-              <Desc>{item.Desc}</Desc>
-              <Button>Happy Shopping</Button>
-            </InfoContainer>
-          </Slide>
-        ))}
-      </Wrapper>
-      <Arrow direction='right' onClick={() => Clickhandler("right")}>
-        <ArrowRightIcon />
-      </Arrow>
-    </Container>
+        <Wrapper slideIndex={slideIndex}>
+          {sliderItems.map((item) => (
+            <Slide key={item.id}>
+              <ImgContainer>
+                <Image src={item.Image} />
+              </ImgContainer>
+              <InfoContainer>
+                <Typography
+                  sx={{
+                    color: "#f0353b",
+                    fontWeight: "bold",
+                    fontSize: "21px",
+                  }}
+                >
+                  Up to 60% Off Now
+                </Typography>
+                {/* <Title>{item.title}</Title> */}
+                <Title>Mid Season Sale 70%</Title>
+                <Desc>Final Clearence: Take 20% Off 'Sale must haves'</Desc>
+                <Button>
+                  Start Shopping <ArrowRightAltIcon />
+                </Button>
+              </InfoContainer>
+            </Slide>
+          ))}
+        </Wrapper>
+        <Arrow direction='right' onClick={() => Clickhandler("right")}>
+          <KeyboardArrowRightIcon
+            sx={{
+              color: "white",
+              fontSize: "35px",
+              background: "#00000030",
+              borderRadius: "8px",
+              "&:hover": {
+                background: "#0000009e",
+              },
+            }}
+          />
+        </Arrow>
+      </Container>
+    </Box>
   );
 };
 

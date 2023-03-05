@@ -8,7 +8,9 @@ import AllDetail from "./Products";
 function App() {
   const { dashboardOpen, state } = useContext(GlobalContext);
   const { userInfo } = state;
-  axios.defaults.headers.common["Authorization"] = `Bearer ${userInfo.token}`;
+  if (userInfo) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${userInfo.token}`;
+  }
 
   useEffect(() => {
     console.log(state);

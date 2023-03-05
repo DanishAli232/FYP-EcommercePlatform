@@ -30,6 +30,8 @@ const Address = () => {
   console.log(defaultA);
   useEffect(() => {
     fetchAddresses();
+    console.log(DefaultAddress);
+    console.log(defaultA);
   }, []);
 
   return (
@@ -42,9 +44,72 @@ const Address = () => {
         padding: "13px",
       }}
     >
-      <Typography sx={{ fontSize: "14px", fontWeight: 500, color: "#1a1a1a" }}>
-        Deliver to: {DefaultAddress.fullname}
-      </Typography>
+      {DefaultAddress.length !== 0 && (
+        <Box>
+          <Typography
+            sx={{ fontSize: "14px", fontWeight: 500, color: "#1a1a1a" }}
+          >
+            Deliver to: {DefaultAddress.fullname}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            {" "}
+            <Typography
+              sx={{
+                fontSize: "12px",
+                color: "#007787",
+                padding: "2px 6px",
+                background: "rgba(0,119,135,.08)",
+              }}
+            >
+              {DefaultAddress.labelselect}
+            </Typography>
+            <span
+              style={{
+                height: "19px",
+                margin: "0px 8px",
+                backgroundColor: "#e5e5e5",
+                width: ".5px",
+              }}
+            ></span>
+            <Typography sx={{ fontSize: "12px", color: "#1a1a1a" }}>
+              {DefaultAddress.mobilenumber}
+            </Typography>
+            <span
+              style={{
+                height: "19px",
+                margin: "0px 8px",
+                backgroundColor: "#e5e5e5",
+                width: ".5px",
+              }}
+            ></span>
+            <Typography
+              sx={{
+                fontSize: "12px",
+                color: "#1a1a1a",
+              }}
+            >
+              {`${DefaultAddress.address},${DefaultAddress.city},${DefaultAddress.province}`}
+            </Typography>
+            <Button
+              onClick={() => {
+                setnewAddress(false);
+                setAddressFormOpen(true);
+                setadddress({ ...adddress, addresslist: defaultA });
+              }}
+              sx={{ fontSize: "12px" }}
+            >
+              Change
+            </Button>
+          </Box>
+        </Box>
+      )}
+
       <Box
         sx={{
           display: "flex",
@@ -52,66 +117,35 @@ const Address = () => {
           alignItems: "center",
         }}
       >
-        {" "}
-        <Typography
-          sx={{
-            fontSize: "12px",
-            color: "#007787",
-            padding: "2px 6px",
-            background: "rgba(0,119,135,.08)",
-          }}
-        >
-          {DefaultAddress.labelselect}
-        </Typography>
-        <span
-          style={{
-            height: "19px",
-            margin: "0px 8px",
-            backgroundColor: "#e5e5e5",
-            width: ".5px",
-          }}
-        ></span>
-        <Typography sx={{ fontSize: "12px", color: "#1a1a1a" }}>
-          {DefaultAddress.mobilenumber}
-        </Typography>
-        <span
-          style={{
-            height: "19px",
-            margin: "0px 8px",
-            backgroundColor: "#e5e5e5",
-            width: ".5px",
-          }}
-        ></span>
-        <Typography
-          sx={{
-            fontSize: "12px",
-            color: "#1a1a1a",
-          }}
-        >
-          {`${DefaultAddress.address},${DefaultAddress.city},${DefaultAddress.province}`}
-        </Typography>
-        <Button
-          onClick={() => {
-            setnewAddress(false);
-            setAddressFormOpen(true);
-            setadddress({ ...adddress, addresslist: defaultA });
-          }}
-          sx={{ fontSize: "12px" }}
-        >
-          Change
-        </Button>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <Typography sx={{ fontSize: "12px" }}>Bill To Same Address</Typography>
-        <Button sx={{ fontSize: "12px" }} onClick={openAdressBox}>
-          Edit
-        </Button>
+        {DefaultAddress.length !== 0 ? (
+          <Box
+            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+          >
+            <Typography sx={{ fontSize: "12px" }}>
+              Bill To Same Address
+            </Typography>
+            <Button sx={{ fontSize: "12px" }} onClick={openAdressBox}>
+              Edit
+            </Button>
+          </Box>
+        ) : (
+          <Box
+            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+          >
+            <Typography sx={{ fontSize: "12px" }}>
+              Add your new Address
+            </Typography>
+            <Button
+              sx={{ fontSize: "12px" }}
+              onClick={() => {
+                setnewAddress(true);
+                setAddressFormOpen(true);
+              }}
+            >
+              Edit
+            </Button>
+          </Box>
+        )}
       </Box>
       <Box
         sx={{

@@ -1,3 +1,20 @@
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+
+//   try {
+//     let result = await axios.post("http://localhost:5000/api/login", values, {
+//       "Content-Type": "application/json",
+//     });
+
+//     if (result.status === 200) {
+//       ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
+//       localStorage.setItem("userInfo", JSON.stringify(result.data));
+//       navigate("/");
+//     }
+//   } catch (err) {
+//     setError(err.response.data.errors);
+//   }
+// };
 import { Close } from "@mui/icons-material";
 import {
   Alert,
@@ -8,22 +25,36 @@ import {
   IconButton,
   Snackbar,
   TextField,
+  Tooltip,
+  Typography,
 } from "@mui/material";
-import FacebookLogin from "react-facebook-login";
-import axios from "axios";
-import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import FacebookLogin from "react-facebook-login";
+import laptop from "../Assets/laptop.jpg";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../Context";
+import styled from "styled-components";
 
-function SigninInScreen() {
+function SignupScreen() {
   const navigate = useNavigate();
-  const { dispatch: ctxDispatch } = useContext(GlobalContext);
+
+  const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
+
   const [error, setError] = useState({});
+  const [googledata, setgoogledata] = useState({});
   const [values, setValues] = useState({
     email: "",
     password: "",
+    confirmpassword: "",
+    name: "",
   });
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,56 +84,96 @@ function SigninInScreen() {
     }
   };
 
-  const [user, setUser] = useState([]);
-  const [profile, setProfile] = useState([]);
-
-  const login = useGoogleLogin({
-    onSuccess: (codeResponse) => {
-      console.log(codeResponse);
-      setUser(codeResponse);
-    },
-    onError: (error) => console.log("Login Failed:", error),
-  });
-
   useEffect(() => {
-    if (user) {
+    if (googledata) {
       axios
         .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${googledata.access_token}`,
           {
             headers: {
-              Authorization: `Bearer ${user.access_token}`,
+              Authorization: `Bearer ${googledata.access_token}`,
               Accept: "application/json",
             },
           }
         )
-        .then((res) => {
-          setProfile(res.data);
+        .then(async (res) => {
+          setUser(res.data);
+          let userdata = {
+            email: res.data.email,
+            password: res.data.password,
+            name: res.data.name,
+            platform: "FG",
+          };
+          try {
+            let result = await axios.post(
+              "http://localhost:5000/api/login",
+              userdata,
+              {
+                "Content-Type": "application/json",
+              }
+            );
+
+            if (result.status === 200) {
+              ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
+              localStorage.setItem("userInfo", JSON.stringify(result.data));
+              navigate("/");
+            }
+          } catch (err) {
+            // setError(err.response.data.errors);
+            console.log(err);
+          }
+          console.log(res);
         })
         .catch((err) => console.log(err));
     }
-  }, [user]);
+  }, [googledata]);
 
-  // log out function to log the user out of google and set the profile array to null
+  const [user, setUser] = useState([]);
+
+  const googlelogin = useGoogleLogin({
+    onSuccess: (codeResponse) => {
+      // console.log(codeResponse);
+      setgoogledata(codeResponse);
+    },
+    onError: (error) => console.log("Login Failed:", error),
+  });
+
   const logOut = () => {
     googleLogout();
-    setProfile(null);
+    // setProfile(null);
   };
 
-  const [login1, setLogin] = useState(false);
-  const [data, setData] = useState({});
-  const [picture, setPicture] = useState("");
-
-  const responseFacebook = (response) => {
+  const responseFacebook = async (response) => {
     console.log(response);
-    setData(response);
-    setPicture(response.picture.data.url);
+    setUser(response);
     if (response.accessToken) {
-      setLogin(true);
+      let userdata = {
+        email: response.email,
+        name: response.name,
+        password: response.password,
+      };
+      try {
+        let result = await axios.post(
+          "http://localhost:5000/api/login",
+          userdata,
+          {
+            "Content-Type": "application/json",
+          }
+        );
+
+        if (result.status === 200) {
+          ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
+          localStorage.setItem("userInfo", JSON.stringify(result.data));
+          navigate("/");
+        }
+      } catch (err) {
+        // setError(err.response.data.errors);
+        console.log(err);
+      }
     } else {
-      setLogin(false);
     }
   };
+
   const action = (
     <React.Fragment>
       <IconButton
@@ -115,10 +186,143 @@ function SigninInScreen() {
       </IconButton>
     </React.Fragment>
   );
+  const Logo = styled.h1`
+    color: #f0353b;
+    font-family: Georgia, "Times New Roman", Times, serif;
+  `;
 
   return (
-    <Box height='100%'>
-      <Container
+    <Box minHeight='100%'>
+      <Box sx={{ padding: "0px 41px" }}>
+        <Link to='/'>
+          <Logo>ARSTORE</Logo>
+        </Link>
+      </Box>
+      <Box
+        sx={{
+          backgroundColor: "#ededed",
+          backgroundImage: `url(${laptop})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          height: "auto",
+          padding: "61px 40px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Box
+          sx={{
+            height: "auto",
+            width: "400px",
+            backgroundColor: "white",
+            padding: "20px",
+          }}
+        >
+          <Box sx={{}}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                // alignItems: "center",
+                // justifyContent: "space-between",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "100%",
+                  marginBottom: "20px",
+                }}
+              >
+                <TextField
+                  label='Email'
+                  onChange={handleChange}
+                  value={values.email}
+                  name='email'
+                  helperText={error.email}
+                  error={!!error.email}
+                  variant='standard'
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "100%",
+                  marginBottom: "20px",
+                }}
+              >
+                <TextField
+                  label='Password'
+                  onChange={handleChange}
+                  value={values.password}
+                  helperText={error.password}
+                  error={!!error.password}
+                  name='password'
+                  variant='standard'
+                />
+              </Box>
+
+              <Button
+                onClick={handleSubmit}
+                sx={{
+                  fontSize: "14px",
+                  background: "#f85606",
+                  color: "white",
+                  width: "100%",
+                  "&:hover": {
+                    background: "#f85606",
+                  },
+                }}
+              >
+                Login
+              </Button>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: "16px",
+                }}
+              >
+                <Typography sx={{ fontSize: "14px" }}>SignIn with:</Typography>
+                <FacebookLogin
+                  appId='504485341863215'
+                  autoLoad={true}
+                  fields='name,email,picture'
+                  icon={
+                    <FacebookIcon
+                      sx={{
+                        color: "blue",
+                        margin: "0px 2px -4px 5px",
+                        cursor: "pointer",
+                        fontSize: "40px",
+                      }}
+                    />
+                  }
+                  callback={responseFacebook}
+                  textButton=''
+                  cssClass='facebookBtn'
+                />
+
+                <Tooltip title='Login with Google' arrow>
+                  <GoogleIcon
+                    sx={{ cursor: "pointer", fontSize: "37px" }}
+                    onClick={() => googlelogin()}
+                  />
+                </Tooltip>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* <Container
         component='form'
         onSubmit={handleSubmit}
         sx={{ height: "100%" }}
@@ -131,6 +335,18 @@ function SigninInScreen() {
           direction='column'
           spacing={3}
         >
+          <Grid item>
+            <TextField
+              label='Name'
+              onChange={handleChange}
+              value={values.name}
+              name='name'
+              helperText={error.name}
+              error={!!error.name}
+              variant='filled'
+            />
+          </Grid>
+
           <Grid item>
             <TextField
               label='Email'
@@ -156,50 +372,23 @@ function SigninInScreen() {
           </Grid>
 
           <Grid item>
+            <TextField
+              label='ConfirmPassword'
+              onChange={handleChange}
+              value={values.confirmpassword}
+              helperText={error.confirmpassword}
+              error={!!error.confirmpassword}
+              name='confirmpassword'
+              variant='filled'
+            />
+          </Grid>
+
+          <Grid item>
             <Button type='submit' variant='outlined'>
-              Login
+              Register
             </Button>
           </Grid>
         </Grid>
-
-        <h2>React Google Login</h2>
-        <br />
-        <br />
-        {profile ? (
-          <div>
-            {/* <img src={profile.picture} alt='user image' /> */}
-            <h3>User Logged in</h3>
-            <p>Name: {profile.name}</p>
-            <p>Email Address: {profile.email}</p>
-            <br />
-            <br />
-            <button onClick={logOut}>Log out</button>
-          </div>
-        ) : (
-          <button onClick={() => login()}>Sign in with Google 🚀 </button>
-        )}
-
-        <h2>Facebook Login</h2>
-        {!login1 && (
-          <FacebookLogin
-            sx={{ width: "100px" }}
-            appId='504485341863215'
-            autoLoad={true}
-            fields='name,email,picture'
-            // scope='public_profile,user_friends'
-            callback={responseFacebook}
-            icon='fa-facebook'
-            cssClass='facebookBtn'
-          />
-        )}
-        {login1 && <img src={picture} alt='' />}
-
-        {login1 && (
-          <div>
-            <p>{data.name}</p>
-            <p>{data.email}</p>
-          </div>
-        )}
 
         <Snackbar
           open={!!error.message}
@@ -220,9 +409,9 @@ function SigninInScreen() {
             {error.message}
           </Alert>
         </Snackbar>
-      </Container>
+      </Container> */}
     </Box>
   );
 }
 
-export default SigninInScreen;
+export default SignupScreen;

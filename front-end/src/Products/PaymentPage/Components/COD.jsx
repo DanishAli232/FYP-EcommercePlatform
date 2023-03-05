@@ -8,7 +8,7 @@ const COD = () => {
   const { state, allprice, DefaultAddress, cartitems } =
     useContext(GlobalContext);
   const [cartDetails, setcartDetails] = useState([]);
-  const [status, setstatus] = useState(true);
+  const [status, setstatus] = useState(false);
   const { userInfo } = state;
 
   useEffect(() => {

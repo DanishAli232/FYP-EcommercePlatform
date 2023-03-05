@@ -92,9 +92,9 @@ const AddressList = ({
         marginTop: "20px",
         display: "flex",
         flexDirection: "column",
-        boxShadow: isDefault ? "2px 1px 5px 0px #007787" : "",
+        boxShadow: isDefault ? "2px 1px 5px 0px #00778785" : "",
         "&:hover": {
-          boxShadow: "2px 1px 5px 0px #007787",
+          boxShadow: "2px 1px 5px 0px #00778785",
         },
         cursor: "pointer",
       }}
