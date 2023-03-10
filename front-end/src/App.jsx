@@ -1,9 +1,42 @@
 import axios from "axios";
-import React, { useContext, useEffect } from "react";
-import { GlobalContext } from "./Context";
+import React, { Suspense, useContext, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 
-import DashboardScreen from "./Dashboard/DashboardScreen";
-import AllDetail from "./Products";
+// import ConfirmEmail from "./Auth/ConfirmEmail";
+// import EmailConfirmation from "./Auth/EmailConfirmation";
+// import SignupScreen from "./Auth/Login";
+import LoadingBox from "./Components/LoadingBox";
+import NotFound from "./Components/NotFound";
+import { GlobalContext } from "./Context";
+import { Sidebar } from "./Dashboard/Components";
+
+const Home1 = React.lazy(() => import("./Products/HomePage/Home1"));
+const SignupScreen = React.lazy(() => import("./Auth/Register"));
+const SigninScreen = React.lazy(() => import("./Auth/Login"));
+const ConfirmEmail = React.lazy(() => import("./Auth/ConfirmEmail"));
+const EmailConfirmation = React.lazy(() => import("./Auth/EmailConfirmation"));
+const Dashboard = React.lazy(() => import("./Dashboard/Pages/Dashboard"));
+const Payment = React.lazy(() => import("./Products/PaymentPage/Payment"));
+const Addproducts = React.lazy(() => import("./Dashboard/Pages/AddProducts"));
+const Cart = React.lazy(() => import("./Products/CartPage/Cart"));
+const Checkout = React.lazy(() => import("./Products/CheckoutPage/Checkout"));
+const CheckoutSuccess = React.lazy(() =>
+  import("./Products/PaymentPage/Components/CheckoutSuccess")
+);
+const ProductDetail = React.lazy(() =>
+  import("./Products/ProductDetail/Components/Screen")
+);
+const ProductsPage = React.lazy(() =>
+  import("./Products/ProductsPage/ProductsPage")
+);
+const AllUsers = React.lazy(() => import("./Dashboard/Pages/AllUsers"));
+const Stores = React.lazy(() => import("./Dashboard/Pages/Stores"));
+const ViewAccount = React.lazy(() => import("./Dashboard/Pages/ViewAccount"));
+const AllVendors = React.lazy(() => import("./Dashboard/Pages/AllVendors"));
+const AllProducts = React.lazy(() => import("./Dashboard/Pages/AllProducts"));
+const Updateproduct = React.lazy(() =>
+  import("./Dashboard/Pages/Updateproduct")
+);
 
 function App() {
   const { dashboardOpen, state } = useContext(GlobalContext);
@@ -17,8 +50,41 @@ function App() {
   }, [state]);
   return (
     <div className='App'>
-      <AllDetail />
-      {dashboardOpen && <DashboardScreen />}
+      <Suspense
+        fallback={
+          <div>
+            <LoadingBox />
+          </div>
+        }
+      >
+        {dashboardOpen && <Sidebar />}
+
+        <Routes>
+          <Route path='/' element={<Home1 />} />
+          <Route path='/productdetail/:id' element={<ProductDetail />} />
+          <Route path='/cartpage' element={<Cart />} />
+          <Route path='/checkout' element={<Checkout />} />
+          <Route path='/payment' element={<Payment />} />
+          <Route path='/signin' element={<SigninScreen />} />
+          <Route path='/signup' element={<SignupScreen />} />
+          <Route path='/checkout-success' element={<CheckoutSuccess />} />
+          {/* <Route path='/email/:id/verify/:token' element={<ConfirmEmail />} /> */}
+          <Route path='/confirmemail' element={<ConfirmEmail />} />
+          <Route path='/emailconfirmation' element={<EmailConfirmation />} />
+          <Route path='/products' element={<ProductsPage />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/allusers' element={<AllUsers />} />
+          <Route path='/stores' element={<Stores />} />
+          <Route path='/viewaccount' element={<ViewAccount />} />
+          <Route path='/addproduct' element={<Addproducts />} />
+          <Route path='/allvendors' element={<AllVendors />} />
+          <Route path='/allproducts' element={<AllProducts />} />
+          <Route path='/updateproduct/:id' element={<Updateproduct />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+      </Suspense>
+      {/* <AllDetail />
+      <DashboardScreen /> */}
     </div>
   );
 }

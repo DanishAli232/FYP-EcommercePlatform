@@ -39,7 +39,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../Context";
 import styled from "styled-components";
 
-function SignupScreen() {
+function SigninScreen() {
   const navigate = useNavigate();
 
   const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
@@ -414,4 +414,4 @@ function SignupScreen() {
   );
 }
 
-export default SignupScreen;
+export default SigninScreen;

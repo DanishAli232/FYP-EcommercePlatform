@@ -71,6 +71,7 @@ const DiscountsProducts = () => {
               {product.map((item) => (
                 <Grid width='100%' item key={item._id} sm={4} md={3} lg={2}>
                   <img
+                    onClick={() => handleClicker(item)}
                     src={img1}
                     alt=''
                     style={{

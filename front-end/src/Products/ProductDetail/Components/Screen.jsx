@@ -19,6 +19,7 @@ import BrowserNotSupportedIcon from "@mui/icons-material/BrowserNotSupported";
 import ProductSlider from "./ProductSlider";
 import Quantity from "../../../Components/Quantity";
 import axios from "axios";
+import NavBar1 from "../../../Components/NavBar1";
 
 const ProductDetail = () => {
   const [quantity, setquantity] = useState(1);
@@ -146,7 +147,7 @@ const ProductDetail = () => {
 
   return (
     <Box sx={{}}>
-      <Navbar />
+      <NavBar1 />
       <Grid
         container
         sx={{ display: "flex", justifyContent: "center", marginTop: "30px" }}

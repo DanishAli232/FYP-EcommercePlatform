@@ -2,9 +2,12 @@ import {
   Box,
   Button,
   CircularProgress,
+  FormControl,
   Grid,
   Input,
   InputAdornment,
+  MenuItem,
+  Select,
   Snackbar,
   TextareaAutosize,
   TextField,
@@ -13,7 +16,7 @@ import {
 import axios from "axios";
 
 import React, { useEffect, useState } from "react";
-import { Navbar } from "../Components";
+import { Navbar, Sidebar } from "../Components";
 import MuiAlert from "@mui/material/Alert";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -24,6 +27,7 @@ const Addproducts = () => {
   const [open, setOpen] = React.useState(false);
   const [alertMsg, newalertMsg] = useState("");
   const [severity, newseverity] = useState("");
+  const [category, setCategory] = React.useState("");
   const [status, setStatus] = useState(null);
   const [error, seterror] = useState({});
   const [values, setValues] = useState({
@@ -88,6 +92,11 @@ const Addproducts = () => {
       newseverity("error");
       seterror(err.response.data.errors);
     }
+  };
+
+  const handleChange2 = (event) => {
+    setCategory(event.target.value);
+    setValues({ ...values, category: event.target.value });
   };
 
   useEffect(() => {
@@ -196,7 +205,29 @@ const Addproducts = () => {
                   className='create-2 a'
                   sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
                 >
-                  <TextField
+                  <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <Select
+                      sx={{
+                        width: "399px",
+                        color: "#888",
+                        // background: "#f7f6f6",
+                        cursor: "pointer",
+                        height: "50px",
+                        marginLeft: "-7px",
+                        outline: "none",
+                      }}
+                      value={category}
+                      onChange={handleChange2}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                    >
+                      <MenuItem value=''>Select Category</MenuItem>
+
+                      <MenuItem value={"shoes"}>Shoes</MenuItem>
+                      <MenuItem value={"shirts"}>Shirts</MenuItem>
+                    </Select>
+                  </FormControl>
+                  {/* <TextField
                     id='outlined-required'
                     label='Category'
                     value={values.category}
@@ -206,7 +237,7 @@ const Addproducts = () => {
                     helperText={error.category}
                     error={!!error.category}
                     sx={{ width: { md: "400px", xs: "100%" } }}
-                  />
+                  /> */}
                 </Box>
                 <br></br>{" "}
                 <Box

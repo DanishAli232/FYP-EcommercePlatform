@@ -3,6 +3,7 @@ import {
   addproduct,
   allproduct,
   deleteproduct,
+  filterProducts,
   findOneproduct,
   getallproducts,
   getproducts,
@@ -55,5 +56,6 @@ ProductRouter.post(
 ProductRouter.patch("/updateproduct", updateproduct);
 ProductRouter.get("/findOneproduct/:id", findOneproduct);
 ProductRouter.get("/allproduct", allproduct);
+ProductRouter.post("/filterproducts", filterProducts);
 
 export default ProductRouter;

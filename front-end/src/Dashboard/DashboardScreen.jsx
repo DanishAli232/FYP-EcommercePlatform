@@ -22,7 +22,6 @@ const DashboardScreen = () => {
           </div>
         }
       >
-        <Sidebar />
         <Routes>
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/allusers' element={<AllUsers />} />

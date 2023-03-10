@@ -40,3 +40,16 @@ a {
   border: none;
   color: blue;
 }
+
+.liststyle {
+  padding: 10px 0px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b2d42;
+  white-space: nowrap;
+  transition: 0.3s;
+  position: relative;
+  text-transform: uppercase;
+  list-style-type: none;
+  margin-right: 20px;
+}

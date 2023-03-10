@@ -16,6 +16,7 @@ import ConfirmEmail from "../Auth/ConfirmEmail";
 import EmailConfirmation from "../Auth/EmailConfirmation";
 import Home1 from "./HomePage/Home1";
 import { GlobalContext } from "../Context";
+import ProductsPage from "./ProductsPage/ProductsPage";
 
 const AllDetail = () => {
   const { dashboardOpen } = useContext(GlobalContext);
@@ -30,7 +31,7 @@ const AllDetail = () => {
         }
       >
         <Routes>
-          <Route path='/' element={<Home />} />
+          <Route path='/' element={<Home1 />} />
           <Route path='/productdetail/:id' element={<ProductDetail />} />
           <Route path='/cartpage' element={<Cart />} />
           <Route path='/checkout' element={<Checkout />} />
@@ -41,7 +42,8 @@ const AllDetail = () => {
           {/* <Route path='/email/:id/verify/:token' element={<ConfirmEmail />} /> */}
           <Route path='/confirmemail' element={<ConfirmEmail />} />
           <Route path='/emailconfirmation' element={<EmailConfirmation />} />
-          <Route path='/home1' element={<Home1 />} />
+          {/* <Route path='/home1' element={<Home1 />} /> */}
+          <Route path='/products' element={<ProductsPage />} />
           {dashboardOpen === false && <Route path='*' element={<NotFound />} />}
         </Routes>
       </Suspense>

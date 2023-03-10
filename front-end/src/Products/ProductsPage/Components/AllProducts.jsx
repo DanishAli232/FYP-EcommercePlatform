@@ -9,20 +9,12 @@ import {
   pVariants,
   staggerContainer,
 } from "../../../FramerMotion/motion";
-import { useNavigate } from "react-router-dom";
 
-const ShopItemsDes = ({ title, price, img }) => {
-  const navigate = useNavigate();
+const AllProducts = ({ title, price, img }) => {
   const [display1, setdisplay1] = useState("none");
   const [open, setopen] = useState(false);
 
-  useEffect(() => {
-    console.log(open);
-  }, [open]);
-
-  const handleClicker = (item) => {
-    navigate(`/productdetail/${item.Desc}`, { state: item });
-  };
+  useEffect(() => {}, [open]);
 
   return (
     <motion.div
@@ -32,7 +24,7 @@ const ShopItemsDes = ({ title, price, img }) => {
       whileHover='hover'
       viewport={{ once: false, amount: 0.25 }}
     >
-      <Box onClick={() => handleClicker({ title, price, img })}>
+      <Box>
         <Box
           sx={{ display: "flex", position: "relative" }}
           onMouseEnter={() => {
@@ -200,4 +192,4 @@ const ShopItemsDes = ({ title, price, img }) => {
   );
 };
 
-export default ShopItemsDes;
+export default AllProducts;

@@ -7,19 +7,23 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 const Container = styled.div`
   height: 80vh;
-  width: 100vw;
+  width: 100%;
   background-color: black;
+  padding: 60px 69px;
 `;
 const Wrapper = styled.div`
   display: flex;
   margin-left: 30px;
 `;
-const Title = styled.h1`
-  color: white;
-  font-size: 50px;
-  text-align: left;
-  padding-left: 30px;
-  padding-top: 40px;
+const Title = styled.h2`
+font-size: 40px;
+color: #fff;
+text-transform: capitalize;
+font-weight: 700;
+margin-bottom: 15px;
+display: block;
+line-height: 50px;
+}
 `;
 const Links = styled.div`
   padding-left: 10px;
@@ -70,7 +74,7 @@ const PUlList = styled.ul`
 `;
 const CompFooter = styled.div`
   height: 20vh;
-  width: 100vw;
+  width: 100%;
   background-color: black;
   justify-content: flex-start;
   align-content: center;
@@ -97,7 +101,9 @@ const PaymentImage = styled.img`
 const Footer = () => {
   return (
     <Container>
-      <Title>All You Need Here</Title>
+      <Title>
+        Special Offer All Branded Sandals Are <br /> Flat 50% Discount
+      </Title>
       <Wrapper>
         <Links>
           <UlList>

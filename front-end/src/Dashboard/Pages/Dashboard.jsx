@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { Navbar } from "../Components";
+import { Navbar, Sidebar } from "../Components";
 import FeedIcon from "@mui/icons-material/Feed";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import PeopleIcon from "@mui/icons-material/People";
@@ -48,7 +48,9 @@ const Dashboard = () => {
       {open1 && <Alerts />}
       {/* <Alerts /> */}
       <Grid container>
-        <Grid item md={2}></Grid>
+        <Grid item md={2}>
+          {" "}
+        </Grid>
         <Grid item md={10}>
           <Navbar />
           <Box sx={{ marginTop: "89px" }}>

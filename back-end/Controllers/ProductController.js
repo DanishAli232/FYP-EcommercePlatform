@@ -98,6 +98,10 @@ export const allproduct = async (req, res) => {
 export const addproduct = async (req, res) => {
   console.log(req.body);
   console.log(req.file);
+  const protocol = req.protocol;
+  const host = req.hostname;
+  const port = process.env.PORT || 5000;
+  let avatarUrl = `${protocol}://${host}:${port}/uploads/`;
   // console.log(req.body.featured);
   // // console.log(req.file);
   const { isValid, errors, values } = validateProductInput({
@@ -120,7 +124,7 @@ export const addproduct = async (req, res) => {
     const product = await Product.create({
       ...req.body,
       vendor: "63adaf89297e1cdd753232d7",
-      image: req.file.filename,
+      image: avatarUrl + req.file.filename,
       rating: 2,
       numReviews: 20,
     });
@@ -137,5 +141,42 @@ export const addproduct = async (req, res) => {
     return res.status(201).json({ product });
   } catch (err) {
     return res.status(500).send({ errors: { message: err.message } });
+  }
+};
+
+export const filterProducts = async (req, res) => {
+  console.log(req.body);
+  let values = req.body;
+  if (values.limit === 1) {
+    values.limit = 0;
+  } else {
+    values.limit = (values.limit - 1) * 9;
+    console.log(values.limit);
+  }
+  let sortprice = {};
+  if (values.sorting === "") {
+    sortprice = {};
+  } else if (values.sorting === "lowtohigh") {
+    sortprice = { price: 1 };
+  } else if (values.sorting === "hightolow") {
+    sortprice = { price: -1 };
+  }
+
+  const product = await Product.find({
+    $and: [
+      { category: "Shoes" },
+      { price: { $gte: 0, $lte: 600 } },
+      { rating: 2 },
+    ],
+  })
+    .skip(0)
+    .limit(9)
+    .sort(sortprice);
+
+  console.log(product.length);
+  res.send("pak");
+  if (product) {
+  } else {
+    res.status(404).send({ message: "Product Not Found" });
   }
 };
