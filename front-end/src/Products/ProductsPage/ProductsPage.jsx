@@ -10,7 +10,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NavBar1 from "../../Components/NavBar1";
 // import img1 from "../Assets/watch2.jpg";
 import styled from "styled-components";
@@ -23,6 +23,7 @@ import Footer1 from "../../Components/Footer1";
 import RatingValue from "./Components/RatingValue";
 import axios from "axios";
 import LoadingBox from "../../Components/LoadingBox";
+import { GlobalContext } from "../../Context";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -88,6 +89,10 @@ function valuetext(value) {
 const minDistance = 10;
 
 const ProductsPage = () => {
+  const { setdashboardOpen } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   const [value1, setValue1] = React.useState([1500, 6000]);
   const [sorting, setSorting] = React.useState("");
   const [status, setstatus] = useState(false);

@@ -6,7 +6,6 @@ import { LoadingBox } from "../Dashboard/Components";
 import Cart from "./CartPage/Cart";
 import Checkout from "./CheckoutPage/Checkout";
 import Payment from "./PaymentPage/Payment";
-import Home from "./HomePage/Home";
 import ProductDetail from "./ProductDetail/Components/Screen";
 import SigninInScreen from "../Auth/Login";
 import SignupScreen from "../Auth/Register";

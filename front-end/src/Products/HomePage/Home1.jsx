@@ -1,8 +1,9 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 // import Footer from "../../Components/Footer";
 import Footer1 from "../../Components/Footer1";
 import NavBar1 from "../../Components/NavBar1";
+import { GlobalContext } from "../../Context";
 // import Deals from "./Components/Deals";
 import DealsProducts from "./Components/DealsProducts";
 import DiscountsProducts from "./Components/DiscountsProduct";
@@ -14,6 +15,10 @@ import Slider from "./Components/Slider";
 import Vendors from "./Components/Vendors";
 
 const Home1 = () => {
+  const { setdashboardOpen } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   return (
     <Box>
       <NavBar1 />

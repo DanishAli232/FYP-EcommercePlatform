@@ -230,11 +230,14 @@ export const login = async (req, res) => {
   if (req.body.platform) {
     try {
       const user = await User1.findOne({ email: values.email });
+      console.log(user);
       let token;
+      let newUser;
       if (!user) {
+        console.log("yess1");
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(values.email, salt);
-        const newUser = await User1.create({
+        newUser = await User1.create({
           email: values.email,
           name: values.name,
           password: hashedPassword,
@@ -244,9 +247,10 @@ export const login = async (req, res) => {
         token = generateToken(newUser);
         return res.json({ user: { ...newUser._doc, password: null }, token });
       } else {
-        token = generateToken(newUser);
+        console.log("yess2");
+        token = generateToken(user);
       }
-
+      console.log("yesss3");
       if (!token) {
         return res
           .status(500)
@@ -255,6 +259,7 @@ export const login = async (req, res) => {
 
       return res.json({ user: { ...user._doc, password: null }, token });
     } catch (error) {
+      console.log(error);
       return res.status(500).send({ errors: { message: error.message } });
     }
   } else {

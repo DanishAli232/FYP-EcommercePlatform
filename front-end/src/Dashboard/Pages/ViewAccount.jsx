@@ -1,9 +1,14 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Navbar } from "../Components";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { GlobalContext } from "../../Context";
 
 const ViewAccount = () => {
+  const { setdashboardOpen } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(true);
+  }, []);
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
       <Grid container>

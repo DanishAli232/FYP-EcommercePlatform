@@ -74,6 +74,7 @@ const Button1 = styled.button`
   color: white;
   font-size: 21px;
   font-weight: 500;
+  transition: 0.5s ease-in;
   width: 198px;
   margin: 9px 20px;
   padding: 15px 30px;

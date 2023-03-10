@@ -27,6 +27,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import MuiAlert from "@mui/material/Alert";
 import { DashboardGlobalContext } from "../Context/DashboardContext";
+import { GlobalContext } from "../../Context";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -57,6 +58,10 @@ const AllProducts = () => {
   const [status, setStatus] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [searchVal, newSearchVal] = useState("");
+  const { setdashboardOpen } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(true);
+  }, []);
 
   const ExpandableCell = ({ value }) => {
     const [expanded, setExpanded] = React.useState(false);

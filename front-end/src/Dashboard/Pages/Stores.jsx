@@ -10,7 +10,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingBox, Navbar } from "../Components";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -25,6 +25,7 @@ import {
   GridRenderCellParams,
 } from "@mui/x-data-grid";
 import SearchIcon from "@mui/icons-material/Search";
+import { GlobalContext } from "../../Context";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -53,6 +54,10 @@ const Stores = () => {
   const [status, setStatus] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [searchVal, newSearchVal] = useState("");
+  const { setdashboardOpen } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(true);
+  }, []);
 
   const ExpandableCell = ({ value }) => {
     const [expanded, setExpanded] = React.useState(false);

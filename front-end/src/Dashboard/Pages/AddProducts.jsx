@@ -15,15 +15,20 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navbar, Sidebar } from "../Components";
 import MuiAlert from "@mui/material/Alert";
+import { GlobalContext } from "../../Context";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
 const Addproducts = () => {
+  const { setdashboardOpen } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(true);
+  }, []);
   const [open, setOpen] = React.useState(false);
   const [alertMsg, newalertMsg] = useState("");
   const [severity, newseverity] = useState("");

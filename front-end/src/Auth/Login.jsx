@@ -38,6 +38,9 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../Context";
 import styled from "styled-components";
+import NavBar1 from "../Components/NavBar1";
+import Navbar2 from "../Components/Navbar2";
+import Footer1 from "../Components/Footer1";
 
 function SigninScreen() {
   const navigate = useNavigate();
@@ -151,15 +154,12 @@ function SigninScreen() {
         email: response.email,
         name: response.name,
         password: response.password,
+        platform: "FG",
       };
       try {
-        let result = await axios.post(
-          "http://localhost:5000/api/login",
-          userdata,
-          {
-            "Content-Type": "application/json",
-          }
-        );
+        let result = await axios.post("/api/login", userdata, {
+          "Content-Type": "application/json",
+        });
 
         if (result.status === 200) {
           ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
@@ -191,27 +191,40 @@ function SigninScreen() {
     font-family: Georgia, "Times New Roman", Times, serif;
   `;
 
+  const Title = styled.h2`
+    color: #2b2d42;
+    font-size: 25px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 2px;
+  `;
+
+  const Title1 = styled.p`
+  font-size: 15px;
+    color: #888;    
+    text-transform: none;
+    letter-spacing: 1px;
+}
+`;
+
   return (
-    <Box minHeight='100%'>
-      <Box sx={{ padding: "0px 41px" }}>
-        <Link to='/'>
-          <Logo>ARSTORE</Logo>
-        </Link>
-      </Box>
+    <Box>
+      <NavBar1 />
+      <Navbar2 title={"Login"} title1={"Home"} />
+
       <Box
         sx={{
-          backgroundColor: "#ededed",
-          backgroundImage: `url(${laptop})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
+          // backgroundColor: "#ededed",
+          // backgroundImage: `url(${laptop})`,
           height: "auto",
           padding: "61px 40px",
           display: "flex",
           alignItems: "center",
+          flexDirection: "column",
           justifyContent: "center",
         }}
       >
+        <Title>Login To Your Account</Title>
         <Box
           sx={{
             height: "auto",
@@ -266,31 +279,69 @@ function SigninScreen() {
                   variant='standard'
                 />
               </Box>
-
-              <Button
-                onClick={handleSubmit}
+              <Box
                 sx={{
-                  fontSize: "14px",
-                  background: "#f85606",
-                  color: "white",
-                  width: "100%",
-                  "&:hover": {
-                    background: "#f85606",
-                  },
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "baseline",
+                  marginTop: "-16px",
                 }}
               >
-                Login
-              </Button>
+                <Title1>Forgot Password?</Title1>
+                <Link>
+                  <Typography
+                    sx={{
+                      color: "#2b2d42",
+                      fontWeight: 600,
+                      fontSize: "15px",
+                      marginLeft: "5px",
+                      textDecoration: "none",
+                      "&:hover": {
+                        color: "#d90429",
+                      },
+                    }}
+                  >
+                    {" "}
+                    Click Here
+                  </Typography>
+                </Link>
+              </Box>
+              <Box sx={{ textAlign: "center" }}>
+                <Button
+                  onClick={handleSubmit}
+                  sx={{
+                    fontSize: "16px",
+                    padding: "13px",
+                    lineHeight: "16px",
+                    fontWeight: 600,
+                    transition: "0.3s ease-in",
+                    textTransform: "capitalize",
+                    marginTop: "13px",
+                    background: "#ef233c",
+                    color: "white",
+                    width: "100%",
+                    borderRadius: "4px",
+                    border: "1px solid transparent",
+                    "&:hover": {
+                      color: "#fff",
+                      backgroundColor: "#d90429",
+                      borderColor: "#d90429",
+                    },
+                  }}
+                >
+                  Login Now
+                </Button>
+              </Box>
 
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
-                  marginTop: "16px",
+                  marginTop: "20px",
                 }}
               >
-                <Typography sx={{ fontSize: "14px" }}>SignIn with:</Typography>
+                <Title1>SignIn with:</Title1>
                 <FacebookLogin
                   appId='504485341863215'
                   autoLoad={true}
@@ -298,7 +349,7 @@ function SigninScreen() {
                   icon={
                     <FacebookIcon
                       sx={{
-                        color: "blue",
+                        // color: "blue",
                         margin: "0px 2px -4px 5px",
                         cursor: "pointer",
                         fontSize: "40px",
@@ -321,95 +372,7 @@ function SigninScreen() {
           </Box>
         </Box>
       </Box>
-
-      {/* <Container
-        component='form'
-        onSubmit={handleSubmit}
-        sx={{ height: "100%" }}
-      >
-        <Grid
-          container
-          height='100%'
-          justifyContent='center'
-          alignItems='center'
-          direction='column'
-          spacing={3}
-        >
-          <Grid item>
-            <TextField
-              label='Name'
-              onChange={handleChange}
-              value={values.name}
-              name='name'
-              helperText={error.name}
-              error={!!error.name}
-              variant='filled'
-            />
-          </Grid>
-
-          <Grid item>
-            <TextField
-              label='Email'
-              onChange={handleChange}
-              value={values.email}
-              name='email'
-              helperText={error.email}
-              error={!!error.email}
-              variant='filled'
-            />
-          </Grid>
-
-          <Grid item>
-            <TextField
-              label='Password'
-              onChange={handleChange}
-              value={values.password}
-              helperText={error.password}
-              error={!!error.password}
-              name='password'
-              variant='filled'
-            />
-          </Grid>
-
-          <Grid item>
-            <TextField
-              label='ConfirmPassword'
-              onChange={handleChange}
-              value={values.confirmpassword}
-              helperText={error.confirmpassword}
-              error={!!error.confirmpassword}
-              name='confirmpassword'
-              variant='filled'
-            />
-          </Grid>
-
-          <Grid item>
-            <Button type='submit' variant='outlined'>
-              Register
-            </Button>
-          </Grid>
-        </Grid>
-
-        <Snackbar
-          open={!!error.message}
-          message={error.message}
-          autoHideDuration={5000}
-          onClose={clearError}
-          action={action}
-        >
-          <Alert
-            onClose={clearError}
-            severity='error'
-            sx={{
-              width: "100%",
-              backgroundColor: "#f8d7da",
-              color: "#842029",
-            }}
-          >
-            {error.message}
-          </Alert>
-        </Snackbar>
-      </Container> */}
+      <Footer1 />
     </Box>
   );
 }

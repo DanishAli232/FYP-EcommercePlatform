@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { listVariants } from "../FramerMotion/motion";
 
 const NavList = ({ title, width, link, active, listClick }) => {

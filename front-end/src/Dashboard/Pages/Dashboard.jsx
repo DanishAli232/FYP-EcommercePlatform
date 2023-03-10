@@ -8,6 +8,7 @@ import Person4Icon from "@mui/icons-material/Person4";
 import axios from "axios";
 import { DashboardGlobalContext } from "../Context/DashboardContext";
 import Alerts from "../Components/Alert";
+import { GlobalContext } from "../../Context";
 
 const Dashboard = () => {
   const { statuscheck, open1 } = useContext(DashboardGlobalContext);
@@ -19,6 +20,10 @@ const Dashboard = () => {
   const [admins, newadmin] = useState(0);
   const [vendors, newvendors] = useState(0);
   const [products, newproducts] = useState(0);
+  const { setdashboardOpen } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(true);
+  }, []);
 
   // const [break1, newbreak1] = useState(true);
 
