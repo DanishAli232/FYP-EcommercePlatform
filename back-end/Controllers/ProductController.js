@@ -57,7 +57,7 @@ export const getproducts = async (req, res) => {
     return res.status(500).json({ error: { message: err.message } });
   }
 };
-
+` `;
 export const updateproduct = async (req, res) => {
   console.log(req.body.featured);
   try {
@@ -100,6 +100,7 @@ export const addproduct = async (req, res) => {
   console.log(req.file);
   const protocol = req.protocol;
   const host = req.hostname;
+
   const port = process.env.PORT || 5000;
   let avatarUrl = `${protocol}://${host}:${port}/uploads/`;
   // console.log(req.body.featured);
@@ -114,7 +115,7 @@ export const addproduct = async (req, res) => {
     }
 
     // const user = await User.findById(req.authUser.id);
-    const vendor = await Vendor.findById({ _id: "63adaf89297e1cdd753232d7" });
+    const vendor = await Vendor.findById({ _id: req.params.uid });
 
     // 63adaf89297e1cdd753232d7
     if (!vendor) {
@@ -123,7 +124,7 @@ export const addproduct = async (req, res) => {
 
     const product = await Product.create({
       ...req.body,
-      vendor: "63adaf89297e1cdd753232d7",
+      vendor: req.params.uid,
       image: avatarUrl + req.file.filename,
       rating: 2,
       numReviews: 20,
@@ -178,5 +179,58 @@ export const filterProducts = async (req, res) => {
   if (product) {
   } else {
     res.status(404).send({ message: "Product Not Found" });
+  }
+};
+
+export const addComments = async (req, res) => {
+  console.log(req.body);
+  let id = req.body.productid;
+  try {
+    const findProduct = await Product.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          comments: {
+            userid: req.body.user,
+            username: req.body.username,
+            comment: req.body.comment,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    ).exec();
+    console.log(findProduct);
+    res.send({ message: "your Comment Successfully Submit" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const allComments = async (req, res) => {
+  let id = req.params.id;
+  try {
+    const findProduct = await Product.findById(id).select("comments");
+    res.send(findProduct);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteComments = async (req, res) => {
+  let pid = req.params.pid;
+  let cid = req.params.cid;
+
+  console.log(cid);
+  try {
+    const data = await Product.updateOne(
+      { _id: pid },
+      { $pull: { comments: { _id: cid } } },
+      { new: true }
+    ).exec();
+    res.send({ message: "Comment Deleted" });
+  } catch (error) {
+    console.log(error);
   }
 };

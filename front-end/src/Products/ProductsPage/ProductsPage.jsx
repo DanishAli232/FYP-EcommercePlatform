@@ -247,12 +247,12 @@ const ProductsPage = () => {
     <Box>
       <NavBar1 />
       <Navbar2 title={"Products"} title1={"Home"} />
-      <Box sx={{ padding: "60px 69px" }}>
+      <Box sx={{ padding: "40px 13px" }}>
         <Grid container spacing={4} rowSpacing={4}>
-          <Grid item md={4}>
+          <Grid item md={4} sx={{ width: { md: "auto", xs: "100%" } }}>
             <Box
               sx={{
-                padding: "30px",
+                padding: { md: "30px", xs: "19px 19px" },
                 paddingTop: "1px",
                 background: "#f7f6f6",
                 borderRadius: "4px",
@@ -413,7 +413,7 @@ const ProductsPage = () => {
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                   <Select
                     sx={{
-                      width: "300px",
+                      width: { md: "300px", xs: "auto" },
                       color: "#888",
                       background: "#f7f6f6",
                       cursor: "pointer",
@@ -454,7 +454,7 @@ const ProductsPage = () => {
                         width='100%'
                         item
                         key={item._id}
-                        sm={6}
+                        xs={6}
                         md={4}
                         lg={4}
                       >

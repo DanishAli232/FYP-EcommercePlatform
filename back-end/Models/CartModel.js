@@ -79,7 +79,7 @@ const CartSchema = new mongoose.Schema(
     ],
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User1",
     },
   },
   { timestamps: true }

@@ -8,8 +8,17 @@ import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { GlobalContext } from "../../../Context";
 import axios from "axios";
+import styled from "styled-components";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
+const Image = styled.img`
+  width: 60px;
+  height: 60px;
+  @media (max-width: 641px) {
+    width: 35px;
+    height: 35px;
+  }
+`;
 const CartList = ({
   name,
   image,
@@ -196,7 +205,7 @@ const CartList = ({
           sx={{
             display: "flex",
             flexDirection: "row",
-            width: "400px",
+            width: { sm: "400px", xs: "auto" },
             alignItems: "center",
           }}
         >
@@ -208,11 +217,11 @@ const CartList = ({
             //   handleClick(id);
             // }}
           />
-          <img style={{ width: "60px", height: "60px" }} src={image} alt='' />
+          <Image src={image} alt='' />
           <Typography
             sx={{
-              paddingLeft: "12px",
-              fontSize: "14px",
+              paddingLeft: { md: "12px", xs: "4px" },
+              fontSize: { sm: "14px", xs: "12px" },
               color: "#212121",
             }}
           >
@@ -226,7 +235,11 @@ const CartList = ({
             flexDirection: "column",
           }}
         >
-          <Typography sx={{ color: " #f57224" }}>Rs. {price}</Typography>
+          <Typography
+            sx={{ color: " #f57224", fontSize: { sm: "1rem", xs: "12px" } }}
+          >
+            Rs. {price}
+          </Typography>
           <Box
             sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}
           >
@@ -238,6 +251,7 @@ const CartList = ({
                 icon={<FavoriteBorder />}
                 checkedIcon={<Favorite />}
                 sx={{
+                  padding: { sm: "9px", xs: "0px" },
                   "&.Mui-checked": {
                     color: "red",
                   },
@@ -261,16 +275,16 @@ const CartList = ({
                 {...label}
                 icon={<DeleteOutlineOutlinedIcon />}
                 checkedIcon={<DeleteOutlineOutlinedIcon />}
-                sx={
-                  {
-                    // color: color,
-                    // fontSize: "22px",
-                    // cursor: "pointer",
-                    // "&:hover": {
-                    //   color: "red",
-                    // },
-                  }
-                }
+                sx={{
+                  padding: { sm: "9px", xs: "0px" },
+
+                  // color: color,
+                  // fontSize: "22px",
+                  // cursor: "pointer",
+                  // "&:hover": {
+                  //   color: "red",
+                  // },
+                }}
               />
               {/* <DeleteOutlineOutlinedIcon
                 onClick={DeleteItem}

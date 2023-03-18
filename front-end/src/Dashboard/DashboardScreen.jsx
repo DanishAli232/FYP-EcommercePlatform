@@ -7,6 +7,7 @@ import Addproducts from "./Pages/AddProducts";
 import Updateproduct from "./Pages/Updateproduct";
 
 const Dashboard = React.lazy(() => import("./Pages/Dashboard"));
+const AllQuestions = React.lazy(() => import("./Pages/AllQuestions"));
 const AllUsers = React.lazy(() => import("./Pages/AllUsers"));
 const Stores = React.lazy(() => import("./Pages/Stores"));
 const ViewAccount = React.lazy(() => import("./Pages/ViewAccount"));

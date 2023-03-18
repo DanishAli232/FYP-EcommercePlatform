@@ -5,7 +5,18 @@ import axios from "axios";
 import img1 from "../../../Assets/img4.jpg";
 import { AnimatePresence, motion } from "framer-motion";
 import { fadeIn, staggerContainer } from "../../../FramerMotion/motion";
+import styled from "styled-components";
 
+const Image = styled.img`
+  width: 100%;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s ease-in-out;
+  height: 200px;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 const OffersProduct = () => {
   const [loading, setloading] = useState(false);
   const [product, setproduct] = useState([]);
@@ -28,11 +39,11 @@ const OffersProduct = () => {
       initial='hidden'
       whileHover='hover'
       whileInView='show'
-      viewport={{ once: false, amount: 0.25 }}
+      viewport={{ once: true, amount: 0.25 }}
     >
       <Box
         sx={{
-          padding: "0px 69px",
+          padding: { md: "0px 69px", xs: "0px 13px" },
           backgroundColor: "#f7f6f6",
           paddingTop: "20px",
         }}
@@ -40,8 +51,8 @@ const OffersProduct = () => {
         <motion.div variants={fadeIn("up", "tween", 0.2, 1)}>
           <Typography
             sx={{
-              fontSize: "32px",
-              lineHeight: "46px",
+              fontSize: { sm: "32px", xs: "24px" },
+              lineHeight: { sm: "46px", xs: "34px" },
               fontWeight: 700,
               color: "#3c3c40",
             }}
@@ -69,23 +80,17 @@ const OffersProduct = () => {
               sx={{ marginBottom: "20px" }}
             >
               {product.map((item) => (
-                <Grid width='100%' item key={item._id} sm={4} md={3} lg={2}>
-                  <img
+                <Grid width='100%' item key={item._id} xs={6} sm={3} lg={2}>
+                  <Image
                     onClick={() => handleClicker(item)}
                     src={img1}
                     alt=''
-                    style={{
-                      width: "100%",
-                      cursor: "pointer",
-                      height: "200px",
-                      borderRadius: "5px",
-                    }}
                   />
                   <Typography
                     sx={{
-                      fontSize: "18px",
+                      fontSize: { md: "18px", xs: "16px" },
                       fontWeight: 600,
-                      lineHeight: "26px",
+                      lineHeight: { md: "26px", xs: "24px" },
                       color: "#2b2d42",
                       cursor: "pointer",
                       paddingTop: "10px",

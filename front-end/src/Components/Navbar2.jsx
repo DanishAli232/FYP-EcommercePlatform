@@ -9,19 +9,34 @@ const Title = styled.h2`
   font-weight: 700;
   text-transform: capitalize;
   color: #fff;
+  @media (max-width: 600px) {
+    font-size: 26px;
+    line-height: 21px;
+  }
 `;
 
 const Navbar2 = ({ title, title1 }) => {
   return (
-    <Box sx={{ backgroundImage: `url(${img1})`, zIndex: 20 }}>
-      <Box sx={{ backgroundColor: "#0000009c", padding: "2rem 69px" }}>
+    <Box
+      sx={{
+        backgroundImage: `url(${img1})`,
+        zIndex: 20,
+        backgroundPosition: "top",
+      }}
+    >
+      <Box
+        sx={{
+          backgroundColor: "#0000009c",
+          padding: { md: "2rem 69px", xs: "1rem 13px" },
+        }}
+      >
         <Box
           sx={{
-            padding: "3rem 0px",
+            padding: { md: "3rem 0px", xs: "2rem 0px" },
             display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
+            flexDirection: { md: "row", xs: "column" },
+            alignItems: { md: "center", xs: "flex-start" },
+            justifyContent: { md: "space-between", xs: "" },
           }}
         >
           <Title>{title}</Title>
@@ -35,7 +50,7 @@ const Navbar2 = ({ title, title1 }) => {
             <Typography
               sx={{
                 fontWeight: 700,
-                fontSize: "20px",
+                fontSize: { md: "20px", xs: "16px" },
                 color: " #f0353b",
                 paddingRight: "7px",
               }}
@@ -46,7 +61,11 @@ const Navbar2 = ({ title, title1 }) => {
               sx={{ color: "white", paddingRight: "7px" }}
             />
             <Typography
-              sx={{ fontWeight: 700, fontSize: "20px", color: "#fff" }}
+              sx={{
+                fontWeight: 700,
+                fontSize: { md: "20px", xs: "16px" },
+                color: "#fff",
+              }}
             >
               {title}
             </Typography>

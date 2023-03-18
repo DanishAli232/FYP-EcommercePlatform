@@ -30,9 +30,11 @@ const Addproducts = () => {
     setdashboardOpen(true);
   }, []);
   const [open, setOpen] = React.useState(false);
+  const [categoryOpen, setcategoryOpen] = useState(false);
   const [alertMsg, newalertMsg] = useState("");
   const [severity, newseverity] = useState("");
   const [category, setCategory] = React.useState("");
+  const [newcategory, setnewCategory] = React.useState("");
   const [status, setStatus] = useState(null);
   const [error, seterror] = useState({});
   const [values, setValues] = useState({
@@ -44,6 +46,8 @@ const Addproducts = () => {
     description: "",
     image: "",
   });
+  const { state } = useContext(GlobalContext);
+  const { userInfo } = state;
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -82,11 +86,15 @@ const Addproducts = () => {
       Object.entries(values).forEach(([key, value]) => {
         formData.append(key, value);
       });
-      await axios.post("/api/addproduct/postdata", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(
+        `/api/addproduct/postdata/${userInfo.user._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       newalertMsg("Your Data Send SuccessFully");
       newseverity("success");
       setOpen(true);
@@ -106,7 +114,8 @@ const Addproducts = () => {
 
   useEffect(() => {
     console.log(values);
-  }, [values]);
+    console.log(categoryOpen);
+  }, [categoryOpen]);
 
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
@@ -210,39 +219,61 @@ const Addproducts = () => {
                   className='create-2 a'
                   sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
                 >
-                  <FormControl sx={{ m: 1, minWidth: 120 }}>
-                    <Select
-                      sx={{
-                        width: "399px",
-                        color: "#888",
-                        // background: "#f7f6f6",
-                        cursor: "pointer",
-                        height: "50px",
-                        marginLeft: "-7px",
-                        outline: "none",
-                      }}
-                      value={category}
-                      onChange={handleChange2}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Without label" }}
-                    >
-                      <MenuItem value=''>Select Category</MenuItem>
+                  {categoryOpen === false ? (
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                      <Select
+                        sx={{
+                          width: "399px",
+                          color: "#888",
+                          // background: "#f7f6f6",
+                          cursor: "pointer",
+                          height: "50px",
+                          marginLeft: "-7px",
+                          outline: "none",
+                        }}
+                        value={category}
+                        onChange={handleChange2}
+                        displayEmpty
+                        inputProps={{ "aria-label": "Without label" }}
+                      >
+                        <MenuItem value=''>Select Category</MenuItem>
 
-                      <MenuItem value={"shoes"}>Shoes</MenuItem>
-                      <MenuItem value={"shirts"}>Shirts</MenuItem>
-                    </Select>
-                  </FormControl>
-                  {/* <TextField
-                    id='outlined-required'
-                    label='Category'
-                    value={values.category}
-                    defaultValue='Category Name'
-                    onChange={handleChange}
-                    name='category'
-                    helperText={error.category}
-                    error={!!error.category}
-                    sx={{ width: { md: "400px", xs: "100%" } }}
-                  /> */}
+                        <MenuItem value={"shoes"}>Shoes</MenuItem>
+                        <MenuItem value={"shirts"}>Shirts</MenuItem>
+                        <MenuItem
+                          value={"add"}
+                          onClick={() => {
+                            console.log("okk");
+                            setcategoryOpen(true);
+                          }}
+                        >
+                          <Button
+                            sx={{
+                              margin: 0,
+                              padding: 0,
+                              background: "transparent",
+                              color: "black",
+                            }}
+                          >
+                            Add Category
+                          </Button>
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  ) : (
+                    <TextField
+                      id='outlined-required'
+                      label='Enter new Category'
+                      value={newcategory}
+                      onChange={(event) => {
+                        setnewCategory(event.target.value);
+                      }}
+                      name='newcategory'
+                      // helperText={error.brand}
+                      // error={!!error.brand}
+                      sx={{ width: { md: "400px", xs: "100%" } }}
+                    />
+                  )}
                 </Box>
                 <br></br>{" "}
                 <Box

@@ -11,6 +11,13 @@ margin-bottom: 15px;
 display: block;
 line-height: 50px;
 }
+@media (max-width: 992px)
+ {
+    font-size: 25px;
+    margin-bottom: 0;
+    display: block;
+    line-height: 36px;
+}
 `;
 
 const ListItems = styled.li`
@@ -38,7 +45,12 @@ color: #fff;
 
 const Footer1 = () => {
   return (
-    <Box sx={{ background: "black", padding: "60px 69px" }}>
+    <Box
+      sx={{
+        background: "black",
+        padding: { sm: "60px 69px", xs: "20px 13px" },
+      }}
+    >
       <Title>
         Special Offer All Branded Sandals Are <br /> Flat 50% Discount
       </Title>
@@ -50,7 +62,7 @@ const Footer1 = () => {
         sx={{ marginBottom: "20px" }}
       >
         <Grid width='100%' item sm={4} md={3} lg={3}>
-          <Box>
+          <Box sx={{ marginTop: { md: "0px", xs: "-32px" } }}>
             <UsefulLink>Useful Links</UsefulLink>
             <ul style={{ margin: 0, padding: 0 }}>
               <ListItems>Home</ListItems>
@@ -63,7 +75,7 @@ const Footer1 = () => {
           </Box>
         </Grid>
         <Grid width='100%' item sm={4} md={3} lg={3}>
-          <Box>
+          <Box sx={{ md: "0px", xs: "6px" }}>
             <UsefulLink>Information</UsefulLink>
             <ul style={{ margin: 0, padding: 0 }}>
               <ListItems>Tems & Conditions</ListItems>
@@ -76,7 +88,7 @@ const Footer1 = () => {
           </Box>
         </Grid>
         <Grid width='100%' item sm={4} md={3} lg={3}>
-          <Box>
+          <Box sx={{ md: "0px", xs: "6px" }}>
             <UsefulLink>Address</UsefulLink>
             <ul style={{ margin: 0, padding: 0 }}>
               <ListItems>Sargodha, PK</ListItems>
@@ -87,7 +99,7 @@ const Footer1 = () => {
           </Box>
         </Grid>
         <Grid width='100%' item sm={4} md={3} lg={3}>
-          <Box>
+          <Box sx={{ md: "0px", xs: "6px" }}>
             <UsefulLink>Payment Method</UsefulLink>
           </Box>
         </Grid>

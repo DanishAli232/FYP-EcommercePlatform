@@ -112,6 +112,38 @@ const reducer = (state, action) => {
 export const ContextState = ({ children }) => {
   const navigate = useNavigate();
   const [totalprice, settotalprice] = useState(0);
+  const [navlistitems, setnavlistitems] = useState([
+    {
+      title: "Home",
+      link: "/",
+      width: "38px",
+      active: true,
+    },
+    {
+      title: "About",
+      link: "/about",
+      width: "42px",
+      active: false,
+    },
+    {
+      title: "Products",
+      link: "/products",
+      width: "65px",
+      active: false,
+    },
+    {
+      title: "Categories",
+      link: "/",
+      width: "73px",
+      active: false,
+    },
+    {
+      title: "Sell",
+      link: "/sell",
+      width: "28px",
+      active: false,
+    },
+  ]);
   const [allprice, setallprice] = useState({
     withdelivery: 0,
     withoutdelivery: 0,
@@ -160,21 +192,26 @@ export const ContextState = ({ children }) => {
         `/api/allcartitems/${state.userInfo.user._id}`
       );
       console.log(data[0]);
-      let cartid = {
-        success: true,
-        cartId: data[0]._id,
-      };
-      dispatch({
-        type: "CART_ID",
-        payload: {
-          cartid,
-        },
-      });
-      console.log(cartid);
-      setcartitems(data[0].products);
+      if (data[0]) {
+        let cartid = {
+          success: true,
+          cartId: data[0]._id,
+        };
+        dispatch({
+          type: "CART_ID",
+          payload: {
+            cartid,
+          },
+        });
+        console.log(cartid);
+        setcartitems(data[0].products);
 
-      return data;
-    } catch (error) {}
+        return data;
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
     // console.log(data1);
     // let data = { success: true, addressId: data1[0]._id };
@@ -189,7 +226,7 @@ export const ContextState = ({ children }) => {
     localStorage.removeItem("cartid");
     localStorage.removeItem("wishid");
     localStorage.removeItem("userInfo");
-    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("ShippingAddress");
     localStorage.removeItem("paymentMethod");
 
     setcartitems([]);
@@ -235,6 +272,8 @@ export const ContextState = ({ children }) => {
         fetchcartItems,
         setCartPrice,
         fetchAddresses,
+        setnavlistitems,
+        navlistitems,
         state,
         dispatch,
         dashboardOpen,

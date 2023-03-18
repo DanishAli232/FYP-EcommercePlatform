@@ -11,6 +11,10 @@ import { GlobalContext } from "./Context";
 import { Sidebar } from "./Dashboard/Components";
 
 const Home1 = React.lazy(() => import("./Products/HomePage/Home1"));
+const AllQuestions = React.lazy(() => import("./Dashboard/Pages/AllQuestions"));
+const Sell = React.lazy(() => import("./Auth/Sell"));
+const VendorLogin = React.lazy(() => import("./Auth/vendorlogin"));
+const About = React.lazy(() => import("./Products/AboutPage/About"));
 const SignupScreen = React.lazy(() => import("./Auth/Register"));
 const SigninScreen = React.lazy(() => import("./Auth/Login"));
 const ConfirmEmail = React.lazy(() => import("./Auth/ConfirmEmail"));
@@ -62,6 +66,9 @@ function App() {
         <Routes>
           <Route path='/' element={<Home1 />} />
           <Route path='/productdetail/:id' element={<ProductDetail />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/vendorlogin' element={<VendorLogin />} />
+          <Route path='/allquestions' element={<AllQuestions />} />
           <Route path='/cartpage' element={<Cart />} />
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/payment' element={<Payment />} />
@@ -80,6 +87,7 @@ function App() {
           <Route path='/allvendors' element={<AllVendors />} />
           <Route path='/allproducts' element={<AllProducts />} />
           <Route path='/updateproduct/:id' element={<Updateproduct />} />
+          <Route path='/sell' element={<Sell />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Suspense>

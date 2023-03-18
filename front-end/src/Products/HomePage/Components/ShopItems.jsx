@@ -41,7 +41,12 @@ const ShopItems = () => {
       whileInView='show'
       viewport={{ once: false, amount: 0.25 }}
     >
-      <Box sx={{ background: "#fbfbfb", padding: "60px 69px" }}>
+      <Box
+        sx={{
+          background: "#fbfbfb",
+          padding: { md: "60px 69px", xs: "40px 13px" },
+        }}
+      >
         <motion.div variants={fadeIn("up", "tween", 0.2, 1)}>
           <Typography
             variant='h3'
@@ -71,7 +76,7 @@ const ShopItems = () => {
             sx={{ marginBottom: "20px" }}
           >
             {productitems.map((item) => (
-              <Grid width='100%' item key={item._id} sm={4} md={3} lg={3}>
+              <Grid width='100%' item key={item._id} xs={6} md={3} lg={3}>
                 <ShopItemsDes {...item} />
               </Grid>
             ))}

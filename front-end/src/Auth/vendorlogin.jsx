@@ -1,22 +1,7 @@
 import { Close } from "@mui/icons-material";
-import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  Grid,
-  IconButton,
-  Snackbar,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import axios from "axios";
-import FacebookLogin from "react-facebook-login";
-import laptop from "../Assets/laptop.jpg";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GoogleIcon from "@mui/icons-material/Google";
+
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../Context";
@@ -25,18 +10,14 @@ import NavBar1 from "../Components/NavBar1";
 import Navbar2 from "../Components/Navbar2";
 import Footer1 from "../Components/Footer1";
 
-function SigninScreen() {
+function VendorLogin() {
   const navigate = useNavigate();
 
   const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
-
   const [error, setError] = useState({});
-  const [googledata, setgoogledata] = useState({});
   const [values, setValues] = useState({
     email: "",
     password: "",
-    confirmpassword: "",
-    name: "",
   });
   useEffect(() => {
     console.log(error);
@@ -56,9 +37,13 @@ function SigninScreen() {
     e.preventDefault();
 
     try {
-      let result = await axios.post("http://localhost:5000/api/login", values, {
-        "Content-Type": "application/json",
-      });
+      let result = await axios.post(
+        "http://localhost:5000/api/vendorlogin",
+        values,
+        {
+          "Content-Type": "application/json",
+        }
+      );
 
       if (result.status === 200) {
         ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
@@ -67,93 +52,6 @@ function SigninScreen() {
       }
     } catch (err) {
       setError(err.response.data.errors);
-    }
-  };
-
-  useEffect(() => {
-    if (googledata) {
-      axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${googledata.access_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${googledata.access_token}`,
-              Accept: "application/json",
-            },
-          }
-        )
-        .then(async (res) => {
-          setUser(res.data);
-          let userdata = {
-            email: res.data.email,
-            password: res.data.password,
-            name: res.data.name,
-            platform: "FG",
-          };
-          try {
-            let result = await axios.post(
-              "http://localhost:5000/api/login",
-              userdata,
-              {
-                "Content-Type": "application/json",
-              }
-            );
-
-            if (result.status === 200) {
-              ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
-              localStorage.setItem("userInfo", JSON.stringify(result.data));
-              navigate("/");
-            }
-          } catch (err) {
-            // setError(err.response.data.errors);
-            console.log(err);
-          }
-          console.log(res);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [googledata]);
-
-  const [user, setUser] = useState([]);
-
-  const googlelogin = useGoogleLogin({
-    onSuccess: (codeResponse) => {
-      // console.log(codeResponse);
-      setgoogledata(codeResponse);
-    },
-    onError: (error) => console.log("Login Failed:", error),
-  });
-
-  const logOut = () => {
-    googleLogout();
-    // setProfile(null);
-  };
-
-  const responseFacebook = async (response) => {
-    console.log(response);
-    setUser(response);
-    if (response.accessToken) {
-      let userdata = {
-        email: response.email,
-        name: response.name,
-        password: response.password,
-        platform: "FG",
-      };
-      try {
-        let result = await axios.post("/api/login", userdata, {
-          "Content-Type": "application/json",
-        });
-
-        if (result.status === 200) {
-          ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
-          localStorage.setItem("userInfo", JSON.stringify(result.data));
-          navigate("/");
-        }
-      } catch (err) {
-        // setError(err.response.data.errors);
-        console.log(err);
-      }
-    } else {
     }
   };
 
@@ -325,7 +223,7 @@ function SigninScreen() {
                 }}
               >
                 <Title1> Have No Account?</Title1>
-                <Link to='/signup'>
+                <Link to='/sell'>
                   <Typography
                     sx={{
                       color: "#2b2d42",
@@ -343,41 +241,6 @@ function SigninScreen() {
                   </Typography>
                 </Link>
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginTop: "0px",
-                }}
-              >
-                <Title1>SignIn with:</Title1>
-                <FacebookLogin
-                  appId='504485341863215'
-                  autoLoad={true}
-                  fields='name,email,picture'
-                  icon={
-                    <FacebookIcon
-                      sx={{
-                        // color: "blue",
-                        margin: "0px 2px -4px 5px",
-                        cursor: "pointer",
-                        fontSize: "40px",
-                      }}
-                    />
-                  }
-                  callback={responseFacebook}
-                  textButton=''
-                  cssClass='facebookBtn'
-                />
-
-                <Tooltip title='Login with Google' arrow>
-                  <GoogleIcon
-                    sx={{ cursor: "pointer", fontSize: "37px" }}
-                    onClick={() => googlelogin()}
-                  />
-                </Tooltip>
-              </Box>
             </Box>
           </Box>
         </Box>
@@ -387,4 +250,4 @@ function SigninScreen() {
   );
 }
 
-export default SigninScreen;
+export default VendorLogin;

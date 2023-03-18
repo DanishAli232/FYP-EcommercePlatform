@@ -73,6 +73,27 @@ export const divVariants = (direction) => ({
   },
 });
 
+export const menudivVariants = (direction) => ({
+  hidden: {
+    // x: direction === "left" ? "-100%" : "100%",
+    x: 0,
+    y: 0,
+    opacity: 0,
+    height: "0px",
+  },
+
+  show: {
+    x: 0,
+    y: 0,
+    height: "270px",
+    opacity: 1,
+    transition: {
+      type: "spring",
+      duration: 0.5,
+    },
+  },
+});
+
 export const fadeIn = (direction, type, delay, duration) => ({
   hidden: {
     x: direction === "left" ? 100 : direction === "right" ? -100 : 0,

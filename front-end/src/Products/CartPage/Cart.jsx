@@ -17,6 +17,8 @@ import { GlobalContext } from "../../Context";
 import axios from "axios";
 import LoadingBox from "../../Components/LoadingBox";
 import NavBar1 from "../../Components/NavBar1";
+import Footer1 from "../../Components/Footer1";
+import styled from "styled-components";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -52,6 +54,7 @@ const Cart = () => {
     newCheckVal,
   } = useContext(GlobalContext);
   const { cart, userInfo } = state;
+  const [message1, setmessage1] = useState("");
   const initialstate = {
     cartdata: [],
     loading: true,
@@ -82,11 +85,15 @@ const Cart = () => {
       //   `/api/allcartitems/${userInfo.user._id}`
       // );
       const data = await fetchcartItems();
+      if (data) {
+        console.log(data);
+        setCartPrice(data[0].products);
+        setmessage1("");
+        settotalitems(data[0].products.length);
+      } else {
+        setmessage1("No Cart Items Yet");
+      }
 
-      console.log(data);
-      setCartPrice(data[0].products);
-
-      settotalitems(data[0].products.length);
       dispatch({ type: "FETCH_SUCCESS", payload: data });
     } catch (error) {
       dispatch({ type: "FETCH_FAIL", payload: error.message });
@@ -167,16 +174,17 @@ const Cart = () => {
       {/* {status === "loading" && <CircularProgress sx={{ ml: 1 }} size='16px' />} */}
       <Box
         sx={{
-          paddingX: "39px",
+          padding: { md: "5px 69px", xs: "5px 13px" },
           // marginTop: "30px",
           backgroundColor: "#f4f4f4",
           minHeight: "100vh",
-          paddingBottom: "40px",
         }}
       >
         <Grid container>
-          <Grid item md={8}>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Grid item md={8} sx={{ width: "100%" }}>
+            <Box
+              sx={{ display: "flex", flexDirection: "column", width: "100%" }}
+            >
               <Box
                 sx={{
                   display: "flex",
@@ -244,6 +252,8 @@ const Cart = () => {
                 <LoadingBox />
               ) : error ? (
                 <p>Something Went Wrong</p>
+              ) : message1 ? (
+                <p>No Cart Items Yet</p>
               ) : (
                 cartitems.map((item, i) => (
                   <CartList
@@ -273,10 +283,10 @@ const Cart = () => {
               {}
             </Box>
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={4} sx={{ width: "100%" }}>
             <Box
               sx={{
-                marginLeft: "15px",
+                marginLeft: { md: "15px", xs: "0px" },
                 backgroundColor: "white",
                 marginTop: "20px",
                 paddingX: "10px",
@@ -387,6 +397,7 @@ const Cart = () => {
           </Grid>
         </Grid>
       </Box>
+      <Footer1 />
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity='success' sx={{ width: "100%" }}>
           {message}

@@ -58,7 +58,7 @@ const AllProducts = () => {
   const [status, setStatus] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [searchVal, newSearchVal] = useState("");
-  const { setdashboardOpen } = useContext(GlobalContext);
+  const { setdashboardOpen, state } = useContext(GlobalContext);
   useEffect(() => {
     setdashboardOpen(true);
   }, []);
@@ -298,7 +298,7 @@ const AllProducts = () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         if (statuscheck === "vendor") {
-          let vl = "63adaf89297e1cdd753232d7";
+          let vl = state.userInfo.user._id;
           result = await axios.get(
             `/api/allvendorsproduct?q=${searchVal}&f=${vl}`
           );

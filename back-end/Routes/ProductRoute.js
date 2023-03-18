@@ -1,7 +1,10 @@
 import express from "express";
 import {
+  addComments,
   addproduct,
+  allComments,
   allproduct,
+  deleteComments,
   deleteproduct,
   filterProducts,
   findOneproduct,
@@ -49,7 +52,7 @@ ProductRouter.get("/getallproducts", getallproducts);
 ProductRouter.get("/getproducts", getproducts);
 ProductRouter.delete("/deleteproduct/:id", deleteproduct);
 ProductRouter.post(
-  "/addproduct/postdata",
+  "/addproduct/postdata/:uid",
   singleImageUpload.single("image"),
   addproduct
 );
@@ -57,5 +60,8 @@ ProductRouter.patch("/updateproduct", updateproduct);
 ProductRouter.get("/findOneproduct/:id", findOneproduct);
 ProductRouter.get("/allproduct", allproduct);
 ProductRouter.post("/filterproducts", filterProducts);
+ProductRouter.post("/addcomment", addComments);
+ProductRouter.get("/allcomment/:id", allComments);
+ProductRouter.patch("/deletecomment/:pid/:cid", deleteComments);
 
 export default ProductRouter;

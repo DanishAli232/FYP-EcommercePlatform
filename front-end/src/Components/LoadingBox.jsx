@@ -12,7 +12,7 @@ const LoadingBox = () => {
         // backgroundColor: "white",
       }}
     >
-      <CircularProgress />;
+      <CircularProgress />
     </div>
   );
 };

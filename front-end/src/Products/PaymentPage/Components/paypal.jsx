@@ -49,7 +49,7 @@ const Paypal = () => {
       sx={{
         backgroundColor: "#ededed",
         marginTop: "10px",
-        height: "85px",
+        height: "auto",
         padding: "40px 20px",
         width: "93%",
       }}

@@ -214,7 +214,7 @@ font-size: 15px;
         <Box
           sx={{
             height: "auto",
-            width: "400px",
+            width: { md: "400px", xs: "100%" },
             backgroundColor: "white",
             padding: "20px",
           }}
@@ -431,8 +431,8 @@ font-size: 15px;
                   marginTop: "-16px",
                 }}
               >
-                <Title1>Do You Have Account?</Title1>
-                <Link>
+                <Title1> Have You Account?</Title1>
+                <Link to='/signin'>
                   <Typography
                     sx={{
                       color: "#2b2d42",
@@ -455,7 +455,7 @@ font-size: 15px;
                 onClick={handleSubmit}
                 sx={{
                   fontSize: "16px",
-                  padding: "13px",
+                  padding: { sm: "13px", xs: "14px 28px" },
                   lineHeight: "16px",
                   fontWeight: 600,
                   transition: "0.3s ease-in",
@@ -463,7 +463,7 @@ font-size: 15px;
                   marginTop: "13px",
                   background: "#ef233c",
                   color: "white",
-                  width: "100%",
+                  width: { sm: "100%", xs: "auto" },
                   borderRadius: "4px",
                   border: "1px solid transparent",
                   "&:hover": {

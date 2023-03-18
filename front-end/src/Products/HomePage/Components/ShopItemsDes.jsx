@@ -49,8 +49,7 @@ const ShopItemsDes = ({ title, price, img }) => {
             alt=''
             style={{
               width: "100%",
-
-              height: "300px",
+              height: { md: "300px", xs: "150px" },
               borderRadius: "5px",
             }}
           />

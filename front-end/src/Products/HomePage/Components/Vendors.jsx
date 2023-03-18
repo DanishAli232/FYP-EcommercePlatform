@@ -13,12 +13,20 @@ const Container = styled.div`
   margin: 10px;
   overflow: hidden;
   position: relative;
+
+  @media (max-width: 768px) {
+    height: auto;
+  }
 `;
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
   margin: 40px;
   align-items: center;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    margin: 0px;
+  }
 `;
 const Vendor = styled.div`
   align-items: center;
@@ -28,6 +36,10 @@ const Vendor = styled.div`
   position: relative;
   margin: 15px 20px 10px 20px;
   border-radius: 10px;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 179px;
+  }
 `;
 const Transparent = styled.div`
   align-items: center;
@@ -65,6 +77,9 @@ const Title = styled.h1`
   color: white;
   margin: 0px 0px 0px 20px;
   font-size: 28px;
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
 `;
 const Button1 = styled.button`
   border: 1px solid white;
@@ -83,6 +98,12 @@ const Button1 = styled.button`
   &:hover {
     background: #ef233c;
     border: #ef233c;
+  }
+  @media (max-width: 768px) {
+    width: 156px;
+    margin: 9px 22px;
+    padding: 9px 10px;
+    font-size: 15px;
   }
 `;
 

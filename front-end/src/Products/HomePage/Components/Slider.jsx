@@ -13,6 +13,10 @@ const Container = styled.div`
 
   overflow: hidden;
   position: relative;
+
+  @media (max-width: 480px) {
+    height: 40vh;
+  }
 `;
 const Wrapper = styled.div`
   height: 100%;
@@ -55,6 +59,9 @@ const Title = styled.h1`
   font-size: 45px;
   color: white;
   margin: 0px 0px;
+  @media (max-width: 440px) {
+    font-size: 28px;
+  }
 `;
 const Desc = styled.p`
   margin: 10px 0px 30px 0px;
@@ -62,6 +69,10 @@ const Desc = styled.p`
   font-weight: 600;
   letter-spacing: 2px;
   color: white;
+
+  @media (max-width: 480px) {
+    font-size: 8px;
+  }
 `;
 const Button = styled.button`
   padding: 10px;
@@ -79,6 +90,10 @@ const Button = styled.button`
     color: #fff;
     background-color: #d90429;
     border-color: #d90429;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
   }
 `;
 
@@ -134,7 +149,7 @@ export const Slider = () => {
                   sx={{
                     color: "#f0353b",
                     fontWeight: "bold",
-                    fontSize: "21px",
+                    fontSize: { md: "21px", xs: "18px" },
                   }}
                 >
                   Up to 60% Off Now

@@ -82,8 +82,19 @@ const Sidebar = () => {
     borderRadius: "0.75rem",
   });
 
+  const [AllQuestion, setAllQuesion] = useState({
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+    },
+    backgroundColor: "",
+    borderRadius: "0.75rem",
+  });
   const DashboardClicker = () => {
     setnavcontent("Dashboard");
+    setAllQuesion({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setDashboard({
       ...Dashboard,
       backgroundColor: "rgba(0, 0, 0, 0.315)",
@@ -118,6 +129,10 @@ const Sidebar = () => {
     setnavcontent("Dashboard");
     setOpen(true);
     // alert("Do you Really want to Logout");
+    setAllQuesion({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setDashboard({
       ...Dashboard,
       backgroundColor: "rgba(0, 0, 0, 0.315)",
@@ -150,6 +165,10 @@ const Sidebar = () => {
 
   const ViewAccountClicker = () => {
     setnavcontent("View Account");
+    setAllQuesion({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setDashboard({
       ...Dashboard,
       backgroundColor: "",
@@ -251,6 +270,10 @@ const Sidebar = () => {
 
   const AddproductClicker = () => {
     setnavcontent("Add Product");
+    setAllQuesion({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setDashboard({
       ...Dashboard,
       backgroundColor: "",
@@ -284,6 +307,10 @@ const Sidebar = () => {
 
   const AllproductClicker = () => {
     setnavcontent("All Products");
+    setAllQuesion({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setDashboard({
       ...Dashboard,
       backgroundColor: "",
@@ -310,6 +337,44 @@ const Sidebar = () => {
     });
 
     setAllProduct({
+      ...AllProduct,
+      backgroundColor: "rgba(0, 0, 0, 0.315)",
+    });
+  };
+
+  const AllQuestionClicker = () => {
+    setnavcontent("All Questions");
+    setDashboard({
+      ...Dashboard,
+      backgroundColor: "",
+    });
+    setStores({
+      ...Stores,
+      backgroundColor: "",
+    });
+    setViewacoount({
+      ...Viewaccount,
+      backgroundColor: "",
+    });
+    setAllusers({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAddproduct({
+      ...Addproduct,
+      backgroundColor: "",
+    });
+
+    setAllProduct({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+
+    setAllQuesion({
       ...AllProduct,
       backgroundColor: "rgba(0, 0, 0, 0.315)",
     });
@@ -600,6 +665,31 @@ const Sidebar = () => {
                     </ListItemIcon>
                     <ListItemText
                       primary='All Products'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+
+              <Link
+                to='/allquestions'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  // onClick={newsClicker}
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                    "&:hover": {},
+                  }}
+                >
+                  <ListItemButton sx={AllQuestion} onClick={AllQuestionClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <FeedIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='All Questions'
                       sx={{ color: "white", textDecoration: "none" }}
                     />
                   </ListItemButton>

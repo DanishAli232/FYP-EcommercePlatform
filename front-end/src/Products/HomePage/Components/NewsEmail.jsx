@@ -20,6 +20,10 @@ const NewsEmail = () => {
       background: white;
       border: 1px solid red;
     }
+
+    @media (max-width: 641px) {
+      width: 90%;
+    }
   `;
 
   return (
@@ -30,7 +34,8 @@ const NewsEmail = () => {
         alignItems: "center",
         justifyContent: "center",
         background: "#fff",
-        padding: "60px 0px",
+        padding: "60px 13px",
+        // width: "100%",
       }}
     >
       <MailOutlineIcon
@@ -39,9 +44,11 @@ const NewsEmail = () => {
       <Typography
         variant='h3'
         sx={{
-          fontSize: "36px",
-          lineHeight: "46px",
+          fontSize: { md: "36px", xs: "34px" },
+          lineHeight: { md: "46px", xs: "34px" },
           fontWeight: 700,
+          marginTop: { md: "0px", xs: "7px" },
+
           color: "#3c3c40",
           marginBottom: "5px",
         }}
@@ -51,9 +58,12 @@ const NewsEmail = () => {
       <Typography
         variant='p'
         sx={{
-          fontSize: "18px",
-          lineHeight: "28px",
+          fontSize: { md: "18px", xs: "16px" },
+          lineHeight: { md: "28px", xs: "26px" },
           color: "#888",
+          marginTop: { md: "0px", xs: "7px" },
+
+          textAlign: "center",
           fontFamily: '"Kumbh Sans", sans-serif',
         }}
       >
@@ -62,11 +72,12 @@ const NewsEmail = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: { md: "row", xs: "column" },
           alignItems: "center",
           justifyContent: "center",
-          width: "550px",
-          height: "60px",
+          marginTop: { md: "0px", xs: "7px" },
+          width: { md: "550px", xs: "100%" },
+          height: { md: "60px", xs: "auto" },
           margin: "1rem 0px",
         }}
       >
@@ -75,9 +86,12 @@ const NewsEmail = () => {
           sx={{
             color: "#fff",
             backgroundColor: "#ef233c",
-            marginLeft: "10px",
+            marginLeft: { md: "10px", xs: "0px" },
             padding: "13px 8px",
+            marginTop: { md: "0px", xs: "7px" },
             border: "#ef233c",
+            width: { sm: "auto", xs: "100%" },
+            transition: "0.4s ease-in",
             "&:hover": {
               background: "#d90429",
               border: "#d90429",
@@ -90,8 +104,10 @@ const NewsEmail = () => {
       <Typography
         sx={{
           color: "#888",
-          fontSize: "17px",
-          width: "516px",
+          fontSize: { md: "17px", xs: "16px" },
+          width: { md: "516px", xs: "100%" },
+          marginTop: { md: "0px", xs: "7px" },
+
           textAlign: "center",
         }}
         variant='p'

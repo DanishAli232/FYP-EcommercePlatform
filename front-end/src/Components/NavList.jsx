@@ -41,12 +41,12 @@ const NavList = ({ title, width, link, active, listClick }) => {
         {open ? (
           <motion.div
             variants={listVariants(width)}
-            style={{
+            style={
               // width: "38px",
+              // active && {  }
+              { height: "2px", background: "red" }
               // width: "10px",
-              height: "2px",
-              background: "red",
-            }}
+            }
             // exit={{ width: "0px" }}
           ></motion.div>
         ) : null}
