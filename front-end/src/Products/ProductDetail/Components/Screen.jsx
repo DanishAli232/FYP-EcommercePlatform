@@ -2,6 +2,8 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../../Context";
+import { Magnifier, GlassMagnifier } from "react-image-magnifiers";
+
 import img from "../../../Assets/img.jpg";
 import Navbar from "../../../Components/Navbar";
 import Rating from "./Rating";
@@ -24,6 +26,9 @@ import Footer1 from "../../../Components/Footer1";
 import QA from "./Q&A";
 import Reviews from "./Reviews";
 import ShopItems from "../../HomePage/Components/ShopItems";
+import styled from "styled-components";
+
+const MagnifierDiv = styled.div``;
 
 let comments = [
   {
@@ -63,6 +68,7 @@ const ProductDetail = () => {
   const [quantity, setquantity] = useState(1);
   const [allcomment, setallcomment] = useState([]);
   const { state: state1 } = useLocation();
+
   const navigate = useNavigate();
   const {
     state,
@@ -78,7 +84,6 @@ const ProductDetail = () => {
     productid: state1._id,
     comment: "",
   });
-  const imageRef = useRef(null);
   const [imagestyle, setimagestyle] = useState({
     position: "",
     top: "",
@@ -87,6 +92,7 @@ const ProductDetail = () => {
   useEffect(() => {
     fetchAddresses();
   }, []);
+
   // const [topPosition, settopPosition] = useState(0);
   // useEffect(() => {
   //   const existItem = cart.cartItem.find((x) => x.id === state1.id);
@@ -209,6 +215,10 @@ const ProductDetail = () => {
     allComment();
   }, []);
 
+  // useEffect(() => {
+  //   console.log(hoverCoords);
+  // }, [hoverCoords]);
+
   return (
     <Box sx={{ background: "#fbfbfb" }}>
       <NavBar1 />
@@ -227,8 +237,29 @@ const ProductDetail = () => {
           <Grid item md={4}>
             <Box>
               {/* <ReactImageZoom {...props} /> */}
+              <Magnifier imageSrc={img} width={400} height={400} zoomFactor={2}>
+                <img src={img} alt='Image1' />
+              </Magnifier>
 
-              <img
+              {/* <div className='image-container'>
+                <MagnifierDiv
+                  className='magnifier'
+                  style={{ left: hoverCoords.x, top: hoverCoords.y }}
+                />
+                <img
+                  src={img}
+                  // style={{
+                  //   // marginLeft: "33px",
+                  //   marginTop: "7px",
+                  //   width: "100%",
+                  //   ...imagestyle,
+                  // }}
+                  alt='Example'
+                  className='zoom-in'
+                  onMouseMove={handleMouseMove}
+                />
+              </div> */}
+              {/* <img
                 ref={imageRef}
                 style={{
                   // marginLeft: "33px",
@@ -238,7 +269,7 @@ const ProductDetail = () => {
                 }}
                 src={img}
                 alt='product_img'
-              />
+              /> */}
 
               <Typography
                 sx={{

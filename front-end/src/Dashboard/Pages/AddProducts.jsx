@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Navbar, Sidebar } from "../Components";
 import MuiAlert from "@mui/material/Alert";
 import { GlobalContext } from "../../Context";
@@ -26,6 +26,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Addproducts = () => {
   const { setdashboardOpen } = useContext(GlobalContext);
+  const inputRef = useRef();
   useEffect(() => {
     setdashboardOpen(true);
   }, []);
@@ -159,6 +160,7 @@ const Addproducts = () => {
                   <TextField
                     id='outlined-required'
                     label='Product Name'
+                    className='title'
                     value={values.name}
                     onChange={handleChange}
                     name='name'
@@ -174,6 +176,7 @@ const Addproducts = () => {
                 >
                   <TextField
                     id='outlined-required'
+                    className='price'
                     label='Price'
                     type='number'
                     InputProps={{
@@ -199,6 +202,7 @@ const Addproducts = () => {
                   sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
                 >
                   <TextField
+                    className='countinstock'
                     id='outlined-required'
                     label='CountInStock'
                     placeholder='00'
@@ -222,6 +226,8 @@ const Addproducts = () => {
                   {categoryOpen === false ? (
                     <FormControl sx={{ m: 1, minWidth: 120 }}>
                       <Select
+                        className='category'
+                        name='category'
                         sx={{
                           width: "399px",
                           color: "#888",
@@ -240,6 +246,7 @@ const Addproducts = () => {
 
                         <MenuItem value={"shoes"}>Shoes</MenuItem>
                         <MenuItem value={"shirts"}>Shirts</MenuItem>
+                        <MenuItem value={"pictures"}>Pictures</MenuItem>
                         <MenuItem
                           value={"add"}
                           onClick={() => {
@@ -263,12 +270,11 @@ const Addproducts = () => {
                   ) : (
                     <TextField
                       id='outlined-required'
+                      className='category'
                       label='Enter new Category'
-                      value={newcategory}
-                      onChange={(event) => {
-                        setnewCategory(event.target.value);
-                      }}
-                      name='newcategory'
+                      value={category}
+                      onChange={handleChange2}
+                      name='category'
                       // helperText={error.brand}
                       // error={!!error.brand}
                       sx={{ width: { md: "400px", xs: "100%" } }}
@@ -280,7 +286,9 @@ const Addproducts = () => {
                   className='create-2 a'
                   sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
                 >
-                  <TextField
+                  <input type='text' className='pakistan' ref={inputRef} />
+                  {/* <TextField
+                    className='brand'
                     id='outlined-required'
                     label='Brand'
                     value={values.brand}
@@ -289,7 +297,7 @@ const Addproducts = () => {
                     helperText={error.brand}
                     error={!!error.brand}
                     sx={{ width: { md: "400px", xs: "100%" } }}
-                  />
+                  /> */}
                 </Box>
                 <br></br>{" "}
                 {/* <Box className='create-2 a'>
@@ -305,6 +313,7 @@ const Addproducts = () => {
                   <br></br> */}
                 <br></br>
                 <Typography
+                  className='description'
                   sx={{
                     fontSize: "15px",
                     fontWeight: "500",

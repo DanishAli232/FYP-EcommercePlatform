@@ -32,7 +32,7 @@ const DiscountsProducts = () => {
   }, []);
   const navigate = useNavigate();
   const handleClicker = (item) => {
-    navigate(`/productdetail/${item.Desc}`, { state: item });
+    navigate(`/productdetail/${item._id}`, { state: item });
   };
   return (
     <motion.div

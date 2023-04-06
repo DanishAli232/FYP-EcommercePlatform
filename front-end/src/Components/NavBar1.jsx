@@ -19,6 +19,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
+
 import logo2 from "../Assets/logo2.png";
 import { GlobalContext } from "../Context";
 import Popover from "@mui/material/Popover";
@@ -73,7 +74,6 @@ const Label = styled.h3`
 const NavBar1 = () => {
   const navigate = useNavigate();
   const [search, setsearch] = useState(false);
-  const [menuOpen, setmenuOpen] = useState(false);
   const [searchvalue, setsearchvalue] = useState("");
   const {
     cartitems,

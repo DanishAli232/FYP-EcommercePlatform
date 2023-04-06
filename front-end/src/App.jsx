@@ -34,6 +34,8 @@ const ProductsPage = React.lazy(() =>
   import("./Products/ProductsPage/ProductsPage")
 );
 const AllUsers = React.lazy(() => import("./Dashboard/Pages/AllUsers"));
+const Orders = React.lazy(() => import("./Dashboard/Pages/Orders"));
+const Wishlist = React.lazy(() => import("./Dashboard/Pages/Wishlist"));
 const Stores = React.lazy(() => import("./Dashboard/Pages/Stores"));
 const ViewAccount = React.lazy(() => import("./Dashboard/Pages/ViewAccount"));
 const AllVendors = React.lazy(() => import("./Dashboard/Pages/AllVendors"));
@@ -68,6 +70,8 @@ function App() {
           <Route path='/productdetail/:id' element={<ProductDetail />} />
           <Route path='/about' element={<About />} />
           <Route path='/vendorlogin' element={<VendorLogin />} />
+          <Route path='/wishlist' element={<Wishlist />} />
+          <Route path='/orders' element={<Orders />} />
           <Route path='/allquestions' element={<AllQuestions />} />
           <Route path='/cartpage' element={<Cart />} />
           <Route path='/checkout' element={<Checkout />} />

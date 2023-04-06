@@ -69,11 +69,18 @@ const About = () => {
   }, []);
 
   const updatelist = () => {
-    navlistitems.map(function (x) {
+    let data1 = navlistitems;
+    let data = data1.map(function (x) {
       x.active = false;
       return x;
     });
-    console.log(navlistitems);
+    console.log(data);
+    // console.log(data);
+    // setnavlistitems({})
+    // setnavlistitems((prev) => {
+    //   console.log(prev);
+    // });
+
     let objIndex = navlistitems.findIndex((obj) => obj.title === "About");
     navlistitems[objIndex].active = true;
     console.log(navlistitems);

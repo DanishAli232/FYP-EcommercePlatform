@@ -92,3 +92,5 @@ export const StripCheckoutSession = async (req, res) => {
 
   res.send({ url: session.url });
 };
+
+export const plan_stripe = (req, res) => {};

@@ -234,3 +234,39 @@ export const deleteComments = async (req, res) => {
     console.log(error);
   }
 };
+
+export const fetchComments = async (req, res) => {
+  let id = req.params.vid;
+  try {
+    const findProduct = await Product.find({ vendor: id });
+    // const comments = await Product.aggregate([
+    //   { $group: { _id: "$vendor", comments: { $push: "$comments" } } },
+    // ]);
+    console.log(findProduct);
+    // console.log(comments);
+    res.send(findProduct);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const postAnswer = async (req, res) => {
+  let pid = req.params.pid;
+  let cid = req.params.cid;
+  console.log({ pid, cid, req: req.body });
+  let ans = req.body.answer;
+  try {
+    const data1 = await Product.updateOne(
+      { _id: pid, "comments._id": cid },
+      { $set: { "comments.$.answer": ans } },
+      {
+        new: true,
+      }
+    );
+    console.log(data1);
+    // console.log(comments);
+    res.send(data1);
+  } catch (error) {
+    console.log(error);
+  }
+};

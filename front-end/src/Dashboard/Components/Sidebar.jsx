@@ -10,9 +10,12 @@ import {
 import { AllStyle } from "../Styles";
 import { Link } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import ViewStreamIcon from "@mui/icons-material/ViewStream";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FeedIcon from "@mui/icons-material/Feed";
 import PeopleIcon from "@mui/icons-material/People";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { DashboardGlobalContext } from "../Context/DashboardContext";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Person4Icon from "@mui/icons-material/Person4";
@@ -89,8 +92,32 @@ const Sidebar = () => {
     backgroundColor: "",
     borderRadius: "0.75rem",
   });
+
+  const [AllOrders, setAllOrders] = useState({
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+    },
+    backgroundColor: "",
+    borderRadius: "0.75rem",
+  });
+
+  const [Wishlist, setWishlist] = useState({
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+    },
+    backgroundColor: "",
+    borderRadius: "0.75rem",
+  });
   const DashboardClicker = () => {
     setnavcontent("Dashboard");
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setAllOrders({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setAllQuesion({
       ...AllProduct,
       backgroundColor: "",
@@ -127,6 +154,14 @@ const Sidebar = () => {
 
   const LogoutClicker = () => {
     setnavcontent("Dashboard");
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setAllOrders({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setOpen(true);
     // alert("Do you Really want to Logout");
     setAllQuesion({
@@ -165,6 +200,14 @@ const Sidebar = () => {
 
   const ViewAccountClicker = () => {
     setnavcontent("View Account");
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setAllOrders({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setAllQuesion({
       ...AllProduct,
       backgroundColor: "",
@@ -205,7 +248,14 @@ const Sidebar = () => {
 
   const AllusersClicker = () => {
     setnavcontent("All Users");
-
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setAllOrders({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setDashboard({
       ...Dashboard,
       backgroundColor: "",
@@ -238,6 +288,14 @@ const Sidebar = () => {
 
   const AllvendorsClicker = () => {
     setnavcontent("All Vendors");
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setAllOrders({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setDashboard({
       ...Dashboard,
       backgroundColor: "",
@@ -270,6 +328,14 @@ const Sidebar = () => {
 
   const AddproductClicker = () => {
     setnavcontent("Add Product");
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setAllOrders({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setAllQuesion({
       ...AllProduct,
       backgroundColor: "",
@@ -307,6 +373,14 @@ const Sidebar = () => {
 
   const AllproductClicker = () => {
     setnavcontent("All Products");
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setAllOrders({
+      ...AllProduct,
+      backgroundColor: "",
+    });
     setAllQuesion({
       ...AllProduct,
       backgroundColor: "",
@@ -375,6 +449,106 @@ const Sidebar = () => {
     });
 
     setAllQuesion({
+      ...AllProduct,
+      backgroundColor: "rgba(0, 0, 0, 0.315)",
+    });
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setAllOrders({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+  };
+
+  const WishlistClicker = () => {
+    setnavcontent("Wishlist");
+    setDashboard({
+      ...Dashboard,
+      backgroundColor: "",
+    });
+    setStores({
+      ...Stores,
+      backgroundColor: "",
+    });
+    setViewacoount({
+      ...Viewaccount,
+      backgroundColor: "",
+    });
+    setAllusers({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAddproduct({
+      ...Addproduct,
+      backgroundColor: "",
+    });
+
+    setAllProduct({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+
+    setAllQuesion({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "rgba(0, 0, 0, 0.315)",
+    });
+    setAllOrders({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+  };
+
+  const OrdersClicker = () => {
+    setnavcontent("Orders");
+    setDashboard({
+      ...Dashboard,
+      backgroundColor: "",
+    });
+    setStores({
+      ...Stores,
+      backgroundColor: "",
+    });
+    setViewacoount({
+      ...Viewaccount,
+      backgroundColor: "",
+    });
+    setAllusers({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAllvendors({
+      ...Allusers,
+      backgroundColor: "",
+    });
+    setAddproduct({
+      ...Addproduct,
+      backgroundColor: "",
+    });
+
+    setAllProduct({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+
+    setAllQuesion({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setWishlist({
+      ...AllProduct,
+      backgroundColor: "",
+    });
+    setAllOrders({
       ...AllProduct,
       backgroundColor: "rgba(0, 0, 0, 0.315)",
     });
@@ -686,7 +860,7 @@ const Sidebar = () => {
                 >
                   <ListItemButton sx={AllQuestion} onClick={AllQuestionClicker}>
                     <ListItemIcon sx={{ color: "white" }}>
-                      <FeedIcon />
+                      <QuestionAnswerIcon />
                     </ListItemIcon>
                     <ListItemText
                       primary='All Questions'
@@ -783,6 +957,50 @@ const Sidebar = () => {
                     </ListItemIcon>
                     <ListItemText
                       primary='View Account'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+              <Link
+                to='/orders'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={AllOrders} onClick={OrdersClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <ViewStreamIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Orders'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+              <Link
+                to='/wishlist'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Wishlist} onClick={WishlistClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <FavoriteBorderIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Wishlists'
                       sx={{ color: "white", textDecoration: "none" }}
                     />
                   </ListItemButton>

@@ -6,10 +6,12 @@ import {
   allproduct,
   deleteComments,
   deleteproduct,
+  fetchComments,
   filterProducts,
   findOneproduct,
   getallproducts,
   getproducts,
+  postAnswer,
   updateproduct,
 } from "../Controllers/ProductController.js";
 var ProductRouter = express.Router();
@@ -63,5 +65,7 @@ ProductRouter.post("/filterproducts", filterProducts);
 ProductRouter.post("/addcomment", addComments);
 ProductRouter.get("/allcomment/:id", allComments);
 ProductRouter.patch("/deletecomment/:pid/:cid", deleteComments);
+ProductRouter.get("/fetchcomments/:vid", fetchComments);
+ProductRouter.post("/postanswer/:pid/:cid", postAnswer);
 
 export default ProductRouter;

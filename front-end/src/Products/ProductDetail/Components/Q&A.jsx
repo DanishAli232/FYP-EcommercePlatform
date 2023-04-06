@@ -60,7 +60,7 @@ const QA = ({
               {username}
             </Typography>
           </Box>
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               justifyContent: "flex-end",
@@ -77,7 +77,7 @@ const QA = ({
                 },
               }}
             />
-          </Box>
+          </Box> */}
         </Box>
         {answer && (
           <Box
