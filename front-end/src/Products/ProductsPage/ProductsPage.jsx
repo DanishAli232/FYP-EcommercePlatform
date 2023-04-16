@@ -119,6 +119,7 @@ const ProductsPage = () => {
     { title: "Watches", qty: 34, active: false },
   ]);
   const [page, setPage] = React.useState(1);
+  const [totalPages, settotalPages] = useState(0);
 
   const [filterQueries, setfilterQueries] = useState({
     sorting: sorting,
@@ -167,53 +168,6 @@ const ProductsPage = () => {
       });
     }
   };
-  const productitems = [
-    {
-      img: shirt3,
-      price: "899.99",
-      title: "Checkered Casual Shirt",
-    },
-    {
-      img: shirt3,
-      price: "899.99",
-      title: "Checkered Casual Shirt",
-    },
-    {
-      img: shirt3,
-      price: "899.99",
-      title: "Checkered Casual Shirt",
-    },
-    {
-      img: shirt3,
-      price: "899.99",
-      title: "Checkered Casual Shirt",
-    },
-    {
-      img: shirt3,
-      price: "899.99",
-      title: "Checkered Casual Shirt",
-    },
-    {
-      img: shirt3,
-      price: "899.99",
-      title: "Checkered Casual Shirt",
-    },
-    {
-      img: shirt3,
-      price: "899.99",
-      title: "Checkered Casual Shirt",
-    },
-    {
-      img: shirt3,
-      price: "899.99",
-      title: "Checkered Casual Shirt",
-    },
-    {
-      img: shirt3,
-      price: "899.99",
-      title: "Checkered Casual Shirt",
-    },
-  ];
 
   const fetchData = async () => {
     console.log("yess");
@@ -222,9 +176,10 @@ const ProductsPage = () => {
       try {
         let { data } = await axios.post("/api/filterproducts", filterQueries);
         setproducts(data);
-
         setstatus(false);
         seterror({ ...error, check: false });
+        let total_pages = Math.ceil(data.length / 9);
+        settotalPages(total_pages);
         console.log(data);
       } catch (error) {
         seterror({ ...error, check: true });
@@ -239,16 +194,25 @@ const ProductsPage = () => {
         setproducts(data);
         setstatus(false);
         seterror({ ...error, check: false });
+        let total_pages = Math.ceil(data.length / 9);
+        settotalPages(total_pages);
         console.log(data);
       } catch (error) {
         seterror({ ...error, check: true });
       }
     }
   };
+
   useEffect(() => {
     fetchData();
     console.log(filterQueries);
   }, [filterQueries, switchbtn]);
+
+  // useEffect(() => {
+  //   chrome.storage.local.get(['myData'], (result) => {
+  //     setMyData(result.myData);
+  //   });
+  // }, []);
 
   const ratingClick = (value) => {
     let data = ratingvalue.filter(function (x) {
@@ -433,7 +397,7 @@ const ProductsPage = () => {
               ))}
             </Box>
           </Grid>
-          <Grid item md={8}>
+          <Grid item md={8} style={{ position: "relative" }}>
             <Box
               sx={{
                 display: "flex",
@@ -506,10 +470,12 @@ const ProductsPage = () => {
                         justifyContent: "flex-end",
                         width: "100%",
                         marginTop: "50px",
+                        position: "absolute",
+                        bottom: "0px",
                       }}
                     >
                       <Pagination
-                        count={10}
+                        count={page}
                         page={page}
                         // classes={{ ul: classes.ul }}
                         onChange={handlePage}

@@ -10,7 +10,7 @@ import {
   staggerContainer,
 } from "../../../FramerMotion/motion";
 
-const AllProducts = ({ name: title, price, img }) => {
+const AllProducts = ({ name: title, price, image }) => {
   const [display1, setdisplay1] = useState("none");
   const [open, setopen] = useState(false);
 
@@ -26,7 +26,12 @@ const AllProducts = ({ name: title, price, img }) => {
     >
       <Box>
         <Box
-          sx={{ display: "flex", position: "relative" }}
+          sx={{
+            display: "flex",
+            position: "relative",
+            // width: "200px",
+            height: "234px",
+          }}
           onMouseEnter={() => {
             setdisplay1("flex");
             setopen(true);
@@ -36,9 +41,9 @@ const AllProducts = ({ name: title, price, img }) => {
             setopen(false);
           }}
         >
-          <motion.img
-            src={img}
-            alt=''
+          <img
+            src={image}
+            alt='image1'
             style={{
               width: "100%",
               height: { md: "300px", xs: "150px" },

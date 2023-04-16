@@ -227,6 +227,7 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
+    console.log(state1.image);
     allComment();
   }, []);
 

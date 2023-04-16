@@ -49,7 +49,7 @@ export const getproducts = async (req, res) => {
     // console.log(q);
     const products = await Product.find({});
     var sortedArr = products.map((x) => {
-      return { ...x._doc, image: avatarUrl + x.image };
+      return { ...x._doc, image: x.image };
     });
 
     res.send(sortedArr);
@@ -309,3 +309,5 @@ export const vendorProducts = async (req, res) => {
     res.status(404).send({ message: "Product Not Found" });
   }
 };
+
+export const fetchPages = async (req, res) => {};
