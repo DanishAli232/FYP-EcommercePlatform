@@ -2,19 +2,19 @@ export const sliderItems = [
   {
     id: 1,
     title: "AR Magic",
-    Image: "assets/images/img1.jpg",
+    Image: "assets/images/img3.jpg",
     Desc: "Not yet specified for this component",
   },
   {
     id: 2,
     title: "Satisfaction",
-    Image: "assets/images/img2.jpg",
+    Image: "assets/images/img1.jpg",
     Desc: "Not yet specified for this component",
   },
   {
     id: 3,
     title: "Explore Now",
-    Image: "assets/images/img3.jpg",
+    Image: "assets/images/img2.jpg",
     Desc: "Not yet specified for this component",
   },
   {

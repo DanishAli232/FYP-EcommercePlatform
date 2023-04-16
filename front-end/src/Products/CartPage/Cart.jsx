@@ -46,6 +46,7 @@ const Cart = () => {
     cartitems,
     setcartitems,
     setCartPrice,
+    setbuyNow,
     fetchcartItems,
     state,
     dispatch: ctxDispatch,
@@ -143,6 +144,7 @@ const Cart = () => {
   useEffect(() => {
     fetchWishData();
     fetchData();
+    setbuyNow({});
   }, []);
 
   const handleSelectAll = (e) => {

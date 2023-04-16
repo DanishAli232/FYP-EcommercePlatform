@@ -165,7 +165,7 @@ export const filterProducts = async (req, res) => {
 
   const product = await Product.find({
     $and: [
-      { category: "Shoes" },
+      { category: "shoes" },
       { price: { $gte: 0, $lte: 600 } },
       { rating: 2 },
     ],
@@ -173,9 +173,9 @@ export const filterProducts = async (req, res) => {
     .skip(0)
     .limit(9)
     .sort(sortprice);
-
+  console.log(product);
   console.log(product.length);
-  res.send("pak");
+  res.send(product);
   if (product) {
   } else {
     res.status(404).send({ message: "Product Not Found" });
@@ -268,5 +268,44 @@ export const postAnswer = async (req, res) => {
     res.send(data1);
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const vendorProducts = async (req, res) => {
+  console.log(req.body);
+  let values = req.body;
+  if (values.limit === 1) {
+    values.limit = 0;
+  } else {
+    values.limit = (values.limit - 1) * 9;
+    console.log(values.limit);
+  }
+  let sortprice = {};
+  if (values.sorting === "") {
+    sortprice = {};
+  } else if (values.sorting === "lowtohigh") {
+    sortprice = { price: 1 };
+  } else if (values.sorting === "hightolow") {
+    sortprice = { price: -1 };
+  }
+  // let vl = values.vendorid.vendorid.trim();
+  // console.log(vl);
+
+  const product = await Product.find({
+    $and: [
+      { price: { $gte: 0, $lte: 600 } },
+      { rating: 2 },
+      { vendor: values.vendorid["vendorid"] },
+    ],
+  })
+    .skip(0)
+    .limit(9)
+    .sort(sortprice);
+  console.log(product);
+  console.log(product.length);
+  res.send(product);
+  if (product) {
+  } else {
+    res.status(404).send({ message: "Product Not Found" });
   }
 };

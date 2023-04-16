@@ -8,6 +8,7 @@ import { ContextState } from "./Context";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import CheckAuth from "./Auth/CheckAuth";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { TransactionsProvider } from "./Context/TransactionContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,15 +16,17 @@ root.render(
     <React.StrictMode>
       <Router>
         <ContextState>
-          <DashboardContext>
-            <CheckAuth>
-              <React.Fragment>
-                <PayPalScriptProvider deferLoading={true}>
-                  <App />
-                </PayPalScriptProvider>{" "}
-              </React.Fragment>{" "}
-            </CheckAuth>{" "}
-          </DashboardContext>{" "}
+          <TransactionsProvider>
+            <DashboardContext>
+              <CheckAuth>
+                <React.Fragment>
+                  <PayPalScriptProvider deferLoading={true}>
+                    <App />
+                  </PayPalScriptProvider>{" "}
+                </React.Fragment>{" "}
+              </CheckAuth>{" "}
+            </DashboardContext>{" "}
+          </TransactionsProvider>{" "}
         </ContextState>{" "}
       </Router>{" "}
     </React.StrictMode>{" "}

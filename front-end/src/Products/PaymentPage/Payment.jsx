@@ -29,7 +29,7 @@ import NavBar1 from "../../Components/NavBar1";
 import Paypal from "./Components/paypal";
 
 const Payment = () => {
-  const { allprice, state, cartitems } = useContext(GlobalContext);
+  const { allprice, state, cartitems, buyNow } = useContext(GlobalContext);
   const [openBox, setopenBox] = useState({
     COD: false,
     Easypaisa: false,
@@ -214,7 +214,7 @@ const Payment = () => {
                       alt=''
                       style={{ width: "64px", height: "32px" }}
                     />
-                    <Typography>JazzCash</Typography>
+                    <Typography>Using Etherium</Typography>
                   </Box>
                 </Box>
                 <Box
@@ -343,7 +343,10 @@ const Payment = () => {
               >
                 <Typography sx={{ fontSize: "14px" }}>Items Total</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
-                  Rs. {allprice.itemstotal}{" "}
+                  Rs.{" "}
+                  {Object.keys(buyNow).length === 0
+                    ? allprice.itemstotal
+                    : buyNow.price}
                 </Typography>
               </Box>
               <Box
@@ -360,7 +363,10 @@ const Payment = () => {
               >
                 <Typography sx={{ fontSize: "14px" }}>Delivery Fee</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
-                  Rs. {allprice.alldelivery}{" "}
+                  Rs.{" "}
+                  {Object.keys(buyNow).length === 0
+                    ? allprice.alldelivery
+                    : 150}{" "}
                 </Typography>
               </Box>
               <Box
@@ -377,7 +383,10 @@ const Payment = () => {
               >
                 <Typography sx={{ fontSize: "14px" }}>Total Payment</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
-                  Rs. {allprice.withdelivery}{" "}
+                  Rs.{" "}
+                  {Object.keys(buyNow).length === 0
+                    ? allprice.withdelivery
+                    : buyNow.price + 150}{" "}
                 </Typography>
               </Box>
 
@@ -392,7 +401,10 @@ const Payment = () => {
               >
                 <Typography>Total</Typography>
                 <Typography sx={{ fontSize: "18px", color: "#f57224" }}>
-                  Rs. {allprice.withdelivery}{" "}
+                  Rs.{" "}
+                  {Object.keys(buyNow).length === 0
+                    ? allprice.withdelivery
+                    : buyNow.price + 150}{" "}
                 </Typography>
               </Box>
               <Link to='/payment'> </Link>

@@ -16,7 +16,8 @@ const Sell = () => {
   const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
 
   useEffect(() => {
-    if (state.userInfo.user) {
+    console.log(state.userInfo);
+    if (state.userInfo) {
       if (state.userInfo.user.status === "vendor") {
         navigate("/dashboard");
       }

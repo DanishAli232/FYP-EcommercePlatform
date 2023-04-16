@@ -55,6 +55,7 @@ const Checkout = () => {
     setCartPrice,
     state,
     allprice,
+    buyNow,
     cartitems,
     setcartitems,
   } = useContext(GlobalContext);
@@ -80,24 +81,32 @@ const Checkout = () => {
   };
 
   const fetchData = async () => {
-    try {
-      dispatch({ type: "FETCH_REQUEST" });
-      const { data } = await axios.get(
-        `/api/allcartitems/${userInfo.user._id}`
-      );
+    if (Object.keys(buyNow).length === 0) {
+      console.log("ok1");
+      try {
+        dispatch({ type: "FETCH_REQUEST" });
+        const { data } = await axios.get(
+          `/api/allcartitems/${userInfo.user._id}`
+        );
 
-      console.log(data);
-      setCartPrice(data[0].products);
-      setcartitems(data[0].products);
-      settotalitems(data[0].products.length);
-      dispatch({ type: "FETCH_SUCCESS", payload: data });
-    } catch (error) {
-      dispatch({ type: "FETCH_FAIL", payload: error.message });
+        console.log(data);
+        setCartPrice(data[0].products);
+        setcartitems(data[0].products);
+        settotalitems(data[0].products.length);
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
+      } catch (error) {
+        dispatch({ type: "FETCH_FAIL", payload: error.message });
+      }
+    } else {
+      console.log("ok1");
+      dispatch({ type: "FETCH_SUCCESS", payload: [] });
     }
   };
 
   useEffect(() => {
     fetchData();
+    console.log(buyNow);
+    console.log(Object.keys(buyNow).length);
   }, []);
 
   return (
@@ -155,7 +164,7 @@ const Checkout = () => {
                 <LoadingBox />
               ) : error ? (
                 <p>Something Went Wrong</p>
-              ) : (
+              ) : Object.keys(buyNow).length === 0 ? (
                 cartitems.map((item, i) => (
                   <CheckoutList
                     key={i}
@@ -173,6 +182,22 @@ const Checkout = () => {
                     setStatus={setStatus}
                   />
                 ))
+              ) : (
+                <CheckoutList
+                  key={buyNow._id}
+                  cartid={cart.cartid.cartId}
+                  id={buyNow._id}
+                  title={buyNow.title}
+                  storename={buyNow.brand}
+                  price={buyNow.price}
+                  image={buyNow.image}
+                  quantity={buyNow.quantity}
+                  fetchData={fetchData}
+                  setseverity={setseverity}
+                  setmessage={setmessage}
+                  setOpen={setOpen}
+                  setStatus={setStatus}
+                />
               )}
               {/* {cartitems.map((item, i) => (
                 <CheckoutList
@@ -268,7 +293,10 @@ const Checkout = () => {
               >
                 <Typography sx={{ fontSize: "14px" }}>Items Total</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
-                  Rs. {allprice.itemstotal}
+                  Rs.{" "}
+                  {Object.keys(buyNow).length === 0
+                    ? allprice.itemstotal
+                    : buyNow.price}
                 </Typography>
               </Box>
               <Box
@@ -285,7 +313,10 @@ const Checkout = () => {
               >
                 <Typography sx={{ fontSize: "14px" }}>Delivery Fee</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
-                  Rs. {allprice.alldelivery}{" "}
+                  Rs.{" "}
+                  {Object.keys(buyNow).length === 0
+                    ? allprice.alldelivery
+                    : 150}{" "}
                 </Typography>
               </Box>
               <Box
@@ -302,7 +333,10 @@ const Checkout = () => {
               >
                 <Typography sx={{ fontSize: "14px" }}>Total Payment</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
-                  Rs. {allprice.withdelivery}{" "}
+                  Rs.{" "}
+                  {Object.keys(buyNow).length === 0
+                    ? allprice.withdelivery
+                    : buyNow.price + 150}{" "}
                 </Typography>
               </Box>
 
@@ -317,7 +351,10 @@ const Checkout = () => {
               >
                 <Typography>Total</Typography>
                 <Typography sx={{ fontSize: "18px", color: "#f57224" }}>
-                  Rs. {allprice.withdelivery}
+                  Rs.{" "}
+                  {Object.keys(buyNow).length === 0
+                    ? allprice.withdelivery
+                    : buyNow.price + 150}
                 </Typography>
               </Box>
               <Link to='/payment'>

@@ -13,6 +13,7 @@ import {
   getproducts,
   postAnswer,
   updateproduct,
+  vendorProducts,
 } from "../Controllers/ProductController.js";
 var ProductRouter = express.Router();
 
@@ -67,5 +68,6 @@ ProductRouter.get("/allcomment/:id", allComments);
 ProductRouter.patch("/deletecomment/:pid/:cid", deleteComments);
 ProductRouter.get("/fetchcomments/:vid", fetchComments);
 ProductRouter.post("/postanswer/:pid/:cid", postAnswer);
+ProductRouter.post("/filtervendorProducts", vendorProducts);
 
 export default ProductRouter;

@@ -27,11 +27,11 @@ const Address = () => {
     setAddressBoxOpen(true);
   };
   defaultA = { ...DefaultAddress };
-  console.log(defaultA);
+  // console.log(defaultA);
   useEffect(() => {
     fetchAddresses();
-    console.log(DefaultAddress);
-    console.log(defaultA);
+    // console.log(DefaultAddress);
+    // console.log(defaultA);
   }, []);
 
   return (

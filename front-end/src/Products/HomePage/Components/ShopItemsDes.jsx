@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { AnimatePresence, motion } from "framer-motion";
@@ -10,8 +10,16 @@ import {
   staggerContainer,
 } from "../../../FramerMotion/motion";
 import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../../Context";
+import axios from "axios";
 
-const ShopItemsDes = ({ title, price, img }) => {
+const ShopItemsDes = ({ title, price, img, _id }) => {
+  const {
+    state,
+    dispatch: ctxDispatch,
+    fetchcartItems,
+  } = useContext(GlobalContext);
+  const { cart, userInfo } = state;
   const navigate = useNavigate();
   const [display1, setdisplay1] = useState("none");
   const [open, setopen] = useState(false);
@@ -20,9 +28,59 @@ const ShopItemsDes = ({ title, price, img }) => {
     console.log(open);
   }, [open]);
 
-  const handleClicker = (item) => {
-    navigate(`/productdetail/${item._id}`, { state: item });
+  const addToCartHandler = async () => {
+    console.log(cart.cartItem);
+
+    // const { data } = await axios.get(`/api/products/${product._id}`);
+    // if (data.countinstock < quantity) {
+    //   window.alert("Sorry, Product is out of Stock");
+    //   return;
+    // }
+    const products = {
+      productid: _id,
+      quantity: 1,
+      totalprice: price,
+    };
+    const id = userInfo.user._id;
+    if (cart.cartid) {
+      const { data } = await axios.patch(
+        `/api/updatecartitems/${cart.cartid.cartId}`,
+        {
+          products,
+        }
+      );
+      navigate("/cartpage");
+      console.log(data);
+    } else {
+      const { data } = await axios.post("/api/addcartitems", {
+        products,
+        id,
+      });
+      console.log(data);
+      fetchcartItems();
+      ctxDispatch({
+        type: "CART_ADD_ITEM",
+        payload: {
+          products,
+        },
+      });
+      navigate("/cartpage");
+
+      // ctxDispatch({
+      //   type: "CART_ID",
+      //   payload: {
+      //     data,
+      //   },
+      // });
+    }
+
+    // navigate("/cartpage");
   };
+  const handleClicker = (item) => {
+    navigate(`/productdetail/${_id}`, { state: item });
+  };
+
+  const handleBasket = () => {};
 
   return (
     <motion.div
@@ -32,7 +90,7 @@ const ShopItemsDes = ({ title, price, img }) => {
       whileHover='hover'
       viewport={{ once: false, amount: 0.25 }}
     >
-      <Box onClick={() => handleClicker({ title, price, img })}>
+      <Box>
         <Box
           sx={{ display: "flex", position: "relative" }}
           onMouseEnter={() => {
@@ -56,6 +114,7 @@ const ShopItemsDes = ({ title, price, img }) => {
           <AnimatePresence>
             {open && (
               <motion.p
+                onClick={addToCartHandler}
                 whileHover={{
                   background: "#eb2d42",
                   transition: {
@@ -91,6 +150,7 @@ const ShopItemsDes = ({ title, price, img }) => {
           <AnimatePresence>
             {open && (
               <motion.div
+                onClick={() => handleClicker({ title, price, img })}
                 whileHover={{
                   background: "#eb2d42",
                   color: "white",
@@ -126,6 +186,7 @@ const ShopItemsDes = ({ title, price, img }) => {
           <AnimatePresence>
             {open && (
               <motion.div
+                onClick={handleBasket}
                 whileHover={{
                   background: "#eb2d42",
                   color: "white",

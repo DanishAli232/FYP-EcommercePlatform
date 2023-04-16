@@ -168,3 +168,12 @@ export const Vendorlogin = async (req, res) => {
     return res.status(500).send({ errors: { message: error.message } });
   }
 };
+
+export const storeName = async (req, res) => {
+  try {
+    let data = await Vendor.findOne({ _id: req.params.id });
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+  }
+};

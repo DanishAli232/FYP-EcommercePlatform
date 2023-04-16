@@ -10,7 +10,7 @@ import {
   staggerContainer,
 } from "../../../FramerMotion/motion";
 
-const AllProducts = ({ title, price, img }) => {
+const AllProducts = ({ name: title, price, img }) => {
   const [display1, setdisplay1] = useState("none");
   const [open, setopen] = useState(false);
 

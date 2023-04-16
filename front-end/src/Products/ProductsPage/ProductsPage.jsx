@@ -15,6 +15,7 @@ import NavBar1 from "../../Components/NavBar1";
 // import img1 from "../Assets/watch2.jpg";
 import styled from "styled-components";
 import Navbar2 from "../../Components/Navbar2";
+import queryString from "query-string";
 import Slider from "@mui/material/Slider";
 import { pink } from "@mui/material/colors";
 import shirt3 from "../../Assets/shirt3.jpg";
@@ -24,6 +25,7 @@ import RatingValue from "./Components/RatingValue";
 import axios from "axios";
 import LoadingBox from "../../Components/LoadingBox";
 import { GlobalContext } from "../../Context";
+import { useLocation } from "react-router-dom";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -89,12 +91,21 @@ function valuetext(value) {
 const minDistance = 10;
 
 const ProductsPage = () => {
-  const { setdashboardOpen } = useContext(GlobalContext);
+  // const location = window.location.search;
+  // const result = location.split("%")[2];
+  const value = queryString.parse(window.location.search);
+  console.log(value.vendorid);
+  // const vendorid = value.vendorid;
+  // console.log(vendorid);
+  // console.log("token", token); //123
+
+  const { setdashboardOpen, switchbtn } = useContext(GlobalContext);
   useEffect(() => {
     setdashboardOpen(false);
   });
   const [value1, setValue1] = React.useState([1500, 6000]);
   const [sorting, setSorting] = React.useState("");
+  const [products, setproducts] = useState([]);
   const [status, setstatus] = useState(false);
   const [error, seterror] = useState({
     message: "Something Went Wrong",
@@ -116,6 +127,7 @@ const ProductsPage = () => {
     maxprice: value1[1],
     category: "shirts",
     limit: page,
+    vendorid: value,
   });
 
   const handleChange2 = (event) => {
@@ -206,19 +218,37 @@ const ProductsPage = () => {
   const fetchData = async () => {
     console.log("yess");
     setstatus(true);
-    try {
-      let { data } = await axios.post("/api/filterproducts", filterQueries);
-      setstatus(false);
-      seterror({ ...error, check: false });
-      console.log(data);
-    } catch (error) {
-      seterror({ ...error, check: true });
+    if (switchbtn === 1 || value.vendorid === undefined) {
+      try {
+        let { data } = await axios.post("/api/filterproducts", filterQueries);
+        setproducts(data);
+
+        setstatus(false);
+        seterror({ ...error, check: false });
+        console.log(data);
+      } catch (error) {
+        seterror({ ...error, check: true });
+      }
+    } else {
+      try {
+        // setfilterQueries({ ...filterQueries, vendorid: vendorid });
+        let { data } = await axios.post(
+          "/api/filtervendorProducts",
+          filterQueries
+        );
+        setproducts(data);
+        setstatus(false);
+        seterror({ ...error, check: false });
+        console.log(data);
+      } catch (error) {
+        seterror({ ...error, check: true });
+      }
     }
   };
   useEffect(() => {
     fetchData();
     console.log(filterQueries);
-  }, [filterQueries]);
+  }, [filterQueries, switchbtn]);
 
   const ratingClick = (value) => {
     let data = ratingvalue.filter(function (x) {
@@ -246,7 +276,11 @@ const ProductsPage = () => {
   return (
     <Box>
       <NavBar1 />
-      <Navbar2 title={"Products"} title1={"Home"} />
+      {switchbtn === 1 ? (
+        <Navbar2 title={"Products"} title1={"Home"} />
+      ) : (
+        <Navbar2 title={"Online Store"} title1={"Home"} />
+      )}
       <Box sx={{ padding: "40px 13px" }}>
         <Grid container spacing={4} rowSpacing={4}>
           <Grid item md={4} sx={{ width: { md: "auto", xs: "100%" } }}>
@@ -258,47 +292,52 @@ const ProductsPage = () => {
                 borderRadius: "4px",
               }}
             >
-              <Title1>Product Categories</Title1>
-              <ul style={{ margin: 0, padding: 0 }}>
-                {categories.map((item) => (
-                  <li
-                    onMouseEnter={(e) => {
-                      if (!item.active) {
-                        e.target.style.backgroundColor = "#e5e5e56b";
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!item.active) {
-                        e.target.style.backgroundColor = "transparent";
-                      }
-                    }}
-                    style={{
-                      ...liststyle,
-                      cursor: "pointer",
-                      background: item.active ? "#e5e5e56b" : "transparent",
-                    }}
-                    onClick={() => {
-                      let data = categories.filter(function (x) {
-                        x.active = false;
-                        return x;
-                      });
-                      setcategories(data);
-                      let objIndex = categories.findIndex(
-                        (obj) => obj.title === item.title
-                      );
-                      data[objIndex].active = true;
-                      setcategories(data);
-                      setfilterQueries({
-                        ...filterQueries,
-                        category: item.title,
-                      });
-                    }}
-                  >
-                    {item.title}
-                    <Total>{item.qty}</Total>
-                  </li>
-                ))}
-              </ul>
+              {switchbtn === 1 && (
+                <Box>
+                  <Title1>Product Categories</Title1>
+                  <ul style={{ margin: 0, padding: 0 }}>
+                    {categories.map((item) => (
+                      <li
+                        onMouseEnter={(e) => {
+                          if (!item.active) {
+                            e.target.style.backgroundColor = "#e5e5e56b";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!item.active) {
+                            e.target.style.backgroundColor = "transparent";
+                          }
+                        }}
+                        style={{
+                          ...liststyle,
+                          cursor: "pointer",
+                          background: item.active ? "#e5e5e56b" : "transparent",
+                        }}
+                        onClick={() => {
+                          let data = categories.filter(function (x) {
+                            x.active = false;
+                            return x;
+                          });
+                          setcategories(data);
+                          let objIndex = categories.findIndex(
+                            (obj) => obj.title === item.title
+                          );
+                          data[objIndex].active = true;
+                          setcategories(data);
+                          setfilterQueries({
+                            ...filterQueries,
+                            category: item.title,
+                          });
+                        }}
+                      >
+                        {item.title}
+                        <Total>{item.qty}</Total>
+                      </li>
+                    ))}
+                  </ul>
+                </Box>
+              )}
+
               <Title1>Filter By Price</Title1>
               <Typography
                 sx={{
@@ -449,7 +488,7 @@ const ProductsPage = () => {
                     columnSpacing={2}
                     sx={{ marginBottom: "20px" }}
                   >
-                    {productitems.map((item) => (
+                    {products.map((item) => (
                       <Grid
                         width='100%'
                         item
@@ -470,7 +509,8 @@ const ProductsPage = () => {
                       }}
                     >
                       <Pagination
-                        count={4}
+                        count={10}
+                        page={page}
                         // classes={{ ul: classes.ul }}
                         onChange={handlePage}
                         shape='rounded'

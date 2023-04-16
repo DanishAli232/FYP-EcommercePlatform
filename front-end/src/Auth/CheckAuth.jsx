@@ -6,7 +6,7 @@ import { GlobalContext } from "../Context";
 const CheckAuth = ({ children }) => {
   const navigate = useNavigate();
   const { state } = useContext(GlobalContext);
-  console.log(state);
+  // console.log(state);
   // useEffect(() => {
   //   if (state.userInfo !== null) {
   //     navigate("/");

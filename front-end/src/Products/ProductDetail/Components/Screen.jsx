@@ -30,22 +30,6 @@ import styled from "styled-components";
 
 const MagnifierDiv = styled.div``;
 
-let comments = [
-  {
-    question: "can Q link(US) sim work in this phone?",
-    answer: "Yes, I am using Qlink SIM on it.",
-  },
-  {
-    question: "funciona para Venezuela?",
-    answer:
-      "viene desbloqueado de fabrica, así que funciona en cualquier país. Lo estoy usando en El Salvador he probado con dos telcos diferentes sin problemas",
-  },
-  {
-    question: "Funciona con spectrum?",
-    answer: "n El Salvador he probado con dos telcos diferentes sin problemas",
-  },
-];
-
 let reviews = [
   {
     personName: "Danish",
@@ -66,31 +50,49 @@ let reviews = [
 
 const ProductDetail = () => {
   const [quantity, setquantity] = useState(1);
+  const [storename, setstorename] = useState("");
   const [allcomment, setallcomment] = useState([]);
   const { state: state1 } = useLocation();
 
   const navigate = useNavigate();
   const {
     state,
+    setbuyNow,
     dispatch: ctxDispatch,
     DefaultAddress,
     fetchAddresses,
+    switchbtn,
+    setswitchbtn,
     fetchcartItems,
   } = useContext(GlobalContext);
   const { cart, userInfo } = state;
   const [comment, setcomment] = useState({
-    user: userInfo.user._id,
-    username: userInfo.user.name,
-    productid: state1._id,
+    user: "",
+    username: "",
+    productid: "s",
     comment: "",
   });
+
   const [imagestyle, setimagestyle] = useState({
     position: "",
     top: "",
   });
 
+  const storeName = async () => {
+    const { data } = await axios.get(`/api/storeName/${state1.vendor}`);
+    setstorename(data.storename);
+  };
   useEffect(() => {
-    fetchAddresses();
+    storeName();
+    if (userInfo) {
+      fetchAddresses();
+      setcomment({
+        user: userInfo.user._id,
+        username: userInfo.user.name,
+        productid: state1._id,
+        comment: "",
+      });
+    }
   }, []);
 
   // const [topPosition, settopPosition] = useState(0);
@@ -197,6 +199,19 @@ const ProductDetail = () => {
     },
   ];
 
+  const handleBasket = () => {
+    console.log(state1);
+    setbuyNow({
+      id: state1._id,
+      title: state1.name,
+      brand: state1.brand,
+      price: state1.price,
+      image: state1.image,
+      quantity: quantity,
+    });
+    navigate("/checkout");
+  };
+
   const postComment = async () => {
     try {
       let { data } = await axios.post("/api/addcomment", comment);
@@ -237,8 +252,13 @@ const ProductDetail = () => {
           <Grid item md={4}>
             <Box>
               {/* <ReactImageZoom {...props} /> */}
-              <Magnifier imageSrc={img} width={400} height={400} zoomFactor={2}>
-                <img src={img} alt='Image1' />
+              <Magnifier
+                imageSrc={state1.image}
+                width={400}
+                height={400}
+                zoomFactor={2}
+              >
+                <img src={state1.image} alt='Image1' />
               </Magnifier>
 
               {/* <div className='image-container'>
@@ -677,7 +697,7 @@ const ProductDetail = () => {
                           marginTop: "4px",
                         }}
                       >
-                        GanaTraZ Fashion (Karachi)
+                        {storename}
                       </Typography>
                     </Box>
                     <Typography
@@ -715,6 +735,7 @@ const ProductDetail = () => {
                       Add to Cart
                     </Button>
                     <Button
+                      onClick={handleBasket}
                       sx={{
                         backgroundColor: "#ffa41c",
                         width: "79%",
@@ -731,6 +752,10 @@ const ProductDetail = () => {
                     </Button>
                   </Box>
                   <Typography
+                    onClick={() => {
+                      setswitchbtn(0);
+                      navigate(`/products?vendorid=${state1.vendor}`);
+                    }}
                     sx={{
                       textAlign: "center",
                       color: "#1a9cb7",

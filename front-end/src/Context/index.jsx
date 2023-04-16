@@ -151,7 +151,9 @@ export const ContextState = ({ children }) => {
   });
   const [state, dispatch] = useReducer(reducer, initialstate);
   const [dashboardOpen, setdashboardOpen] = useState(false);
+  const [buyNow, setbuyNow] = useState({});
   const [AddressBoxOpen, setAddressBoxOpen] = useState(false);
+  const [switchbtn, setswitchbtn] = useState(0);
   const [AddressFormOpen, setAddressFormOpen] = useState(false);
   const [DefaultAddress, setDefaultAddress] = useState([]);
   const [addresslist, setaddresslist] = useState({});
@@ -164,11 +166,11 @@ export const ContextState = ({ children }) => {
   const [quantity, setquantity] = useState(0);
 
   const fetchAddresses = async () => {
-    console.log("yes");
+    // console.log("yes");
     const { data: data1 } = await axios.get(
       `/api/getaddresses/${state.userInfo.user._id}`
     );
-    console.log(data1);
+    // console.log(data1);
     let data = { success: true, addressId: data1[0]._id };
     dispatch({
       type: "SAVE_SHIPPING_ADDRESS",
@@ -186,12 +188,12 @@ export const ContextState = ({ children }) => {
   };
 
   const fetchcartItems = async () => {
-    console.log("yes");
+    // console.log("yes");
     try {
       const { data } = await axios.get(
         `/api/allcartitems/${state.userInfo.user._id}`
       );
-      console.log(data[0]);
+      // console.log(data[0]);
       if (data[0]) {
         let cartid = {
           success: true,
@@ -203,14 +205,14 @@ export const ContextState = ({ children }) => {
             cartid,
           },
         });
-        console.log(cartid);
+        // console.log(cartid);
         setcartitems(data[0].products);
 
         return data;
       } else {
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
 
     // console.log(data1);
@@ -262,6 +264,8 @@ export const ContextState = ({ children }) => {
     <GlobalContext.Provider
       value={{
         addresslist,
+        buyNow,
+        setbuyNow,
         setaddresslist,
         cartitems,
         setcartitems,
@@ -270,6 +274,8 @@ export const ContextState = ({ children }) => {
         adddress,
         setadddress,
         fetchcartItems,
+        switchbtn,
+        setswitchbtn,
         setCartPrice,
         fetchAddresses,
         setnavlistitems,

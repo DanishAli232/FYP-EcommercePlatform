@@ -22,11 +22,13 @@
     "chart.js": "^4.2.1",
     "dotenv": "^16.0.3",
     "draft-js": "^0.11.7",
+    "ethers": "^6.3.0",
     "faker": "^6.6.6",
     "framer-motion": "^7.10.3",
     "jwt-decode": "^3.1.2",
     "material-ui-popup-state": "^5.0.4",
     "prop-types": "^15.8.1",
+    "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-custom-scrollbars-2": "^4.5.0",
@@ -42,7 +44,8 @@
     "slick-carousel": "^1.8.1",
     "stripe": "^11.15.0",
     "styled-components": "^5.3.6",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "web3": "^1.9.0"
   },
   "scripts": {
     "start": "react-scripts start",

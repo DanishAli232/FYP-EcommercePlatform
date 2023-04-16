@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { Scrollbars } from "react-custom-scrollbars-2";
@@ -8,6 +8,7 @@ import { Scrollbars } from "react-custom-scrollbars-2";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { listVariants } from "../FramerMotion/motion";
+import { GlobalContext } from "../Context";
 
 const catlist = [
   "Shoes",
@@ -32,6 +33,7 @@ const List = styled.li`
   }
 `;
 const NavList = ({ title, width, link, active, listClick }) => {
+  const { setswitchbtn } = useContext(GlobalContext);
   const navigate = useNavigate();
   const [open, setopen] = useState(active ? true : false);
   const [categoryOpen, setcategoryOpen] = useState(false);
@@ -51,6 +53,9 @@ const NavList = ({ title, width, link, active, listClick }) => {
         listClick(title);
         if (title !== "Categoies") {
           navigate(link);
+        }
+        if (title === "Products") {
+          setswitchbtn(1);
         }
       }}
     >
