@@ -133,7 +133,7 @@ export const ContextState = ({ children }) => {
     },
     {
       title: "Categories",
-      link: "/",
+      link: "",
       width: "73px",
       active: false,
     },
@@ -223,7 +223,7 @@ export const ContextState = ({ children }) => {
     //     data,
   };
 
-  const SignOut = () => {
+  const SignOut = (vl) => {
     localStorage.removeItem("cartItem");
     localStorage.removeItem("cartid");
     localStorage.removeItem("wishid");
@@ -237,7 +237,10 @@ export const ContextState = ({ children }) => {
     dispatch({
       type: "USER_SIGNOUT",
     });
-    navigate("/signin");
+    if (vl === "sell") {
+    } else {
+      navigate("/signin");
+    }
   };
 
   const setCartPrice = (cart) => {

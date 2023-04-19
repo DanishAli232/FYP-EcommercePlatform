@@ -100,7 +100,6 @@ const NavBar1 = () => {
   useEffect(() => {
     fetchcartItems();
   }, []);
-
   const settings = [
     { value: "Dashboard", nav: "/dashboard" },
     { value: "Logout", signout: SignOut },
@@ -247,7 +246,8 @@ const NavBar1 = () => {
                   </Box>
                 </Box>
               )}
-              {cartitems.length === 0 ? (
+              {state?.userInfo?.user?.status === "user" &&
+              cartitems.length === 0 ? (
                 <PopupState variant='popover' popupId='demo-popup-popover'>
                   {(popupState) => (
                     <div>
@@ -293,27 +293,29 @@ const NavBar1 = () => {
                   )}
                 </PopupState>
               ) : (
-                <Link to='/cartpage'>
-                  <Button
-                    sx={{
-                      backgroundColor: "#f0353b",
-                      display: { md: "flex", xs: "none" },
-                      fontSize: "13px",
-                      padding: "5px 20px 5px 20px",
-                      borderRadius: "5px",
-                      transition: "0.4s ease-in",
-                      color: "white",
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                      "&:hover": {
-                        backgroundColor: "#d90429",
-                      },
-                    }}
-                  >
-                    <ShoppingCartIcon sx={{ marginRight: "6px" }} />
-                    Cart
-                  </Button>
-                </Link>
+                state?.userInfo?.user?.status === "user" && (
+                  <Link to='/cartpage'>
+                    <Button
+                      sx={{
+                        backgroundColor: "#f0353b",
+                        display: { md: "flex", xs: "none" },
+                        fontSize: "13px",
+                        padding: "5px 20px 5px 20px",
+                        borderRadius: "5px",
+                        transition: "0.4s ease-in",
+                        color: "white",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#d90429",
+                        },
+                      }}
+                    >
+                      <ShoppingCartIcon sx={{ marginRight: "6px" }} />
+                      Cart
+                    </Button>
+                  </Link>
+                )
               )}
 
               {state.userInfo && (
@@ -466,12 +468,31 @@ const NavBar1 = () => {
               }}
             >
               <Label>Search Here</Label>
-              <InputField
-                type='search'
-                name='search'
-                id='search'
-                placeholder='Enter Keyword Here'
-              />
+              <Box
+                sx={{
+                  display: " flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <InputField
+                  type='search'
+                  name='search'
+                  id='search'
+                  placeholder='Enter Keyword Here'
+                />
+                <SearchIcon
+                  sx={{
+                    position: "relative",
+                    top: "-62px",
+                    left: "-26px",
+                    cursor: "pointer",
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{ height: "300px", width: "100%", background: "white" }}
+              ></Box>
             </Box>
             {/* <TextField
             sx={{ width: "100%", color: "white", outline: "white" }}

@@ -3,8 +3,11 @@ import {
   addUser,
   alladmins,
   alluser,
+  ChangePassword,
   deleteuser,
   Emailverify,
+  Emailverify2,
+  forgotPassword,
   getall,
   login,
   statusupdate,
@@ -20,5 +23,8 @@ UserRouter.patch("/statususerupdate/:id", statusupdate);
 UserRouter.get("/alladmins", alladmins);
 UserRouter.post("/register", addUser);
 UserRouter.post("/login", login);
+UserRouter.post("/forgotpassword", forgotPassword);
+UserRouter.get("/:id/verify2/:token", Emailverify2);
+UserRouter.post("/changepassword", ChangePassword);
 
 export default UserRouter;

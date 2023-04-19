@@ -99,7 +99,8 @@ const ProductsPage = () => {
   // console.log(vendorid);
   // console.log("token", token); //123
 
-  const { setdashboardOpen, switchbtn } = useContext(GlobalContext);
+  const { setdashboardOpen, switchbtn, navlistitems } =
+    useContext(GlobalContext);
   useEffect(() => {
     setdashboardOpen(false);
   });
@@ -202,6 +203,26 @@ const ProductsPage = () => {
       }
     }
   };
+
+  const updatelist = () => {
+    let data1 = navlistitems;
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    console.log(data);
+    // console.log(data);
+    // setnavlistitems({})
+    // setnavlistitems((prev) => {
+    //   console.log(prev);
+    // });
+
+    let objIndex = navlistitems.findIndex((obj) => obj.title === "Products");
+    navlistitems[objIndex].active = true;
+  };
+  useEffect(() => {
+    updatelist();
+  }, []);
 
   useEffect(() => {
     fetchData();

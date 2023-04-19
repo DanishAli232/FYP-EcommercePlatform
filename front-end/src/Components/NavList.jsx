@@ -44,7 +44,7 @@ const NavList = ({ title, width, link, active, listClick }) => {
     } else {
       setopen(false);
     }
-  }, []);
+  }, [active]);
 
   return (
     <Box
@@ -61,7 +61,10 @@ const NavList = ({ title, width, link, active, listClick }) => {
     >
       {" "}
       <motion.li
-        style={active && { color: "red" }}
+        style={active && title !== "Categories" && { color: "red" }}
+        onClick={() => {
+          title === "Categories" && setcategoryOpen(!categoryOpen);
+        }}
         onMouseOver={() => {
           setopen(true);
         }}
@@ -103,7 +106,7 @@ const NavList = ({ title, width, link, active, listClick }) => {
         )}
       </motion.li>
       <AnimatePresence initial={true}>
-        {open ? (
+        {open && title !== "Categories" ? (
           <motion.div
             variants={listVariants(width)}
             style={

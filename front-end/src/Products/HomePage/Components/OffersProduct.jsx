@@ -10,6 +10,8 @@ import styled from "styled-components";
 const Image = styled.img`
   width: 100%;
   cursor: pointer;
+  object-fit: cover;
+  object-position: center;
   border-radius: 5px;
   transition: 0.3s ease-in-out;
   height: 200px;

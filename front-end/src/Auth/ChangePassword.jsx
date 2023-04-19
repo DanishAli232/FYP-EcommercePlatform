@@ -1,29 +1,56 @@
 import { Close } from "@mui/icons-material";
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  Snackbar,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-
+import FacebookLogin from "react-facebook-login";
+import laptop from "../Assets/laptop.jpg";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
 import React, { useState, useContext, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../Context";
 import styled from "styled-components";
 import NavBar1 from "../Components/NavBar1";
 import Navbar2 from "../Components/Navbar2";
 import Footer1 from "../Components/Footer1";
 
-function VendorLogin() {
+function ChangePassword() {
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const {
-    state,
-    dispatch: ctxDispatch,
-    SignOut,
-    navlistitems,
-  } = useContext(GlobalContext);
+  const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
+
   const [error, setError] = useState({});
+  const [severity, setseverity] = useState("error");
+  const [open, setOpen] = React.useState(false);
+  const [message, setmessage] = useState("");
+  const [status, setStatus] = useState(null);
   const [values, setValues] = useState({
-    email: "",
+    email: id,
     password: "",
+    confirmpassword: "",
+    name: "",
   });
+
+  useEffect(() => {
+    const verify1 = () => {
+      try {
+      } catch (error) {}
+    };
+    verify1();
+  }, []);
+
   useEffect(() => {
     console.log(error);
   }, [error]);
@@ -34,69 +61,41 @@ function VendorLogin() {
     console.log(values);
   };
 
-  const clearError = () => {
-    setError({});
-  };
-
-  const updatelist = () => {
-    let data1 = navlistitems;
-    let data = data1.map(function (x) {
-      x.active = false;
-      return x;
-    });
-    console.log(data);
-    // console.log(data);
-    // setnavlistitems({})
-    // setnavlistitems((prev) => {
-    //   console.log(prev);
-    // });
-
-    let objIndex = navlistitems.findIndex((obj) => obj.title === "Sell");
-    navlistitems[objIndex].active = true;
-  };
-  useEffect(() => {
-    updatelist();
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       let result = await axios.post(
-        "http://localhost:5000/api/vendorlogin",
+        "http://localhost:5000/api/changepassword",
         values,
         {
           "Content-Type": "application/json",
         }
       );
-
-      if (result.status === 200) {
-        await SignOut("sell");
-        ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
-        localStorage.setItem("userInfo", JSON.stringify(result.data));
-        navigate("/");
-      }
+      console.log(result);
+      setStatus(true);
+      setseverity("success");
+      setOpen(true);
+      setError({});
+      setmessage("Your Password Successfully Updated");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000);
+      //   if (result.status === 200) {
+      //     ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
+      //     localStorage.setItem("userInfo", JSON.stringify(result.data));
+      //     navigate("/");
+      //   }
     } catch (err) {
-      setError(err.response.data.errors);
+      console.log(err.response.data);
+
+      setStatus(true);
+      setseverity("error");
+      setOpen(true);
+      setError(err.response.data);
+      setmessage("Invalid Input");
     }
   };
-
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size='small'
-        aria-label='close'
-        color='inherit'
-        onClick={clearError}
-      >
-        <Close fontSize='small' />
-      </IconButton>
-    </React.Fragment>
-  );
-  const Logo = styled.h1`
-    color: #f0353b;
-    font-family: Georgia, "Times New Roman", Times, serif;
-  `;
 
   const Title = styled.h2`
     color: #2b2d42;
@@ -114,10 +113,18 @@ function VendorLogin() {
 }
 `;
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setStatus(null);
+    setOpen(false);
+  };
+
   return (
     <Box>
       <NavBar1 />
-      <Navbar2 title={"Login"} title1={"Home"} />
+      <Navbar2 title={"Change Password"} title1={"Home"} />
 
       <Box
         sx={{
@@ -131,7 +138,7 @@ function VendorLogin() {
           justifyContent: "center",
         }}
       >
-        <Title>Login To Your Account</Title>
+        <Title>Change Password</Title>
         <Box
           sx={{
             height: "auto",
@@ -159,7 +166,6 @@ function VendorLogin() {
               >
                 <TextField
                   label='Email'
-                  onChange={handleChange}
                   value={values.email}
                   name='email'
                   helperText={error.email}
@@ -186,32 +192,24 @@ function VendorLogin() {
                   variant='standard'
                 />
               </Box>
+
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "row",
-                  alignItems: "baseline",
-                  marginTop: "-16px",
+                  flexDirection: "column",
+                  width: "100%",
+                  marginBottom: "20px",
                 }}
               >
-                <Title1>Forgot Password?</Title1>
-                <Link>
-                  <Typography
-                    sx={{
-                      color: "#2b2d42",
-                      fontWeight: 600,
-                      fontSize: "15px",
-                      marginLeft: "5px",
-                      textDecoration: "none",
-                      "&:hover": {
-                        color: "#d90429",
-                      },
-                    }}
-                  >
-                    {" "}
-                    Click Here
-                  </Typography>
-                </Link>
+                <TextField
+                  label='ConfirmPassword'
+                  onChange={handleChange}
+                  value={values.confirmpassword}
+                  helperText={error.confirmpassword}
+                  error={!!error.confirmpassword}
+                  name='confirmpassword'
+                  variant='standard'
+                />
               </Box>
 
               <Box sx={{ textAlign: "center" }}>
@@ -237,7 +235,7 @@ function VendorLogin() {
                     },
                   }}
                 >
-                  Login Now
+                  Change
                 </Button>
               </Box>
               <Box
@@ -249,7 +247,7 @@ function VendorLogin() {
                 }}
               >
                 <Title1> Have No Account?</Title1>
-                <Link to='/sell'>
+                <Link to='/signup'>
                   <Typography
                     sx={{
                       color: "#2b2d42",
@@ -271,9 +269,14 @@ function VendorLogin() {
           </Box>
         </Box>
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
       <Footer1 />
     </Box>
   );
 }
 
-export default VendorLogin;
+export default ChangePassword;

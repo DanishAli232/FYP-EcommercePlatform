@@ -31,6 +31,9 @@ function SignupScreen() {
   const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
 
   const [error, setError] = useState({});
+  const [open, setOpen] = React.useState(false);
+  const [status, setStatus] = useState(null);
+  const [message, setmessage] = useState("");
   const [googledata, setgoogledata] = useState({});
   const [values, setValues] = useState({
     email: "",
@@ -58,14 +61,18 @@ function SignupScreen() {
         values,
       });
       if (data) {
+        console.log("okkkk");
         ctxDispatch({ type: "USER_SIGNIN", payload: data });
         localStorage.setItem("userInfo", JSON.stringify(data));
-        navigate("/");
+        navigate("/emailconfirmation", { state: values.email });
       }
     } catch (err) {
       if (err.response.data.errors) {
-        setError(err.response.data.errors);
+        setError(err?.response?.data?.errors);
       }
+      setStatus(true);
+      setOpen(true);
+      setmessage(err?.response?.data?.errors?.message);
       console.log(err.response.data.errors);
       console.log("Sorry Not data send");
     }
@@ -194,6 +201,14 @@ font-size: 15px;
 }
 `;
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setStatus(null);
+    setOpen(false);
+  };
+
   return (
     <Box>
       <NavBar1 />
@@ -245,36 +260,6 @@ font-size: 15px;
                   error={!!error.name}
                   variant='standard'
                 />
-                {/* <label
-                  htmlFor='name'
-                  style={{
-                    fontSize: "15px",
-                    color: "#424242",
-                    paddingBottom: "6px",
-                  }}
-                >
-                  Full Name:
-                </label>
-                <input
-                  style={{
-                    border: "1px solid #e5e5e5",
-                    borderRadius: "4px",
-                    width: "100%",
-                    height: "40px",
-                    padding: "0 35px 0 10px",
-                    outline: "none",
-                    fontSize: "14px",
-                    boxSizing: "border-box",
-                  }}
-                  value={values.name}
-                  placeholder='Input Full Name'
-                  type='text'
-                  name='name'
-                  id='name'
-                  onChange={(event) => {
-                    handleChange(event);
-                  }}
-                /> */}
               </Box>
 
               <Box
@@ -294,36 +279,6 @@ font-size: 15px;
                   error={!!error.email}
                   variant='standard'
                 />
-                {/* <label
-                  htmlFor='email'
-                  style={{
-                    fontSize: "15px",
-                    color: "#424242",
-                    paddingBottom: "6px",
-                  }}
-                >
-                  Email:
-                </label>
-                <input
-                  style={{
-                    border: "1px solid #e5e5e5",
-                    borderRadius: "4px",
-                    width: "100%",
-                    height: "40px",
-                    padding: "0 35px 0 10px",
-                    outline: "none",
-                    fontSize: "14px",
-                    boxSizing: "border-box",
-                  }}
-                  value={values.email}
-                  placeholder='Input Email'
-                  type='text'
-                  name='email'
-                  id='email'
-                  onChange={(event) => {
-                    handleChange(event);
-                  }}
-                /> */}
               </Box>
 
               <Box
@@ -343,36 +298,6 @@ font-size: 15px;
                   name='password'
                   variant='standard'
                 />
-                {/* <label
-                  htmlFor='password'
-                  style={{
-                    fontSize: "15px",
-                    color: "#424242",
-                    paddingBottom: "6px",
-                  }}
-                >
-                  Password:
-                </label>
-                <input
-                  style={{
-                    border: "1px solid #e5e5e5",
-                    borderRadius: "4px",
-                    width: "100%",
-                    height: "40px",
-                    padding: "0 35px 0 10px",
-                    outline: "none",
-                    fontSize: "14px",
-                    boxSizing: "border-box",
-                  }}
-                  value={values.password}
-                  placeholder='Input Password'
-                  type='text'
-                  name='password'
-                  id='password'
-                  onChange={(event) => {
-                    handleChange(event);
-                  }}
-                /> */}
               </Box>
 
               <Box
@@ -392,36 +317,6 @@ font-size: 15px;
                   name='confirmpassword'
                   variant='standard'
                 />
-                {/* <label
-                  htmlFor='ConfrimPassword'
-                  style={{
-                    fontSize: "15px",
-                    color: "#424242",
-                    paddingBottom: "6px",
-                  }}
-                >
-                  Confirm Password:
-                </label>
-                <input
-                  style={{
-                    border: "1px solid #e5e5e5",
-                    borderRadius: "4px",
-                    width: "100%",
-                    height: "40px",
-                    padding: "0 35px 0 10px",
-                    outline: "none",
-                    fontSize: "14px",
-                    boxSizing: "border-box",
-                  }}
-                  value={values.confirmpassword}
-                  placeholder='Input Confirm Password'
-                  type='text'
-                  name='confirmpassword'
-                  id='ConfrimPassword'
-                  onChange={(event) => {
-                    handleChange(event);
-                  }}
-                /> */}
               </Box>
               <Box
                 sx={{
@@ -487,7 +382,7 @@ font-size: 15px;
                 <Title1>SignIn with:</Title1>
                 <FacebookLogin
                   appId='504485341863215'
-                  autoLoad={true}
+                  autoLoad={false}
                   fields='name,email,picture'
                   icon={
                     <FacebookIcon
@@ -516,6 +411,11 @@ font-size: 15px;
         </Box>
       </Box>
       <Footer1 />
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity='error' sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

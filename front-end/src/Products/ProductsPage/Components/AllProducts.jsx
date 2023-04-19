@@ -46,6 +46,8 @@ const AllProducts = ({ name: title, price, image }) => {
             alt='image1'
             style={{
               width: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
               height: { md: "300px", xs: "150px" },
               borderRadius: "5px",
             }}

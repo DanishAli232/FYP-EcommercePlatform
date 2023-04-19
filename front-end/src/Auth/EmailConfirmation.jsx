@@ -1,8 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import emaillogo from "../Assets/emaillogo.png";
+import { useLocation } from "react-router-dom";
 
 const EmailConfirmation = () => {
+  const { state } = useLocation();
+
   return (
     <Box
       sx={{
@@ -41,9 +44,9 @@ const EmailConfirmation = () => {
           sx={{ textAlign: "center", fontSize: "17px", paddingBottom: "20px" }}
         >
           We have sent email to{" "}
-          <span style={{ color: "#32bf87" }}>balochdanish2020@gmail.com</span>{" "}
-          to confirm the validity of email address. After receiving the email
-          follow the link provided to complete your registration.
+          <span style={{ color: "#32bf87" }}>{state}</span> to confirm the
+          validity of email address. After receiving the email follow the link
+          provided to complete your registration.
         </Typography>
         <Box sx={{ backgroundColor: "black", height: "2px" }}></Box>
         <Typography

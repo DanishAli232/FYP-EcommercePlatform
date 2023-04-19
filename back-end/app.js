@@ -27,7 +27,6 @@ app.use(cors());
 app.use("/api", UserRouter);
 app.use("/api", ProductRouter);
 app.use("/api", VendorRouter);
-app.use("/api", VendorRouter);
 app.use("/api", CartRouter);
 app.use("/api", WishRouter);
 app.use("/api", AddressRouter);

@@ -13,7 +13,32 @@ import Footer1 from "../Components/Footer1";
 const Sell = () => {
   const navigate = useNavigate();
 
-  const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
+  const {
+    state,
+    dispatch: ctxDispatch,
+    SignOut,
+    navlistitems,
+  } = useContext(GlobalContext);
+
+  const updatelist = () => {
+    let data1 = navlistitems;
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    console.log(data);
+    // console.log(data);
+    // setnavlistitems({})
+    // setnavlistitems((prev) => {
+    //   console.log(prev);
+    // });
+
+    let objIndex = navlistitems.findIndex((obj) => obj.title === "Sell");
+    navlistitems[objIndex].active = true;
+  };
+  useEffect(() => {
+    updatelist();
+  }, []);
 
   useEffect(() => {
     console.log(state.userInfo);
@@ -53,6 +78,7 @@ const Sell = () => {
         values,
       });
       if (data) {
+        await SignOut("sell");
         ctxDispatch({ type: "USER_SIGNIN", payload: data });
         localStorage.setItem("userInfo", JSON.stringify(data));
         navigate("/");
@@ -65,19 +91,6 @@ const Sell = () => {
       console.log("Sorry Not data send");
     }
   };
-
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size='small'
-        aria-label='close'
-        color='inherit'
-        onClick={clearError}
-      >
-        <Close fontSize='small' />
-      </IconButton>
-    </React.Fragment>
-  );
 
   const Title = styled.h2`
     color: #2b2d42;

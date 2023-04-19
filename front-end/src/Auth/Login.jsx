@@ -31,6 +31,10 @@ function SigninScreen() {
   const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
 
   const [error, setError] = useState({});
+  const [severity, setseverity] = useState("error");
+  const [open, setOpen] = React.useState(false);
+  const [message, setmessage] = useState("");
+  const [status, setStatus] = useState(null);
   const [googledata, setgoogledata] = useState({});
   const [values, setValues] = useState({
     email: "",
@@ -66,7 +70,31 @@ function SigninScreen() {
         navigate("/");
       }
     } catch (err) {
+      setStatus(true);
+      setseverity("error");
+      setOpen(true);
       setError(err.response.data.errors);
+      setmessage("Invalid Input");
+    }
+  };
+
+  const forgotpassword = async () => {
+    try {
+      let { data } = await axios.post("/api/forgotpassword", {
+        email: values.email,
+      });
+      console.log(data);
+      setmessage(data?.message);
+      setStatus(true);
+      setseverity("success");
+
+      setOpen(true);
+    } catch (error) {
+      console.log(error.response.data.message);
+      setmessage(error?.response?.data?.message);
+      setStatus(true);
+      setseverity("error");
+      setOpen(true);
     }
   };
 
@@ -190,6 +218,14 @@ function SigninScreen() {
 }
 `;
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setStatus(null);
+    setOpen(false);
+  };
+
   return (
     <Box>
       <NavBar1 />
@@ -273,6 +309,7 @@ function SigninScreen() {
                 <Title1>Forgot Password?</Title1>
                 <Link>
                   <Typography
+                    onClick={() => forgotpassword()}
                     sx={{
                       color: "#2b2d42",
                       fontWeight: 600,
@@ -354,7 +391,7 @@ function SigninScreen() {
                 <Title1>SignIn with:</Title1>
                 <FacebookLogin
                   appId='504485341863215'
-                  autoLoad={true}
+                  autoLoad={false}
                   fields='name,email,picture'
                   icon={
                     <FacebookIcon
@@ -382,6 +419,11 @@ function SigninScreen() {
           </Box>
         </Box>
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
       <Footer1 />
     </Box>
   );

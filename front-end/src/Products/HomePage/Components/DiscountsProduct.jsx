@@ -11,6 +11,8 @@ const Image = styled.img`
   width: 100%;
   cursor: pointer;
   border-radius: 5px;
+  object-fit: cover;
+  object-position: center;
   transition: 0.3s ease-in-out;
   height: 200px;
   &:hover {

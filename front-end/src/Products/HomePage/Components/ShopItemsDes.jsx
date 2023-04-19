@@ -106,6 +106,8 @@ const ShopItemsDes = ({ title, price, img, _id }) => {
             src={img}
             alt=''
             style={{
+              objectFit: "cover",
+              objectPosition: "center",
               width: "100%",
               height: { md: "300px", xs: "150px" },
               borderRadius: "5px",

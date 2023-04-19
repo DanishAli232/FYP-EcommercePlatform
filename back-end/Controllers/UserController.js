@@ -87,49 +87,6 @@ export const alladmins = async (req, res) => {
 };
 
 export const addUser = async (req, res) => {
-  console.log(req.body.values);
-  // const transporter = nodemailer.createTransport({
-  //   host: "nslookup smtp.gmail.com",
-  //   service: process.env.SERVICE,
-  //   port: Number(process.env.EMAIL_PORT),
-  //   secure: Boolean(process.env.SECURE),
-  //   tls: {
-  //     rejectUnauthorized: true,
-  //     minVersion: "TLSv1.2",
-  //   },
-  //   auth: {
-  //     user: process.env.USER,
-  //     pass: process.env.PASS,
-  //   },
-  // });
-
-  // // const token = jwt.sign({
-  // //      data: 'Token Data'  .
-  // //     }, 'ourSecretKey', { expiresIn: '10m' }
-  // // );
-
-  // const mailConfigurations = {
-  //   // It should be a string of sender/server email
-  //   from: "balochdanish2020@gmail.com",
-
-  //   to: "mdanishawan165@gmail.com",
-
-  //   // Subject of Email
-  //   subject: "Email Verification",
-
-  //   // This would be the text of email body
-  //   text: `Hi! There, You have recently visited
-  //          our website and entered your email.
-  //          Please follow the given link to verify your email
-  //          http://localhost:3000/verify
-  //          Thanks`,
-  // };
-
-  // transporter.sendMail(mailConfigurations, function (error, info) {
-  //   if (error) throw Error(error);
-  //   console.log("Email Sent Successfully");
-  //   console.log(info);
-  // });
   const { isValid, errors, values } = validateRegisterInput(req.body.values);
   try {
     if (!isValid) {
@@ -155,21 +112,24 @@ export const addUser = async (req, res) => {
 
     const newUser = await User1.create({ ...values, password: hashedPassword });
     console.log(newUser);
-    // const token = await new Token({
-    //   userId: newUser._id,
-    //   token: crypto.randomBytes(32).toString("hex"),
-    // }).save();
+    const token = await new Token({
+      userId: newUser._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    }).save();
+    const url = `${process.env.BASE_URL}email/${newUser._id}/verify/${token.token}`;
+    console.log(url);
+    let email = await sendEmail(newUser.email, "Verify Email", url);
 
-    // const url = `${process.env.BASE_URL}email/${newUser._id}/verify/${token.token}`;
-    // console.log(url);
-    // await sendEmail(newUser.email, "Verify Email", url);
-
-    // if ((email.message = "error")) {
-    //   res.send({ message: "Not Email Send" });
-    // }
-    // res.send({ message: "An Email sent to your account please verify" });
-    const token = generateToken(newUser);
-    res.json({ user: { ...newUser._doc, password: null }, token });
+    if (email.message === "error") {
+      console.log("errorrr");
+      await User1.deleteOne({ _id: newUser._id });
+      res.send({
+        errors: { message: "Sorry Not Email Send" },
+      });
+    } else {
+      const token = generateToken(newUser);
+      res.json({ user: { ...newUser._doc, password: null }, token });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Not Email Send" });
@@ -178,18 +138,30 @@ export const addUser = async (req, res) => {
 
 export const Emailverify = async (req, res) => {
   try {
-    const user = await User1.findOne({ _id: req.params.id });
+    let user;
+
+    user = await User1.findOne({ _id: req.params.id });
+
     console.log(req.params.id);
     console.log(req.params.token);
     console.log(user);
-    if (!user) return res.status(400).send({ message: "Invalid link" });
+    if (!user) {
+      console.log("user not found");
+      return res.status(400).send({ message: "Invalid link" });
+    }
 
-    const token = await Token.findOne({
-      userId: user._id,
-      token: req.params.token,
-    });
-    console.log(token);
-    if (!token) return res.status(400).send({ message: "Invalid link" });
+    try {
+      const token = await Token.findOne({
+        token: req.params.token,
+      });
+      console.log(token);
+      if (token) {
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(400).send({ message: "Invalid link" });
+    }
+
     const _id = req.params.id;
     const newUser = await User1.findByIdAndUpdate(
       _id,
@@ -200,8 +172,7 @@ export const Emailverify = async (req, res) => {
     );
     // let newUser = await User1.updateOne({ _id: user._id, verified: true });
     console.log(newUser);
-    await token.remove();
-    const token1 = generateToken(newUser);
+    await Token.deleteMany({});
 
     // res.status(200).send({ message: "Email verified successfully", user: {
 
@@ -209,13 +180,11 @@ export const Emailverify = async (req, res) => {
     console.log({
       message: "Email verified successfully",
       user: { ...newUser._doc, password: null },
-      token1,
     });
     if (newUser) {
       return res.status(201).json({
         message: "Email verified successfully",
         user: { ...newUser._doc, password: null },
-        token1,
       });
     }
   } catch (error) {
@@ -272,12 +241,13 @@ export const login = async (req, res) => {
       const user = await User1.findOne({ email: values.email }).select(
         "+password"
       );
-
+      console.log(user);
       if (!user) {
         return res.status(401).send({ errors: { message: "User1 not found" } });
       }
 
       const isMatch = await bcrypt.compare(values.password, user.password);
+      console.log(isMatch);
       if (!isMatch)
         return res
           .status(400)
@@ -295,5 +265,112 @@ export const login = async (req, res) => {
     } catch (error) {
       return res.status(500).send({ errors: { message: error.message } });
     }
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  let email1 = req.body.email;
+  console.log(req.body.email);
+  await Token.deleteMany({});
+  try {
+    if (!email1 || email1.trim() === "") {
+      return res.status(400).send({ message: "Please provide email" });
+    }
+    const user = await User1.findOne({ email: email1 });
+
+    console.log(user);
+    if (!user) {
+      console.log("User not found");
+      return res.status(400).send({ message: "User Not Found" });
+    }
+
+    const token = await new Token({
+      userId: user._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    }).save();
+    const url = `${process.env.BASE_URL}forgotpassword/${email1}/verify/${token.token}`;
+    console.log(url);
+    let email = await sendEmail(email1, "Verify Email", url);
+
+    res.status(200).send({ message: "Email send to your gmail address" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+export const Emailverify2 = async (req, res) => {
+  try {
+    let user;
+
+    user = await User1.findOne({ email: req.params.id });
+
+    console.log(req.params.id);
+    console.log(req.params.token);
+    console.log(user);
+    if (!user) {
+      console.log("user not found");
+      return res.status(400).send({ message: "Invalid link" });
+    }
+
+    try {
+      const token = await Token.findOne({
+        token: req.params.token,
+      });
+      console.log(token);
+      if (token) {
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(400).send({ message: "Invalid link" });
+    }
+    await Token.deleteMany({});
+    res.status(200).send({ message: "ok" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+export const ChangePassword = async (req, res) => {
+  console.log(req.body);
+  let errors = {};
+  const { email, password, confirmpassword } = req.body;
+  if (password.length < 6) {
+    errors.password = "password length should be >= 6";
+  }
+
+  if (!password || password.trim() === "") {
+    errors.password = "password should not be empty";
+  }
+
+  if (!confirmpassword || confirmpassword.trim() === "") {
+    errors.confirmpassword = "ConfirmPassword should not be empty";
+  } else if (password !== confirmpassword) {
+    errors.confirmpassword = "Password and ConfirmPassword are not match";
+  }
+
+  console.log(errors);
+  if (Object.keys(errors).length === 0) {
+    try {
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(password, salt);
+      let data = await User1.updateOne(
+        {
+          email: email,
+        },
+        {
+          $set: {
+            password: hashedPassword,
+          },
+        },
+        { new: true }
+      );
+      res.status(200).send({ message: "ok" });
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    return res.status(500).send(errors);
   }
 };

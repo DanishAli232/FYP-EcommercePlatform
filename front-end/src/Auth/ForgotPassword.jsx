@@ -5,21 +5,22 @@ import emaillogo from "../Assets/emaillogo.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../Context";
 
-const ConfirmEmail = () => {
+const ForgotPassword = () => {
   const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
   let { id, token } = useParams();
+  const [verify, setverify] = useState(false);
   const navigate = useNavigate();
   const [message, setmessage] = useState("");
   useEffect(() => {
     console.log({ id, token });
     const updateData = async () => {
       try {
-        let { data } = await axios.get(`/api/${id}/verify/${token}`);
+        let { data } = await axios.get(`/api/${id}/verify2/${token}`);
         console.log(data);
-        ctxDispatch({ type: "USER_SIGNIN", payload: data });
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        setmessage("Registration is Complete");
+        setverify(true);
+        setmessage("Now you can change your password");
       } catch (error) {
+        setverify(false);
         setmessage("Invalid Link");
       }
     };
@@ -64,7 +65,9 @@ const ConfirmEmail = () => {
         <Typography
           sx={{ textAlign: "center", fontSize: "17px", paddingBottom: "10px" }}
         >
-          Follow this link to go to Shopping Page
+          {verify
+            ? "Follow this link to go to Change Password Page"
+            : "Go to Home Page"}
         </Typography>
         <Box sx={{ backgroundColor: "black", height: "2px" }}></Box>
         <Typography
@@ -75,18 +78,29 @@ const ConfirmEmail = () => {
             color: "#138dea",
           }}
         >
-          <Button
-            sx={{ fontSize: "13px", fontWeight: 700, color: "#32bf87" }}
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Home Screen
-          </Button>
+          {verify ? (
+            <Button
+              sx={{ fontSize: "13px", fontWeight: 700, color: "#32bf87" }}
+              onClick={() => {
+                navigate(`/changepassword/${id}`);
+              }}
+            >
+              Change Password
+            </Button>
+          ) : (
+            <Button
+              sx={{ fontSize: "13px", fontWeight: 700, color: "#32bf87" }}
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Home Page
+            </Button>
+          )}
         </Typography>
       </Box>
     </Box>
   );
 };
 
-export default ConfirmEmail;
+export default ForgotPassword;

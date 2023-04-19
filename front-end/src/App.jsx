@@ -9,6 +9,8 @@ import LoadingBox from "./Components/LoadingBox";
 import NotFound from "./Components/NotFound";
 import { GlobalContext } from "./Context";
 import { Sidebar } from "./Dashboard/Components";
+import ForgotPassword from "./Auth/ForgotPassword";
+import ChangePassword from "./Auth/ChangePassword";
 
 const Home1 = React.lazy(() => import("./Products/HomePage/Home1"));
 const AllQuestions = React.lazy(() => import("./Dashboard/Pages/AllQuestions"));
@@ -79,8 +81,13 @@ function App() {
           <Route path='/signin' element={<SigninScreen />} />
           <Route path='/signup' element={<SignupScreen />} />
           <Route path='/checkout-success' element={<CheckoutSuccess />} />
-          {/* <Route path='/email/:id/verify/:token' element={<ConfirmEmail />} /> */}
-          <Route path='/confirmemail' element={<ConfirmEmail />} />
+          <Route path='/email/:id/verify/:token' element={<ConfirmEmail />} />
+          <Route
+            path='/forgotpassword/:id/verify/:token'
+            element={<ForgotPassword />}
+          />
+          <Route path='/changepassword/:id' element={<ChangePassword />} />
+          {/* <Route path='/confirmemail' element={<ConfirmEmail />} /> */}
           <Route path='/emailconfirmation' element={<EmailConfirmation />} />
           <Route path='/products' element={<ProductsPage />} />
           <Route path='/dashboard' element={<Dashboard />} />

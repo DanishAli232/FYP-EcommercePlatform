@@ -108,9 +108,8 @@ const ProductDetail = () => {
   // }, [quantity]);
 
   const addToCartHandler = async () => {
-    const existItem = cart.cartItem.find((x) => x.id === state1.id);
-    console.log(cart.cartItem);
-
+    // const existItem = cart.cartItem.find((x) => x.id === state1.id);
+    // console.log(cart.cartItem);
     // const { data } = await axios.get(`/api/products/${product._id}`);
     // if (data.countinstock < quantity) {
     //   window.alert("Sorry, Product is out of Stock");
@@ -121,37 +120,42 @@ const ProductDetail = () => {
       quantity: quantity,
       totalprice: state1.price,
     };
-    const _id = userInfo.user._id;
-    if (cart.cartid) {
-      const { data } = await axios.patch(
-        `/api/updatecartitems/${cart.cartid.cartId}`,
-        {
+    const _id = userInfo?.user?._id;
+    console.log(_id);
+    if (_id) {
+      if (cart.cartid) {
+        const { data } = await axios.patch(
+          `/api/updatecartitems/${cart.cartid.cartId}`,
+          {
+            products,
+          }
+        );
+        navigate("/cartpage");
+        console.log(data);
+      } else {
+        const { data } = await axios.post("/api/addcartitems", {
           products,
-        }
-      );
-      navigate("/cartpage");
-      console.log(data);
-    } else {
-      const { data } = await axios.post("/api/addcartitems", {
-        products,
-        _id,
-      });
-      console.log(data);
-      fetchcartItems();
-      ctxDispatch({
-        type: "CART_ADD_ITEM",
-        payload: {
-          products,
-        },
-      });
-      navigate("/cartpage");
+          _id,
+        });
+        console.log(data);
+        fetchcartItems();
+        ctxDispatch({
+          type: "CART_ADD_ITEM",
+          payload: {
+            products,
+          },
+        });
+        navigate("/cartpage");
 
-      // ctxDispatch({
-      //   type: "CART_ID",
-      //   payload: {
-      //     data,
-      //   },
-      // });
+        // ctxDispatch({
+        //   type: "CART_ID",
+        //   payload: {
+        //     data,
+        //   },
+        // });
+      }
+    } else {
+      navigate("/signin");
     }
 
     // navigate("/cartpage");
@@ -201,15 +205,20 @@ const ProductDetail = () => {
 
   const handleBasket = () => {
     console.log(state1);
-    setbuyNow({
-      id: state1._id,
-      title: state1.name,
-      brand: state1.brand,
-      price: state1.price,
-      image: state1.image,
-      quantity: quantity,
-    });
-    navigate("/checkout");
+    const _id = userInfo?.user?._id;
+    if (_id) {
+      setbuyNow({
+        id: state1._id,
+        title: state1.name,
+        brand: state1.brand,
+        price: state1.price,
+        image: state1.image,
+        quantity: quantity,
+      });
+      navigate("/checkout");
+    } else {
+      navigate("/signin");
+    }
   };
 
   const postComment = async () => {
