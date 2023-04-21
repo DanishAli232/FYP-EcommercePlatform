@@ -24,10 +24,6 @@ const ShopItemsDes = ({ title, price, img, _id }) => {
   const [display1, setdisplay1] = useState("none");
   const [open, setopen] = useState(false);
 
-  useEffect(() => {
-    console.log(open);
-  }, [open]);
-
   const addToCartHandler = async () => {
     console.log(cart.cartItem);
 

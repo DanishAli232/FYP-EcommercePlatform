@@ -14,6 +14,8 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 const Image = styled.img`
   width: 60px;
   height: 60px;
+  object-fit: cover;
+  object-position: center;
   @media (max-width: 641px) {
     width: 35px;
     height: 35px;

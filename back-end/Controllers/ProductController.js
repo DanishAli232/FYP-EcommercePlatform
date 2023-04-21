@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Product from "../Models/productModel.js";
 import Vendor from "../Models/VendorModel.js";
 import { validateProductInput } from "../Validators/validateproductinput.js";
@@ -11,7 +12,7 @@ export const getallproducts = async (req, res) => {
       "description",
       // "rating",
       // "numReviews",
-      // "brand",
+      // "brand",a
       // "countinstock",
     ];
     const search = (data) => {
@@ -24,6 +25,19 @@ export const getallproducts = async (req, res) => {
     res.send(search(products));
   } catch (err) {
     return res.status(500).json({ error: { message: err.message } });
+  }
+};
+
+export const filterSearchProduct = async (req, res) => {
+  var search = req.params.searchvl;
+  try {
+    let result = await Product.find({ name: new RegExp(search, "i") })
+    .sort({
+      price: 1,
+    });
+    res.send(result);
+  } catch (error) {
+    res.send("Sorry Not Found");
   }
 };
 
@@ -210,11 +224,18 @@ export const addComments = async (req, res) => {
 
 export const allComments = async (req, res) => {
   let id = req.params.id;
+  console.log(id);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    console.log("invalid pid");
+    return res.status(400).send("Invalid product ID.");
+  }
   try {
     const findProduct = await Product.findById(id).select("comments");
+    console.log(findProduct);
     res.send(findProduct);
   } catch (error) {
     console.log(error);
+    res.status(400).send({ message: "Request Fail" });
   }
 };
 

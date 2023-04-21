@@ -11,6 +11,8 @@ import { GlobalContext } from "./Context";
 import { Sidebar } from "./Dashboard/Components";
 import ForgotPassword from "./Auth/ForgotPassword";
 import ChangePassword from "./Auth/ChangePassword";
+import Chat from "./Products/ChatPage/Chat/Chat";
+import Join from "./Products/ChatPage/Join/Join";
 
 const Home1 = React.lazy(() => import("./Products/HomePage/Home1"));
 const AllQuestions = React.lazy(() => import("./Dashboard/Pages/AllQuestions"));
@@ -71,6 +73,8 @@ function App() {
           <Route path='/' element={<Home1 />} />
           <Route path='/productdetail/:id' element={<ProductDetail />} />
           <Route path='/about' element={<About />} />
+          <Route path='/join' element={<Join />} />
+          <Route path='/chat' element={<Chat />} />
           <Route path='/vendorlogin' element={<VendorLogin />} />
           <Route path='/wishlist' element={<Wishlist />} />
           <Route path='/orders' element={<Orders />} />

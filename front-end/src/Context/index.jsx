@@ -168,7 +168,7 @@ export const ContextState = ({ children }) => {
   const fetchAddresses = async () => {
     // console.log("yes");
     const { data: data1 } = await axios.get(
-      `/api/getaddresses/${state.userInfo.user._id}`
+      `/api/getaddresses/${state?.userInfo?.user?._id}`
     );
     // console.log(data1);
     let data = { success: true, addressId: data1[0]._id };

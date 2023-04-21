@@ -69,7 +69,7 @@ const ProductDetail = () => {
   const [comment, setcomment] = useState({
     user: "",
     username: "",
-    productid: "s",
+    productid: "",
     comment: "",
   });
 
@@ -82,18 +82,6 @@ const ProductDetail = () => {
     const { data } = await axios.get(`/api/storeName/${state1.vendor}`);
     setstorename(data.storename);
   };
-  useEffect(() => {
-    storeName();
-    if (userInfo) {
-      fetchAddresses();
-      setcomment({
-        user: userInfo.user._id,
-        username: userInfo.user.name,
-        productid: state1._id,
-        comment: "",
-      });
-    }
-  }, []);
 
   // const [topPosition, settopPosition] = useState(0);
   // useEffect(() => {
@@ -202,6 +190,33 @@ const ProductDetail = () => {
         "🎧【Steelseries Arctis 1 Mic】: Fit perfectly for Steelseries Arctis 1 1.0 One Raw Wired Wireless Headphones Gaming Headsets",
     },
   ];
+  const allComment = async () => {
+    console.log("okk");
+    try {
+      let { data } = await axios.get(`/api/allcomment/${state1._id}`);
+      console.log(data);
+      setallcomment(data.comments);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    console.log(state1.image);
+    allComment();
+  }, []);
+
+  useEffect(() => {
+    storeName();
+    if (userInfo) {
+      fetchAddresses();
+      setcomment({
+        user: userInfo.user._id,
+        username: userInfo.user.name,
+        productid: state1._id,
+        comment: "",
+      });
+    }
+  }, []);
 
   const handleBasket = () => {
     console.log(state1);
@@ -227,18 +242,6 @@ const ProductDetail = () => {
       allComment();
     } catch (error) {}
   };
-
-  const allComment = async () => {
-    try {
-      let { data } = await axios.get(`/api/allcomment/${comment.productid}`);
-      setallcomment(data.comments);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    console.log(state1.image);
-    allComment();
-  }, []);
 
   // useEffect(() => {
   //   console.log(hoverCoords);
@@ -446,6 +449,8 @@ const ProductDetail = () => {
                       flexDirection: "row",
                       justifyContent: "space-between",
                       alignItems: "center",
+                      overflow: "hidden",
+
                       marginTop: "10px",
                     }}
                   >
@@ -453,6 +458,7 @@ const ProductDetail = () => {
                       sx={{
                         width: "250px",
                         display: "flex",
+
                         flexDirection: "row",
                         alignItems: "center",
                       }}
@@ -711,6 +717,17 @@ const ProductDetail = () => {
                       </Typography>
                     </Box>
                     <Typography
+                      onClick={() =>
+                        navigate(
+                          `/chat?userID=${state?.userInfo?.user?._id}&&vendorID=${state1.vendor}`,
+                          {
+                            state: {
+                              storename,
+                              username: state?.userInfo?.user?.name,
+                            },
+                          }
+                        )
+                      }
                       sx={{
                         color: "#1a9cb7",
                         fontSize: "13px",

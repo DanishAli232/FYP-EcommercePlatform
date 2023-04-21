@@ -168,11 +168,10 @@ export const updatedefaultaddress = async (req, res) => {
 export const getaddresses = async (req, res) => {
   try {
     const addresses = await Address.find({ user: req.params.id });
-    console.log(addresses[0].addresslist);
 
     res.status(200).json(addresses);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(400).json({
       error: "Your request could not be processed. Please try again.",
     });
@@ -182,7 +181,6 @@ export const getaddresses = async (req, res) => {
 export const getaddressesbyid = async (req, res) => {
   try {
     const addresses = await Address.find({ _id: req.params.id });
-    console.log(addresses);
     res.status(200).json(addresses);
   } catch (error) {
     console.log(error);

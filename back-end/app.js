@@ -13,6 +13,7 @@ import WishRouter from "./Routes/WishlistRoute.js";
 import AddressRouter from "./Routes/Address.Route.js";
 import StripeRouter from "./Routes/StripeRoute.js";
 import OrderRouter from "./Routes/OrderRoute.js";
+import ChatRouter from "./Routes/ChatRoute.js";
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use("/api", WishRouter);
 app.use("/api", AddressRouter);
 app.use("/api", StripeRouter);
 app.use("/api", OrderRouter);
+app.use("/api", ChatRouter);
 app.use("/", DemoRouter);
 app.use("*", handle404);
 

@@ -36,6 +36,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NavList from "./NavList";
 import MenuOption from "./NavbarComp/MenuOption";
+import axios from "axios";
+import Scrollbars from "react-custom-scrollbars-2";
 
 const Logo = styled.h1`
   color: #f0353b;
@@ -74,7 +76,9 @@ const Label = styled.h3`
 const NavBar1 = () => {
   const navigate = useNavigate();
   const [search, setsearch] = useState(false);
+  const [show, setshow] = useState("none");
   const [searchvalue, setsearchvalue] = useState("");
+  const [filterproducts, setfilterproducts] = useState([]);
   const {
     cartitems,
     state,
@@ -109,6 +113,28 @@ const NavBar1 = () => {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
+
+  const productClicker = (item) => {
+    navigate(`/productdetail/${item._id}`, { state: item });
+  };
+
+  const searchftn = async () => {
+    try {
+      let { data } = await axios.get(`/api/filterproducts/${searchvalue}`);
+      console.log(data);
+      if (data.length !== 0) {
+        setshow("flex");
+      }
+      setfilterproducts(data);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    searchftn();
+  }, [searchvalue]);
+
+  useEffect(() => {
+    console.log(filterproducts);
+  }, [filterproducts]);
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -437,7 +463,11 @@ const NavBar1 = () => {
             }}
           >
             <Box
-              onClick={() => setsearch(!search)}
+              onClick={() => {
+                setsearch(!search);
+                setshow("none");
+                setfilterproducts([]);
+              }}
               sx={{
                 width: "100%",
                 display: "flex",
@@ -476,6 +506,10 @@ const NavBar1 = () => {
                 }}
               >
                 <InputField
+                  value={searchvalue}
+                  onChange={(event) => {
+                    setsearchvalue(event.target.value);
+                  }}
                   type='search'
                   name='search'
                   id='search'
@@ -484,15 +518,70 @@ const NavBar1 = () => {
                 <SearchIcon
                   sx={{
                     position: "relative",
-                    top: "-62px",
+                    top: "-70px",
                     left: "-26px",
                     cursor: "pointer",
                   }}
                 />
               </Box>
+
               <Box
-                sx={{ height: "300px", width: "100%", background: "white" }}
-              ></Box>
+                sx={{
+                  width: "95%",
+                  display: show,
+                  flexDirection: "column",
+                  position: "relative",
+                  top: "-101px",
+                  padding: "20px 17px",
+                  border: "1px solid #ffffff57",
+                  borderRadius: "6px",
+                  background: "#16171882",
+                }}
+              >
+                <Scrollbars style={{ width: "100%", minHeight: "200px" }}>
+                  {" "}
+                  {filterproducts.map((item, i) => (
+                    <Box
+                      onClick={() => {
+                        productClicker(item);
+                      }}
+                      key={i}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginBottom: "14px",
+                        cursor: "pointer",
+                        borderRadius: "6px",
+                        "&:hover": {
+                          background: "#0000005e",
+                        },
+                      }}
+                    >
+                      <img
+                        src={item.image}
+                        alt=''
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          objectFit: "cover",
+                          objectPosition: "center",
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          color: "white",
+                          marginLeft: "16px",
+                          letterSpacing: "3px",
+                          fontSize: "23px",
+                        }}
+                      >
+                        {item.name}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Scrollbars>
+              </Box>
             </Box>
             {/* <TextField
             sx={{ width: "100%", color: "white", outline: "white" }}

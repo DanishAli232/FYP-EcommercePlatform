@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Cart } from "../Models/CartModel.js";
 
 export const addcartitems = async (req, res) => {
@@ -85,6 +86,10 @@ export const updatecartitems = async (req, res) => {
 
 export const allcartitems = async (req, res) => {
   const id = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    console.log("invalid pid");
+    return res.status(400).send("Invalid product ID.");
+  }
   try {
     const cartdata = await Cart.find({ user: id })
       .select("products")
@@ -93,7 +98,7 @@ export const allcartitems = async (req, res) => {
     res.send(cartdata);
   } catch (error) {
     res.status(404).send(error);
-    console.log(error);
+    // console.log(error);
   }
 };
 

@@ -9,6 +9,7 @@ import {
   fetchComments,
   fetchPages,
   filterProducts,
+  filterSearchProduct,
   findOneproduct,
   getallproducts,
   getproducts,
@@ -69,6 +70,7 @@ ProductRouter.get("/allcomment/:id", allComments);
 ProductRouter.patch("/deletecomment/:pid/:cid", deleteComments);
 ProductRouter.get("/fetchcomments/:vid", fetchComments);
 ProductRouter.get("/fetchPages", fetchPages);
+ProductRouter.get("/filterproducts/:searchvl", filterSearchProduct);
 ProductRouter.post("/postanswer/:pid/:cid", postAnswer);
 ProductRouter.post("/filtervendorProducts", vendorProducts);
 
