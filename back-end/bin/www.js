@@ -30,63 +30,69 @@ io.on("connection", (socket) => {
     io.emit("receiveMessage", data);
   });
 
-  socket.on("join", ({ userID, vendorID }, callback) => {
-    console.log({ userID, vendorID });
+  socket.on("join", ({ userID, vendorID, username, vendor }, callback) => {
+    console.log({ userID, vendorID, username, vendor });
     const { error, user } = addUser({ id: socket.id, userID, vendorID });
     console.log({ error, user });
     if (error) return callback(error);
 
     const roomId = `${userID}_${vendorID}`;
-
+    console.log(roomId);
     // Join the room
     socket.join(roomId);
 
     // Notify the user and the vendor that they have joined the room
-    io.to(roomId).emit("roomJoined", { roomId });
+    // io.to(roomId).emit("roomJoined", { roomId });
 
     console.log(`User ${userID} and Vendor ${vendorID} joined room ${roomId}`);
 
     socket.emit("message", {
       user: "admin",
-      text: `${user.name}, welcome to room ${user.room}.`,
+      text: `${username}, welcome to room.`,
     });
-    socket.broadcast
-      .to(user.room)
-      .emit("message", { user: "admin", text: `${user.name} has joined!` });
 
-    io.to(user.room).emit("roomData", {
-      room: user.room,
-      users: getUsersInRoom(user.room),
-    });
+    socket.broadcast
+      .to(roomId)
+      .emit("message", { user: "admin", text: `${username} has joined!` });
+
+    // io.to(user.room).emit("roomData", {
+    //   room: user.room,
+    //   users: getUsersInRoom(user.room),
+    // });
 
     callback();
   });
 
   socket.on("sendMessage", (message, callback) => {
-    console.log(message);
-    const user = getUser(socket.id);
-    console.log(user);
+    const { user, error } = getUser(message);
+    if (error) {
+      console.log("error occur");
+      return callback(error);
+    }
 
-    io.to(33).emit("message", { user: "dan", text: message });
-
-    callback();
+    io.to(`${message.sender}_${message.receiver}`).emit("message", {
+      user: message.name,
+      text: message.message,
+    });
   });
 
   socket.on("disconnect", () => {
-    const user = removeUser(socket.id);
+    console.log("user gone");
+    // const user = removeUser(socket.id);
 
-    if (user) {
-      io.to(user.room).emit("message", {
-        user: "Admin",
-        text: `${user.name} has left.`,
-      });
-      io.to(user.room).emit("roomData", {
-        room: user.room,
-        users: getUsersInRoom(user.room),
-      });
-    }
+    // if (user) {
+    //   io.to(user.room).emit("message", {
+    //     user: "Admin",
+    //     text: `${user.name} has left.`,
+    //   });
+    //   io.to(user.room).emit("roomData", {
+    //     room: user.room,
+    //     users: getUsersInRoom(user.room),
+    //   });
+    // }
   });
 });
+
 /**
  * Listen on provided port, on all network interfaces.
  */

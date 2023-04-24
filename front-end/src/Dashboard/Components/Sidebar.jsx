@@ -869,7 +869,28 @@ const Sidebar = () => {
                   </ListItemButton>
                 </ListItem>
               </Link>
-
+              <Link
+                to='/chatvendor'
+                style={{ textDecoration: "none", width: "88%" }}
+              >
+                <ListItem
+                  disablePadding
+                  sx={{
+                    transition:
+                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                  }}
+                >
+                  <ListItemButton sx={Dashboard} onClick={DashboardClicker}>
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Chat'
+                      sx={{ color: "white", textDecoration: "none" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
               <Link
                 to='/addproduct'
                 style={{ textDecoration: "none", width: "88%" }}

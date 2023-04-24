@@ -1,12 +1,9 @@
 import React from "react";
-
-import "./Message.css";
-
 import ReactEmoji from "react-emoji";
-
-const Message = ({ message: { text, sender }, name }) => {
+const MessagesVendor = ({ message, name }) => {
   let isSentByCurrentUser = false;
-  const trimmedName = name.trim().toLowerCase();
+  let { text, sender } = message;
+  const trimmedName = name?.trim().toLowerCase();
   if (sender.toLowerCase() === trimmedName) {
     isSentByCurrentUser = true;
   } else {
@@ -29,4 +26,4 @@ const Message = ({ message: { text, sender }, name }) => {
   );
 };
 
-export default Message;
+export default MessagesVendor;

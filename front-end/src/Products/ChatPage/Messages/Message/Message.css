@@ -1,5 +1,5 @@
 .messageBox {
-  background: #F3F3F3;
+  background: #f3f3f3;
   border-radius: 20px;
   padding: 5px 20px;
   color: white;
@@ -22,7 +22,7 @@
 .messageContainer {
   display: flex;
   justify-content: flex-end;
-  padding: 0 5%;
+  /* padding: 0 5%; */
   margin-top: 3px;
 }
 
@@ -59,9 +59,10 @@
 }
 
 .backgroundBlue {
-  background: #2979FF;
+  background: #2979ff;
+  margin-right: 5px;
 }
 
 .backgroundLight {
-  background: #F3F3F3;
+  background: #f3f3f3;
 }

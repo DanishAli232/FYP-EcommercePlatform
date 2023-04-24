@@ -7,7 +7,9 @@ export const DashboardGlobalContext = React.createContext();
 
 export const DashboardContext = ({ children }) => {
   const { state } = useContext(GlobalContext);
+  console.log(state);
   const [navcontent, setnavcontent] = useState("Dashboard");
+  console.log(state?.userInfo?.user?.status);
   const [statuscheck, setstatus] = useState(state?.userInfo?.user?.status);
   // const [statuscheck, setstatus] = useState("user");
 

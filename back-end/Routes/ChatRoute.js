@@ -1,9 +1,12 @@
 import express from "express";
+import {
+  chatCustomer,
+  chatCustomerUsers,
+} from "../Controllers/ChatController.js";
 
 var ChatRouter = express.Router();
 
-ChatRouter.get("/", (req, res) => {
-  res.send({ response: "Server is up and running." }).status(200);
-});
+ChatRouter.get("/chatcustomers/:id", chatCustomer);
+ChatRouter.get("/chatcustomersusers/:id", chatCustomerUsers);
 
 export default ChatRouter;

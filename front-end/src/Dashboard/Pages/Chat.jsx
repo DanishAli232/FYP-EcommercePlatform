@@ -1,0 +1,213 @@
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
+import { Navbar } from "../Components";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { GlobalContext } from "../../Context";
+import axios from "axios";
+import io from "socket.io-client";
+import MessagesVendor from "./ChatContent/Messages";
+import ScrollToBottom from "react-scroll-to-bottom";
+import Input from "./ChatContent/Input";
+
+const ENDPOINT = "http://localhost:3000";
+
+let socket;
+const ChatVendor = () => {
+  const [OPEN, setOPEN] = useState(false);
+  const [message, setMessage] = useState("");
+  const [users, setusers] = useState([]);
+  const [messages, setmessages] = useState([]);
+  const { setdashboardOpen, state } = useContext(GlobalContext);
+  console.log(state);
+  const fetchCustomers = async () => {
+    console.log("okk1");
+    try {
+      let { data } = await axios.get(
+        `/api/chatcustomers/${state.userInfo.user._id}`
+      );
+      console.log(data);
+      setusers(data);
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    setdashboardOpen(true);
+    fetchCustomers();
+  }, []);
+  let socketRequest = () => {
+    socket = io(ENDPOINT);
+
+    socket.emit(
+      "join",
+      {
+        userID: users[0]?.customer?._id,
+        vendorID: users[0]?.vendor?._id,
+        username: state?.userInfo?.user?.storename,
+        vendor: undefined,
+      },
+      (error) => {
+        if (error) {
+          alert(error);
+        }
+      }
+    );
+
+    socket.on("message", (message) => {
+      console.log(message);
+      setmessages((messages) => [
+        ...messages,
+        { text: message.text, sender: message.user },
+      ]);
+    });
+  };
+
+  useEffect(() => {}, []);
+
+  const fetchChat = async (id) => {
+    let data = users.find((item, i) => {
+      return item.customer._id === id;
+    });
+    setmessages(data.chat);
+    setOPEN(true);
+    socketRequest();
+  };
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    const messageData = {
+      sender: users[0].customer._id,
+      receiver: users[0].vendor._id,
+      message: message,
+      name: state?.userInfo?.user?.storename,
+    };
+    console.log(messageData);
+    socket.emit("sendMessage", messageData, () => setMessage(""));
+  };
+
+  return (
+    <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
+      <Grid container>
+        <Grid item md={2}></Grid>
+        <Grid item md={10}>
+          <Navbar />
+          <Box sx={{ height: "569px" }}>
+            <Box
+              sx={{
+                backgroundColor: "white",
+                marginTop: "89px",
+                marginLeft: { md: "32px", xs: "0px" },
+                marginRight: { md: "32px", xs: "0px" },
+                borderRadius: "0.75rem",
+                boxShadow:
+                  "rgba(255, 255, 255, 0.9) 0rem 0rem 0.0625rem 0.0625rem inset, rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem",
+                border: "1px solid rgba(224,224, 224, 1)",
+                // marginBottom: "10px",
+              }}
+            >
+              <Box
+                sx={{
+                  paddingLeft: { md: "17px", xs: "9px" },
+                  paddingTop: "20px",
+                  paddingRight: { md: "17px", xs: "9px" },
+                  paddingBottom: "10px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: "9px",
+                  }}
+                >
+                  {users.map((item, i) => (
+                    <Typography
+                      sx={{
+                        cursor: "pointer",
+                        color: "#00000085",
+                        textTransform: "uppercase",
+                        padding: "10px",
+                        borderRight: "1px solid #00000029",
+                      }}
+                      onClick={() => fetchChat(item.customer._id)}
+                    >
+                      {item?.customer?.name}
+                    </Typography>
+                  ))}
+
+                  {/* <Input
+          message={message}
+          setMessage={setMessage}
+          sendMessage={sendMessage1}
+        /> */}
+                </Box>
+                {OPEN && (
+                  <ScrollToBottom
+                    className='messages1'
+                    // style={{ height: "500px" }}
+                  >
+                    {messages.map((message, i) => (
+                      <div key={i}>
+                        <MessagesVendor
+                          message={message}
+                          name={users[0]?.vendor?.storename}
+                        />
+                      </div>
+                    ))}
+                  </ScrollToBottom>
+                )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: "20px",
+                    // background: "#fbfbfb",
+                    width: "100%",
+                  }}
+                >
+                  {/* <Box
+                    sx={{ height: "56px", margin: "10px 0px", width: "90%" }}
+                  > */}{" "}
+                  <TextField
+                    sx={{ width: "91%" }}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    id='standard-basic'
+                    label='Type'
+                    variant='outlined'
+                  />
+                  <Button
+                    onClick={sendMessage}
+                    sx={{
+                      background: "#f0353b",
+                      color: "white",
+                      width: "90px",
+                      padding: "15px 9px",
+                      marginLeft: "6px",
+                      "&:hover": {
+                        background: "#d90429",
+                      },
+                    }}
+                  >
+                    Send
+                  </Button>
+                  {/* </Box> */}
+                </Box>
+                {/* <Input
+                  message={message}
+                  setMessage={setMessage}
+                  sendMessage={sendMessage}
+                /> */}
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
+export default ChatVendor;

@@ -13,6 +13,7 @@ import ForgotPassword from "./Auth/ForgotPassword";
 import ChangePassword from "./Auth/ChangePassword";
 import Chat from "./Products/ChatPage/Chat/Chat";
 import Join from "./Products/ChatPage/Join/Join";
+import ChatVendor from "./Dashboard/Pages/Chat";
 
 const Home1 = React.lazy(() => import("./Products/HomePage/Home1"));
 const AllQuestions = React.lazy(() => import("./Dashboard/Pages/AllQuestions"));
@@ -79,6 +80,7 @@ function App() {
           <Route path='/wishlist' element={<Wishlist />} />
           <Route path='/orders' element={<Orders />} />
           <Route path='/allquestions' element={<AllQuestions />} />
+          <Route path='/chatvendor' element={<ChatVendor />} />
           <Route path='/cartpage' element={<Cart />} />
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/payment' element={<Payment />} />

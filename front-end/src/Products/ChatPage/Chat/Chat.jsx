@@ -9,6 +9,10 @@ import Input from "../Input/Input";
 
 import "./Chat.css";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { Box, Button, TextField } from "@mui/material";
+import NavBar1 from "../../../Components/NavBar1";
+import Navbar2 from "../../../Components/Navbar2";
 
 const ENDPOINT = "http://localhost:3000";
 
@@ -25,9 +29,20 @@ const Chat = () => {
   const [users, setUsers] = useState("");
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [messageList, setMessageList] = useState([]);
 
-  useEffect(() => {
+  const fetchChat = async () => {
+    console.log(state.userID);
+    const { userID } = queryString.parse(location.search);
+    try {
+      let { data } = await axios.get(`/api/chatcustomersusers/${userID}`);
+      setMessages(data[0].chat);
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+    }
+  };
+
+  const SocketConnection = () => {
     const { userID, vendorID } = queryString.parse(location.search);
     console.log({ userID, vendorID });
     setuserID(userID);
@@ -36,96 +51,100 @@ const Chat = () => {
     setusername(state.username);
     setvendor(state.storename);
 
-    //   socket.emit("join", { userID, vendorID }, (error) => {
-    //     if (error) {
-    //       alert(error);
-    //     }
-    //   });
+    socket.emit(
+      "join",
+      { userID, vendorID, username: state.username, vendor: state.storename },
+      (error) => {
+        if (error) {
+          alert(error);
+        }
+      }
+    );
+    socket.on("message", (message) => {
+      setMessages((messages) => [
+        ...messages,
+        { text: message.text, sender: message.user },
+      ]);
+    });
+  };
+  useEffect(() => {
+    fetchChat();
+    SocketConnection();
   }, []);
 
-  // useEffect(() => {
-  //   socket.on("receiveMessage", (data) => {
-  //     setMessageList([...messageList, data]);
-  //   });
-  // }, [messageList]);
-
-  const sendMessage1 = () => {
+  const sendMessage1 = (e) => {
+    e.preventDefault();
     const messageData = {
       sender: userID,
       receiver: vendorID,
       message: message,
+      name: state.username,
     };
-
+    console.log(messageData);
     socket.emit("sendMessage", messageData);
-    setMessageList([...messageList, messageData]);
     setMessage("");
   };
-  // useEffect(() => {
-  //   const { userID, vendorID } = queryString.parse(location.search);
 
-  //   console.log({ userID, vendorID });
-  //   const socket = io("http://localhost:3000");
-
-  //   setRoom(vendorID);
-  //   setName(userID);
-
-  //   socket.emit("join", { userID, vendorID }, (error) => {
-  //     if (error) {
-  //       alert(error);
-  //     }
-  //   });
-  // }, [ENDPOINT, location.search]);
-
-  // useEffect(() => {
-  //   socket.on("message", (message) => {
-  //     setMessages((messages) => [...messages, message]);
-  //   });
-
-  //   socket.on("roomData", ({ users }) => {
-  //     console.log(users);
-  //     setUsers(users);
-  //   });
-  // }, []);
-
-  // const sendMessage = (event) => {
-  //   event.preventDefault();
-
-  //   if (message) {
-  //     socket.emit("sendMessage", message, () => setMessage(""));
-  //   }
-  // };
   return (
-    // <div>
-    //   <ul>
-    //     {messageList.map((data, index) => {
-    //       return (
-    //         <li key={index}>
-    //           <p>{data.sender}: </p>
-    //           <p>{data.message}</p>
-    //         </li>
-    //       );
-    //     })}
-    //   </ul>
-    //   <input
-    //     type='text'
-    //     placeholder='Type message'
-    //     value={message}
-    //     onChange={(e) => setMessage(e.target.value)}
-    //   />
-    //   <button onClick={sendMessage1}>Send</button>
-    // </div>
-    <div className='outerContainer'>
-      <div className='container'>
-        <InfoBar vendorID={vendorID} />
-        <Messages messages={messages} userID={userID} />
-        <Input
+    <Box sx={{ position: "relative", minHeight: "100vh" }}>
+      <NavBar1 />
+      <Navbar2 title={"Chat"} title1={"Home"} />
+      <Box
+        sx={{
+          backgroundColor: "#fbfbfb",
+          padding: { sm: "40px 69px 95px", xs: "40px 63px" },
+        }}
+      >
+        <Box>
+          {" "}
+          <Messages messages={messages} name={username} />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: "40px",
+            bottom: 0,
+            background: "#fbfbfb",
+            width: "100%",
+            position: "fixed",
+          }}
+        >
+          <Box sx={{ height: "56px", margin: "10px 0px", width: "90%" }}>
+            {" "}
+            <TextField
+              sx={{ width: "91%", height: "20px" }}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              id='standard-basic'
+              label='Type'
+              variant='outlined'
+            />
+            <Button
+              onClick={sendMessage1}
+              sx={{
+                background: "#f0353b",
+                color: "white",
+                width: "90px",
+                padding: "15px 9px",
+                marginLeft: "6px",
+                "&:hover": {
+                  background: "#d90429",
+                },
+              }}
+            >
+              Send
+            </Button>
+          </Box>
+        </Box>
+        {/* <Input
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage1}
-        />
-      </div>
-      <TextContainer users={users} />
-    </div>
+        /> */}
+      </Box>
+    </Box>
   );
 };
 
