@@ -25,6 +25,7 @@ import { GlobalContext } from "../../Context";
 
 const Sidebar = () => {
   const { setdashboardOpen } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
 
   const { setnavcontent, statuscheck, setOpen } = useContext(
     DashboardGlobalContext
@@ -556,7 +557,8 @@ const Sidebar = () => {
 
   useEffect(() => {
     console.log(Dashboard);
-  }, [Dashboard]);
+    console.log(statuscheck);
+  }, [Dashboard, statuscheck]);
 
   return (
     <Box sx={AllStyle.sidebar1}>
@@ -585,7 +587,7 @@ const Sidebar = () => {
       {/* <Divider /> */}
       <nav aria-label='main mailbox folders'>
         <>
-          {statuscheck === "admin" && (
+          {state?.userInfo?.user?.status === "admin" && (
             <List>
               <Link
                 to='/dashboard'
@@ -773,7 +775,7 @@ const Sidebar = () => {
               </Link>
             </List>
           )}
-          {statuscheck === "vendor" && (
+          {state?.userInfo?.user?.status === "vendor" && (
             <List>
               <Link
                 to='/dashboard'
@@ -937,30 +939,8 @@ const Sidebar = () => {
               </Link>
             </List>
           )}
-          {statuscheck === "user" && (
+          {state?.userInfo?.user?.status === "user" && (
             <List>
-              <Link
-                to='/dashboard'
-                style={{ textDecoration: "none", width: "88%" }}
-              >
-                <ListItem
-                  disablePadding
-                  sx={{
-                    transition:
-                      "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-                  }}
-                >
-                  <ListItemButton sx={Dashboard} onClick={DashboardClicker}>
-                    <ListItemIcon sx={{ color: "white" }}>
-                      <DashboardIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary='Dashboard'
-                      sx={{ color: "white", textDecoration: "none" }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
               <Link
                 to='/viewaccount'
                 style={{ textDecoration: "none", width: "88%" }}

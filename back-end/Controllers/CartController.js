@@ -41,14 +41,15 @@ export const updatecartitems = async (req, res) => {
   try {
     const items = req.body.products;
     const id = req.params.id;
-    console.log(items, id);
-    const cartdata = await Cart.find({
-      products: { $elemMatch: { product: items.productid } },
-    });
-    console.log(cartdata.length);
+    const cartdata = await Cart.find(
+      { _id: id },
+      {
+        products: { $elemMatch: { product: items.productid } },
+      }
+    );
 
-    if (cartdata.length === 0) {
-      const { data } = await Cart.findByIdAndUpdate(
+    if (cartdata[0].products.length === 0) {
+      const data = await Cart.findByIdAndUpdate(
         id,
         {
           $push: {
@@ -63,12 +64,10 @@ export const updatecartitems = async (req, res) => {
           new: true,
         }
       ).exec();
-      if (data) {
-        res.status(200).json({
-          success: true,
-          data,
-        });
-      }
+      res.status(200).json({
+        success: true,
+        data,
+      });
     } else {
       res.status(200).json({
         success: true,

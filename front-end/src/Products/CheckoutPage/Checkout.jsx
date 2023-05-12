@@ -58,9 +58,13 @@ const Checkout = () => {
     buyNow,
     cartitems,
     setcartitems,
+    setdashboardOpen,
   } = useContext(GlobalContext);
-  const { cart, userInfo } = state;
 
+  const { cart, userInfo } = state;
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   const initialstate = {
     cartdata: [],
     loading: true,
@@ -105,6 +109,7 @@ const Checkout = () => {
 
   useEffect(() => {
     fetchData();
+    console.log(allprice);
     console.log(buyNow);
     console.log(Object.keys(buyNow).length);
   }, []);
@@ -313,10 +318,10 @@ const Checkout = () => {
               >
                 <Typography sx={{ fontSize: "14px" }}>Delivery Fee</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
-                  Rs.{" "}
+                  Rs.
                   {Object.keys(buyNow).length === 0
                     ? allprice.alldelivery
-                    : 150}{" "}
+                    : 149}
                 </Typography>
               </Box>
               <Box
@@ -333,10 +338,10 @@ const Checkout = () => {
               >
                 <Typography sx={{ fontSize: "14px" }}>Total Payment</Typography>
                 <Typography sx={{ fontSize: "14px" }}>
-                  Rs.{" "}
+                  Rs.
                   {Object.keys(buyNow).length === 0
                     ? allprice.withdelivery
-                    : buyNow.price + 150}{" "}
+                    : buyNow.price + 149}
                 </Typography>
               </Box>
 
@@ -354,7 +359,7 @@ const Checkout = () => {
                   Rs.{" "}
                   {Object.keys(buyNow).length === 0
                     ? allprice.withdelivery
-                    : buyNow.price + 150}
+                    : buyNow.price + 149}
                 </Typography>
               </Box>
               <Link to='/payment'>

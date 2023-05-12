@@ -95,6 +95,35 @@ export const allwishitems = async (req, res) => {
   }
 };
 
+export const getwishitems = async (req, res) => {
+  const userId = req.query.id;
+  const searchVal = req.query.sval;
+  let filter = {};
+  if (searchVal) {
+    filter = {
+      $or: [
+        { "products.product.name": { $regex: searchVal, $options: "i" } },
+        // { "products.product.price": { $regex: searchVal, $options: "i" } },
+      ],
+    };
+  }
+  // const regex = new RegExp(searchVal, "i");
+
+  try {
+    const wishdata = await Wishlist.find({
+      user: userId,
+      ...filter,
+    })
+      .select("products")
+      .populate("products.product");
+    console.log(wishdata);
+    res.status(200).send(wishdata);
+  } catch (error) {
+    res.status(404).send("Something Went Wrong");
+    console.log(error);
+  }
+};
+
 export const deletewishitem = async (req, res) => {
   try {
     const p = req.query.i;

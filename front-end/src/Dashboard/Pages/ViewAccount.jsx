@@ -1,13 +1,29 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navbar } from "../Components";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { GlobalContext } from "../../Context";
+import axios from "axios";
 
 const ViewAccount = () => {
-  const { setdashboardOpen } = useContext(GlobalContext);
+  const { setdashboardOpen, state } = useContext(GlobalContext);
+  const [account, setaccount] = useState({});
+
+  console.log(state.userInfo.user._id);
+  const AccountDetails = async () => {
+    try {
+      let { data } = await axios.get(
+        `/api/accountdetail/${state.userInfo.user._id}`
+      );
+      setaccount(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     setdashboardOpen(true);
+    AccountDetails();
   }, []);
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
@@ -69,12 +85,12 @@ const ViewAccount = () => {
                         fontSize: "1.25rem",
                       }}
                     >
-                      Name Of Person
+                      {account.name}
                     </Typography>
                     <Typography
                       sx={{ color: "rgb(123, 128, 154)", fontSize: "0.875rem" }}
                     >
-                      Admin
+                      {account.status}
                     </Typography>
                   </Box>
                 </Box>
@@ -124,7 +140,7 @@ const ViewAccount = () => {
                         width: "150px",
                       }}
                     >
-                      Name of Person
+                      {account.name}
                     </Typography>
                   </Box>
                   <Box
@@ -154,7 +170,7 @@ const ViewAccount = () => {
                         width: "150px",
                       }}
                     >
-                      Email of Person
+                      {account.email}
                     </Typography>
                   </Box>
                   <Box
@@ -184,7 +200,7 @@ const ViewAccount = () => {
                         width: "150px",
                       }}
                     >
-                      PhoneNo of Person
+                      null
                     </Typography>
                   </Box>
                   <Box
@@ -204,7 +220,7 @@ const ViewAccount = () => {
                         width: "100px",
                       }}
                     >
-                      Location:
+                      Verified:
                     </Typography>{" "}
                     <Typography
                       sx={{
@@ -214,37 +230,7 @@ const ViewAccount = () => {
                         width: "150px",
                       }}
                     >
-                      location of Person
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginTop: "6px",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: "rgb(52, 71, 103)",
-                        fontSize: "0.875rem",
-                        fontWeight: 700,
-                        marginRight: "20px",
-                        width: "100px",
-                      }}
-                    >
-                      No of Likes:
-                    </Typography>{" "}
-                    <Typography
-                      sx={{
-                        color: "rgb(123, 128, 154)",
-                        fontSize: "0.875rem",
-                        fontWeight: 400,
-                        width: "150px",
-                      }}
-                    >
-                      Likes of Person
+                      {account.verified && "true"}
                     </Typography>
                   </Box>
                 </Box>

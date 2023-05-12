@@ -31,7 +31,7 @@ const Dashboard = () => {
   const [admins, newadmin] = useState(0);
   const [vendors, newvendors] = useState(0);
   const [products, newproducts] = useState(0);
-  const { setdashboardOpen } = useContext(GlobalContext);
+  const { setdashboardOpen, state } = useContext(GlobalContext);
   useEffect(() => {
     setdashboardOpen(true);
   }, []);
@@ -482,368 +482,378 @@ const Dashboard = () => {
             </Grid>
           </Box>
 
-          <Box sx={{ margin: "25px 40px" }}>
-            <Typography
-              sx={{
-                color: "rgb(52,71,103)",
-                fontWeight: 600,
-                fontSize: "1.25rem",
-              }}
-            >
-              Billing Details
-            </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                margin: "20px 0px",
-                width: "100%",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  // justifyContent: "space-between",
-                  // width: "100%",
-                }}
-              >
-                {" "}
-                <Box
+          {state?.userInfo?.user?.status === "vendor" && (
+            <>
+              {" "}
+              <Box sx={{ margin: "25px 40px" }}>
+                <Typography
                   sx={{
-                    width: "300px",
-                    height: "160px",
-                    // background: "white",
-                    borderRadius: "7px",
-                    padding: "20px",
-                    color: "white",
-                    background:
-                      "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
-                    boxShadow:
-                      "rgb(0 0 0 / 14%) 0rem 0.25rem 1.25rem 0rem, rgb(64 64 64 / 40%) 0rem 0.4375rem 0.625rem -0.3125rem",
-                  }}
-                >
-                  <Box>
-                    <Typography sx={{ fontSize: "15px" }}>
-                      Current Internet Plan
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      // width: "400px",
-                    }}
-                  >
-                    <Typography sx={{ fontSize: "32px", letterSpacing: "2px" }}>
-                      $200.00
-                    </Typography>
-                    <Box
-                      sx={{
-                        width: "40px",
-                        height: "40px",
-                        background: "#ffffff4a",
-                        borderRadius: "360px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <StarOutlineIcon
-                        sx={{
-                          fontSize: "35px",
-                        }}
-                      />
-                    </Box>
-                  </Box>
-
-                  <Typography sx={{ fontSize: "15px" }}>
-                    Due Date: July 04,2023
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      marginTop: "14px",
-                    }}
-                  >
-                    <Button
-                      sx={{
-                        color: "rgb(73, 163, 241)",
-                        background: "white",
-                        marginRight: "10px",
-                        "&:hover": {
-                          background: "white",
-                        },
-                      }}
-                    >
-                      Change Plan
-                    </Button>
-                    <Button
-                      sx={{
-                        color: "rgb(73, 163, 241)",
-                        background: "white",
-                        "&:hover": {
-                          background: "white",
-                        },
-                      }}
-                    >
-                      Pay Now
-                    </Button>
-                  </Box>
-                </Box>
-                <Box
-                  sx={{
-                    width: "300px",
-                    height: "160px",
-                    // background: "white",
-                    borderRadius: "7px",
-                    padding: "20px",
-                    marginLeft: "20px",
                     color: "rgb(52,71,103)",
-                    background: "white",
-                    // background:
-                    //   "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
-                    boxShadow:
-                      "rgb(0 0 0 / 14%) 0rem 0.25rem 1.25rem 0rem, rgb(64 64 64 / 40%) 0rem 0.4375rem 0.625rem -0.3125rem",
+                    fontWeight: 600,
+                    fontSize: "1.25rem",
                   }}
                 >
-                  <Box sx={{ fontSize: "15px" }}>
-                    <Typography>Next Payment</Typography>
-                  </Box>
+                  Billing Details
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    margin: "20px 0px",
+                    width: "100%",
+                  }}
+                >
                   <Box
                     sx={{
                       display: "flex",
                       flexDirection: "row",
-                      justifyContent: "space-between",
+                      // justifyContent: "space-between",
+                      // width: "100%",
                     }}
                   >
-                    <Typography sx={{ fontSize: "32px", letterSpacing: "2px" }}>
-                      $200.00
-                    </Typography>
+                    {" "}
                     <Box
                       sx={{
-                        width: "40px",
-                        height: "40px",
-                        background: "#0043ff14",
-                        borderRadius: "360px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <PaymentIcon
-                        sx={{
-                          fontSize: "30px",
-                          color: "rgb(73, 163, 241)",
-                        }}
-                      />
-                    </Box>
-                  </Box>
-                  <Typography sx={{ fontSize: "15px" }}>
-                    On August 04,2023
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      marginTop: "14px",
-                    }}
-                  >
-                    <Button
-                      sx={{
+                        width: "300px",
+                        height: "160px",
+                        // background: "white",
+                        borderRadius: "7px",
+                        padding: "20px",
                         color: "white",
                         background:
                           "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
-                        marginRight: "10px",
-                        "&:hover": {
-                          background: "white",
-                        },
+                        boxShadow:
+                          "rgb(0 0 0 / 14%) 0rem 0.25rem 1.25rem 0rem, rgb(64 64 64 / 40%) 0rem 0.4375rem 0.625rem -0.3125rem",
                       }}
                     >
-                      Manage Payment
-                    </Button>
+                      <Box>
+                        <Typography sx={{ fontSize: "15px" }}>
+                          Current Internet Plan
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          // width: "400px",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontSize: "32px", letterSpacing: "2px" }}
+                        >
+                          $200.00
+                        </Typography>
+                        <Box
+                          sx={{
+                            width: "40px",
+                            height: "40px",
+                            background: "#ffffff4a",
+                            borderRadius: "360px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <StarOutlineIcon
+                            sx={{
+                              fontSize: "35px",
+                            }}
+                          />
+                        </Box>
+                      </Box>
+
+                      <Typography sx={{ fontSize: "15px" }}>
+                        Due Date: July 04,2023
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          marginTop: "14px",
+                        }}
+                      >
+                        <Button
+                          sx={{
+                            color: "rgb(73, 163, 241)",
+                            background: "white",
+                            marginRight: "10px",
+                            "&:hover": {
+                              background: "white",
+                            },
+                          }}
+                        >
+                          Change Plan
+                        </Button>
+                        <Button
+                          sx={{
+                            color: "rgb(73, 163, 241)",
+                            background: "white",
+                            "&:hover": {
+                              background: "white",
+                            },
+                          }}
+                        >
+                          Pay Now
+                        </Button>
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        width: "300px",
+                        height: "160px",
+                        // background: "white",
+                        borderRadius: "7px",
+                        padding: "20px",
+                        marginLeft: "20px",
+                        color: "rgb(52,71,103)",
+                        background: "white",
+                        // background:
+                        //   "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
+                        boxShadow:
+                          "rgb(0 0 0 / 14%) 0rem 0.25rem 1.25rem 0rem, rgb(64 64 64 / 40%) 0rem 0.4375rem 0.625rem -0.3125rem",
+                      }}
+                    >
+                      <Box sx={{ fontSize: "15px" }}>
+                        <Typography>Next Payment</Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontSize: "32px", letterSpacing: "2px" }}
+                        >
+                          $200.00
+                        </Typography>
+                        <Box
+                          sx={{
+                            width: "40px",
+                            height: "40px",
+                            background: "#0043ff14",
+                            borderRadius: "360px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <PaymentIcon
+                            sx={{
+                              fontSize: "30px",
+                              color: "rgb(73, 163, 241)",
+                            }}
+                          />
+                        </Box>
+                      </Box>
+                      <Typography sx={{ fontSize: "15px" }}>
+                        On August 04,2023
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          marginTop: "14px",
+                        }}
+                      >
+                        <Button
+                          sx={{
+                            color: "white",
+                            background:
+                              "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
+                            marginRight: "10px",
+                            "&:hover": {
+                              background: "white",
+                            },
+                          }}
+                        >
+                          Manage Payment
+                        </Button>
+                      </Box>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              // width: "86%",
-              // // height: "200px",
-              // padding: "31px",
-              // background: "white",
-              margin: "25px 40px",
-              // borderRadius: "5px",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "rgb(52,71,103)",
-                fontWeight: 600,
-                fontSize: "1.25rem",
-              }}
-            >
-              Billing Plan
-            </Typography>
-            <BillingPlan />
-          </Box>
-          <Box
-            sx={{
-              // width: "86%",
-              // // height: "200px",
-              // padding: "31px",
-              // background: "white",
-              margin: "25px 40px",
-              // borderRadius: "5px",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "rgb(52,71,103)",
-                fontWeight: 600,
-                fontSize: "1.25rem",
-              }}
-            >
-              Payment History
-            </Typography>
-            <Box sx={{ marginTop: "20px" }}>
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  // justifyContent: "space-between",
-                  alignItems: "center",
-                  background: "#b19c9c12",
-                  padding: "12px 17px",
-                  borderRadius: "5px",
-                  color: "rgb(52,71,103)",
-                  fontWeight: 600,
-                  fontSize: "1.25rem",
+                  // width: "86%",
+                  // // height: "200px",
+                  // padding: "31px",
+                  // background: "white",
+                  margin: "25px 40px",
+                  // borderRadius: "5px",
                 }}
               >
                 <Typography
                   sx={{
-                    width: "200px",
+                    color: "rgb(52,71,103)",
+                    fontWeight: 600,
+                    fontSize: "1.25rem",
                   }}
                 >
-                  Amount
+                  Billing Plan
                 </Typography>
-                <Typography
-                  sx={{
-                    width: "150px",
-                  }}
-                >
-                  Status
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "240px",
-                  }}
-                >
-                  Recepient
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "200px",
-                  }}
-                >
-                  Date
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "200px",
-                  }}
-                >
-                  Payment Method
-                </Typography>
+                <BillingPlan />
               </Box>
               <Box
                 sx={{
-                  marginTop: "15px",
-                  display: "flex",
-                  flexDirection: "row",
-                  // justifyContent: "space-between",
-                  background: "white",
-                  padding: "23px 17px",
-                  alignItems: "center",
-                  borderRadius: "5px",
-                  color: "rgb(52,71,103)",
-                  fontWeight: 600,
-                  fontSize: "1.25rem",
+                  // width: "86%",
+                  // // height: "200px",
+                  // padding: "31px",
+                  // background: "white",
+                  margin: "25px 40px",
+                  // borderRadius: "5px",
                 }}
               >
                 <Typography
                   sx={{
-                    width: "200px",
+                    color: "rgb(52,71,103)",
+                    fontWeight: 600,
+                    fontSize: "1.25rem",
                   }}
                 >
-                  $175.00
+                  Payment History
                 </Typography>
-                <Box
-                  sx={{
-                    width: "150px",
-                  }}
-                >
-                  {" "}
-                  <span
-                    style={{
-                      color: "#ffd24c",
-                      background: "#fff5d6",
-                      fontSize: "15px",
-                      padding: "1px 8px",
+                <Box sx={{ marginTop: "20px" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      // justifyContent: "space-between",
+                      alignItems: "center",
+                      background: "#b19c9c12",
+                      padding: "12px 17px",
+                      borderRadius: "5px",
+                      color: "rgb(52,71,103)",
+                      fontWeight: 600,
+                      fontSize: "1.25rem",
                     }}
                   >
-                    Pending
-                  </span>
+                    <Typography
+                      sx={{
+                        width: "200px",
+                      }}
+                    >
+                      Amount
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "150px",
+                      }}
+                    >
+                      Status
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "240px",
+                      }}
+                    >
+                      Recepient
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "200px",
+                      }}
+                    >
+                      Date
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "200px",
+                      }}
+                    >
+                      Payment Method
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      marginTop: "15px",
+                      display: "flex",
+                      flexDirection: "row",
+                      // justifyContent: "space-between",
+                      background: "white",
+                      padding: "23px 17px",
+                      alignItems: "center",
+                      borderRadius: "5px",
+                      color: "rgb(52,71,103)",
+                      fontWeight: 600,
+                      fontSize: "1.25rem",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        width: "200px",
+                      }}
+                    >
+                      $175.00
+                    </Typography>
+                    <Box
+                      sx={{
+                        width: "150px",
+                      }}
+                    >
+                      {" "}
+                      <span
+                        style={{
+                          color: "#ffd24c",
+                          background: "#fff5d6",
+                          fontSize: "15px",
+                          padding: "1px 8px",
+                        }}
+                      >
+                        Pending
+                      </span>
+                    </Box>
+
+                    <Typography
+                      sx={{
+                        width: "240px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <AccountCircleIcon sx={{ marginRight: "10px" }} />
+                      Muhammad Danish
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "200px",
+                      }}
+                    >
+                      June 09 ,2023
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "200px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      Stripe <PaymentIcon sx={{ marginLeft: "10px" }} />
+                    </Typography>
+                  </Box>
                 </Box>
-
-                <Typography
-                  sx={{
-                    width: "240px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <AccountCircleIcon sx={{ marginRight: "10px" }} />
-                  Muhammad Danish
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "200px",
-                  }}
-                >
-                  June 09 ,2023
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "200px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  Stripe <PaymentIcon sx={{ marginLeft: "10px" }} />
-                </Typography>
               </Box>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              height: "250px !important",
-              width: "400px",
-              padding: "31px",
-              background: "white",
-              margin: "0px -37px 10px 41px",
-              borderRadius: "5px",
-            }}
-          >
-            <VerticalBars />
-          </Box>
-          <Stripe1 />
+              <Box
+                sx={{
+                  height: "250px !important",
+                  width: "400px",
+                  padding: "31px",
+                  background: "white",
+                  margin: "0px -37px 10px 41px",
+                  borderRadius: "5px",
+                }}
+              >
+                <VerticalBars />
+              </Box>
+            </>
+          )}
 
-          <a href='https://buy.stripe.com/test_4gwaHj9FYfckb4YbII'>Checkout</a>
+          {/* <Stripe1 />
+
+          <a href='https://buy.stripe.com/test_4gwaHj9FYfckb4YbII'>Checkout</a> */}
           {/* <Box
             sx={{
               width: "86%",

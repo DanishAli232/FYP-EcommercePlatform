@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import shirt3 from "../../../Assets/shirt3.jpg";
 
 import { motion } from "framer-motion";
@@ -9,30 +9,42 @@ import {
   staggerContainer,
 } from "../../../FramerMotion/motion";
 import ShopItemsDes from "./ShopItemsDes";
+import axios from "axios";
 
 const productitems = [
   {
-    img: shirt3,
+    image: shirt3,
     price: "899.99",
     title: "Checkered Casual Shirt",
   },
   {
-    img: shirt3,
+    image: shirt3,
     price: "899.99",
     title: "Checkered Casual Shirt",
   },
   {
-    img: shirt3,
+    image: shirt3,
     price: "899.99",
     title: "Checkered Casual Shirt",
   },
   {
-    img: shirt3,
+    image: shirt3,
     price: "899.99",
     title: "Checkered Casual Shirt",
   },
 ];
 const ShopItems = () => {
+  const [loading, setloading] = useState(false);
+  const [product, setproduct] = useState([]);
+  useEffect(() => {
+    const fetchdata = async () => {
+      setloading(true);
+      const { data } = await axios.get("/api/getproducts");
+      setloading(false);
+      setproduct(data);
+    };
+    fetchdata();
+  }, []);
   return (
     <motion.div
       variants={staggerContainer}
@@ -75,7 +87,7 @@ const ShopItems = () => {
             columnSpacing={2}
             sx={{ marginBottom: "20px" }}
           >
-            {productitems.map((item) => (
+            {product.map((item) => (
               <Grid width='100%' item key={item._id} xs={6} md={3} lg={3}>
                 <ShopItemsDes {...item} />
               </Grid>

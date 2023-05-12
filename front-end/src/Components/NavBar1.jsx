@@ -42,8 +42,12 @@ import Scrollbars from "react-custom-scrollbars-2";
 const Logo = styled.h1`
   color: #f0353b;
   font-family: Georgia, "Times New Roman", Times, serif;
+  transition: 0.4s;
   @media (max-width: 641px) {
     font-size: 25px;
+  }
+  &:hover {
+    transform: scale(1.2, 1.2);
   }
 `;
 
@@ -173,7 +177,7 @@ const NavBar1 = () => {
                 alignItems: "center",
               }}
             >
-              <Link to='/'>
+              <Link to='#'>
                 <Logo>ARSTORE</Logo>
               </Link>
               <Box
@@ -197,15 +201,16 @@ const NavBar1 = () => {
                     <NavList key={i} {...item} listClick={listClick} />
                   ))}
                 </ul>
-
-                <Box
-                  onClick={() => {
-                    console.log("yess");
-                    setsearch(!search);
-                  }}
-                >
-                  <SearchIcon sx={{ color: "red" }} />
-                </Box>
+                {state?.userInfo?.user?.status === "user" && (
+                  <Box
+                    onClick={() => {
+                      console.log("yess");
+                      setsearch(!search);
+                    }}
+                  >
+                    <SearchIcon sx={{ color: "red" }} />
+                  </Box>
+                )}
               </Box>
             </Box>
 
@@ -419,10 +424,14 @@ const NavBar1 = () => {
                           <Typography
                             textAlign='center'
                             onClick={() => {
-                              if (setting.nav) {
-                                navigate(setting.nav);
+                              if (state?.userInfo?.user?.status === "user") {
+                                navigate("/viewaccount");
                               } else {
-                                SignOut();
+                                if (setting.nav) {
+                                  navigate(setting.nav);
+                                } else {
+                                  SignOut();
+                                }
                               }
                             }}
                           >

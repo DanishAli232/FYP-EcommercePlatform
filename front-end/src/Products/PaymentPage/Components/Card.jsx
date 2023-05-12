@@ -21,28 +21,7 @@ const Card = () => {
     });
     setcartDetails(data);
   }, []);
-  const navigate = useNavigate();
-  const alldetail = {
-    userInfo,
-    DefaultAddress,
-    paymentMethod: "Stripe",
-    allprice,
-  };
-  const ConfirmOrder = async () => {
-    // setstatus(true);
-    // try {
-    //   let { data } = await axios.post("/api/postorder", {
-    //     cartItems: cartDetails,
-    //     userId: userInfo.user._id,
-    //     alldetail,
-    //   });
-    //   console.log(data);
-    //   if (data) {
-    //     setstatus(false);
-    //     navigate("/checkout-success");
-    //   }
-    // } catch (error) {}
-  };
+
   return (
     <Box
       sx={{

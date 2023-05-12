@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { AnimatePresence, motion } from "framer-motion";
@@ -9,12 +9,99 @@ import {
   pVariants,
   staggerContainer,
 } from "../../../FramerMotion/motion";
+import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../../Context";
+import axios from "axios";
 
-const AllProducts = ({ name: title, price, image }) => {
+const AllProducts = ({
+  name: title,
+  price,
+  image,
+  _id,
+  brand,
+  description,
+  vendor,
+  rating,
+}) => {
+  const {
+    state,
+    dispatch: ctxDispatch,
+    fetchcartItems,
+    setbuyNow,
+  } = useContext(GlobalContext);
+  const navigate = useNavigate();
+  const { cart, userInfo } = state;
   const [display1, setdisplay1] = useState("none");
   const [open, setopen] = useState(false);
 
   useEffect(() => {}, [open]);
+
+  const handleBasket = () => {
+    const _id = userInfo?.user?._id;
+    if (_id) {
+      setbuyNow({
+        id: _id,
+        title,
+        brand: brand,
+        price: price,
+        image: image,
+        description,
+        rating,
+        quantity: 1,
+        vendor,
+      });
+      navigate("/checkout");
+    } else {
+      navigate("/signin");
+    }
+  };
+
+  const addToCartHandler = async () => {
+    console.log(cart.cartItem);
+    const products = {
+      productid: _id,
+      quantity: 1,
+      totalprice: price,
+    };
+    const id = userInfo.user._id;
+    if (cart.cartid) {
+      const { data } = await axios.patch(
+        `/api/updatecartitems/${cart.cartid.cartId}`,
+        {
+          products,
+        }
+      );
+      navigate("/cartpage");
+      console.log(data);
+    } else {
+      const { data } = await axios.post("/api/addcartitems", {
+        products,
+        id,
+      });
+      console.log(data);
+      fetchcartItems();
+      ctxDispatch({
+        type: "CART_ADD_ITEM",
+        payload: {
+          products,
+        },
+      });
+      navigate("/cartpage");
+
+      // ctxDispatch({
+      //   type: "CART_ID",
+      //   payload: {
+      //     data,
+      //   },
+      // });
+    }
+
+    // navigate("/cartpage");
+  };
+
+  const handleClicker = (item) => {
+    navigate(`/productdetail/${_id}`, { state: item });
+  };
 
   return (
     <motion.div
@@ -55,6 +142,7 @@ const AllProducts = ({ name: title, price, image }) => {
           <AnimatePresence>
             {open && (
               <motion.p
+                onClick={addToCartHandler}
                 whileHover={{
                   background: "#eb2d42",
                   transition: {
@@ -90,6 +178,17 @@ const AllProducts = ({ name: title, price, image }) => {
           <AnimatePresence>
             {open && (
               <motion.div
+                onClick={() =>
+                  handleClicker({
+                    title,
+                    price,
+                    image,
+                    vendor,
+                    description,
+                    rating,
+                    _id,
+                  })
+                }
                 whileHover={{
                   background: "#eb2d42",
                   color: "white",
@@ -125,6 +224,7 @@ const AllProducts = ({ name: title, price, image }) => {
           <AnimatePresence>
             {open && (
               <motion.div
+                onClick={handleBasket}
                 whileHover={{
                   background: "#eb2d42",
                   color: "white",

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  accountDetail,
   addUser,
   alladmins,
   alluser,
@@ -26,5 +27,6 @@ UserRouter.post("/login", login);
 UserRouter.post("/forgotpassword", forgotPassword);
 UserRouter.get("/:id/verify2/:token", Emailverify2);
 UserRouter.post("/changepassword", ChangePassword);
+UserRouter.get("/accountdetail/:id", accountDetail);
 
 export default UserRouter;

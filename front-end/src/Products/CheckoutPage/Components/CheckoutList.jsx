@@ -77,7 +77,16 @@ const CheckoutList = ({
             alignItems: "center",
           }}
         >
-          <img style={{ width: "60px", height: "60px" }} src={image} alt='' />
+          <img
+            style={{
+              width: "60px",
+              height: "60px",
+              objectFit: "cover",
+              objectposition: "center",
+            }}
+            src={image}
+            alt=''
+          />
           <Typography
             sx={{
               paddingLeft: "12px",
@@ -174,7 +183,7 @@ const CheckoutList = ({
           </Typography>
         </Box>
         <Typography sx={{ color: "#f57224", fontSize: "18px" }}>
-          Rs. {price * quantity + 150}
+          Rs. {price * quantity + 149}
         </Typography>
       </Box>
     </Box>

@@ -30,9 +30,9 @@ import { GlobalContext } from "../../Context";
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
-      return { ...state, loading: true }; //keep the previous value and only update loading to true
+      return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return { ...state, user: action.payload, loading: false };
+      return { ...state, orders: action.payload, loading: false };
     case "FETCH_FAIL":
       return { ...state, error: action.payload, loading: false };
     default:
@@ -41,20 +41,15 @@ const reducer = (state, action) => {
 };
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
-const label1 = { inputProps: { "aria-label": "Switch demo" } };
 
 const Orders = () => {
-  // const Alert = React.forwardRef(function Alert(props, ref) {
-  //   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
-  // });
-  const navigate = useNavigate();
   const [CheckVal, newCheckVal] = React.useState([]);
-  const [show, newshow] = useState(false);
-  const [IconShow, notShow] = useState(true);
+
   const [status, setStatus] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [searchVal, newSearchVal] = useState("");
-  const { setdashboardOpen } = useContext(GlobalContext);
+  const { setdashboardOpen, state } = useContext(GlobalContext);
+
   useEffect(() => {
     setdashboardOpen(true);
   }, []);
@@ -86,69 +81,80 @@ const Orders = () => {
 
   const columns = [
     {
-      field: "checkout",
-      headerName: "",
-      width: 60,
-      minHeight: 300,
-      renderCell: (cellValues) => {
-        const handleClick = (cellValues) => {
-          console.log(cellValues);
-
-          let position = CheckVal.indexOf(cellValues.id) + 1;
-          if (position === 0) {
-            newCheckVal([...CheckVal, cellValues.id]);
-          } else {
-            newCheckVal((prevdata) => {
-              return prevdata.filter((filterval) => {
-                return filterval !== cellValues.id;
-              });
-            });
-          }
-        };
-        return (
-          <Box>
-            <Checkbox
-              {...label}
-              onClick={(event) => {
-                handleClick(cellValues);
-              }}
-            />
-          </Box>
-        );
-      },
-    },
-
-    {
-      field: "name",
+      field: "user.name",
       headerName: "Name",
       minWidth: 150,
       disableReorder: true,
-      // valueGetter: (value) => {
-      //   // console.log(value.id);
-      //   return value.value;
-      // },
+      valueGetter: (value) => {
+        return value?.row?.user?.name;
+      },
     },
     {
-      field: "email",
+      field: "user.email",
       headerName: "Email",
       width: 200,
+      valueGetter: (value) => {
+        return value?.row?.user?.email;
+      },
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
     {
-      field: "phoneno",
-      headerName: "PhoneNo",
-      width: 150,
+      field: "orderItems",
+      headerName: "orderItems",
+      width: 100,
+      valueGetter: (value) => {
+        return value?.row?.orderItems?.length;
+      },
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
     {
-      field: "status",
-      headerName: "Status",
+      field: "shippingaddress",
+      headerName: "shippingAddress",
+      width: 200,
+      valueGetter: (value) => {
+        return value?.row?.shippingAddress?.city;
+      },
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "itemsPrice",
+      headerName: "itemsPrice",
       width: 100,
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
     {
-      field: "storename",
-      headerName: "StoreName",
+      field: "shippingPrice",
+      headerName: "shippingPrice",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "totalPrice",
+      headerName: "totalPrice",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "isPaid",
+      headerName: "isPaid",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "totalPrice",
+      headerName: "Total Price",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "isDelivered",
+      headerName: "isDelivered",
+      width: 100,
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "paymentMethod",
+      headerName: "paymentMethod",
       width: 100,
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
@@ -159,72 +165,6 @@ const Orders = () => {
       valueFormatter: ({ value }) => value.slice(0, 10),
       cellClassName: "font-tabular-nums",
     },
-
-    {
-      field: "switch",
-      headerName: "switch",
-      width: 70,
-      renderCell: (cellValues) => {
-        const handleClick = (cellvalues) => {
-          if (cellvalues.row.status === "vendor") {
-            try {
-              axios.patch(`/api/statusupdate/${cellvalues.id}`, {
-                status: "admin",
-              });
-            } catch (error) {
-              console.log(error);
-            }
-            cellvalues.row.status = "admin";
-          } else if (cellvalues.row.status === "admin") {
-            try {
-              axios.patch(`/api/statusupdate/${cellvalues.id}`, {
-                status: "vendor",
-              });
-            } catch (error) {
-              console.log(error);
-            }
-            cellvalues.row.status = "vendor";
-          }
-        };
-
-        // console.log(cellvalues);
-
-        return (
-          <Switch
-            {...label1}
-            onClick={(event) => {
-              handleClick(cellValues);
-            }}
-          />
-        );
-      },
-    },
-    {
-      field: "delete",
-      headerName: "",
-      width: 50,
-      renderCell: (cellValues) => {
-        const DeleteRow = async (cellvalues) => {
-          window.location.reload();
-          try {
-            setOpen(true);
-            setStatus("loading");
-            axios.delete(`/api/deletevendor/${cellValues.id}`);
-          } catch (error) {
-            console.log(error);
-          }
-        };
-
-        return (
-          <DeleteIcon
-            onClick={(event) => {
-              DeleteRow(cellValues);
-            }}
-            sx={{ cursor: "pointer", color: "red" }}
-          />
-        );
-      },
-    },
   ];
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -234,28 +174,15 @@ const Orders = () => {
     setOpen(false);
   };
   const initialstate = {
-    user: [],
+    orders: [],
     loading: true,
     error: "",
   };
-  const [{ loading, error, user }, dispatch] = useReducer(
+  const [{ loading, error, orders }, dispatch] = useReducer(
     reducer,
     initialstate
   );
-  // const [user, newproducts] = useState([]);
-
-  const DeleteRow = async () => {
-    window.location.reload();
-    try {
-      setOpen(true);
-      setStatus("loading");
-      CheckVal.map((value) => {
-        return axios.delete(`/api/deletevendor/${value}`);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const [orders, newproducts] = useState([]);
 
   const filterResult = (event) => {
     newSearchVal(event.target.value);
@@ -275,8 +202,10 @@ const Orders = () => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`/api/getallvendors?q=${searchVal}`);
-        console.log(result);
+        const result = await axios.get(
+          `/api/getorders?uid=${state.userInfo.user._id}&&sval=${searchVal}`
+        );
+        console.log(result.data);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
         dispatch({ type: "FETCH_FAIL", payload: error.message });
@@ -306,34 +235,7 @@ const Orders = () => {
               paddingRight: { md: "45px", xs: "10px" },
             }}
           >
-            {CheckVal.length === 0 ? (
-              <Button
-                disabled
-                sx={{
-                  paddingLeft: { md: "0px", xs: "0px" },
-                  fontSize: "17px",
-                  color: "red",
-                  cursor: "pointer",
-                }}
-              >
-                Delete
-              </Button>
-            ) : (
-              <Button
-                sx={{
-                  paddingLeft: { md: "0px", xs: "0px" },
-                  fontSize: "17px",
-                  color: "red",
-                  cursor: "pointer",
-                }}
-                onClick={DeleteRow}
-              >
-                Delete
-                {status === "loading" && (
-                  <CircularProgress sx={{ ml: 1 }} size='16px' />
-                )}{" "}
-              </Button>
-            )}
+            <Box></Box>
             <Box sx={{ marginBottom: "10px" }}>
               {/* <TextField
                     onChange={filterResult}
@@ -372,7 +274,7 @@ const Orders = () => {
               <h1>Error Occur</h1>
             ) : (
               <DataGrid
-                rows={user}
+                rows={orders}
                 columns={columns}
                 pageSize={6}
                 getRowId={(row) => row._id}

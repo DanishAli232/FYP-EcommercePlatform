@@ -5,7 +5,7 @@ import config from "../Utils/config.js";
 const stripe = Stripe(config.STRIPE_KEY);
 
 export const StripCheckoutSession = async (req, res) => {
-  console.log(req.body);
+  console.log(req.body.alldetail.DefaultAddress._id);
   const customer = await stripe.customers.create({
     metadata: {
       userId: req.body.userId,
@@ -18,7 +18,7 @@ export const StripCheckoutSession = async (req, res) => {
         currency: "pkr",
         product_data: {
           name: item.product.name,
-          // images: [item.product.image],
+          images: [item.product.image],
           description: item.product.description,
           metadata: {
             id: item._id,
@@ -30,10 +30,22 @@ export const StripCheckoutSession = async (req, res) => {
     };
   });
   console.log(line_items);
+  line_items.push({
+    price_data: {
+      currency: "pkr",
+      product_data: {
+        name: "Shipping cost",
+        description: "Shipping cost",
+      },
+      unit_amount: 149 * 100,
+    },
+    quantity: req.body.cartItems.length,
+  });
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     shipping_address_collection: {
-      allowed_countries: ["US", "CA", "KE", "PK"],
+      // allowed_countries: ["US", "CA", "KE", "PK"],
+      allowed_countries: [],
     },
     // shipping_options: [
     //   {
@@ -82,6 +94,8 @@ export const StripCheckoutSession = async (req, res) => {
     phone_number_collection: {
       enabled: true,
     },
+
+    // customer: customer.id,
     line_items,
     mode: "payment",
     // customer: customer.id,

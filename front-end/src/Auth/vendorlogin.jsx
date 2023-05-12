@@ -74,7 +74,7 @@ function VendorLogin() {
         await SignOut("sell");
         ctxDispatch({ type: "USER_SIGNIN", payload: result.data });
         localStorage.setItem("userInfo", JSON.stringify(result.data));
-        navigate("/");
+        navigate("/products");
       }
     } catch (err) {
       setError(err.response.data.errors);

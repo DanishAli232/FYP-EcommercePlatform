@@ -31,8 +31,7 @@ export const getallproducts = async (req, res) => {
 export const filterSearchProduct = async (req, res) => {
   var search = req.params.searchvl;
   try {
-    let result = await Product.find({ name: new RegExp(search, "i") })
-    .sort({
+    let result = await Product.find({ name: new RegExp(search, "i") }).sort({
       price: 1,
     });
     res.send(result);
@@ -316,7 +315,7 @@ export const vendorProducts = async (req, res) => {
     $and: [
       { price: { $gte: 0, $lte: 600 } },
       { rating: 2 },
-      { vendor: values.vendorid["vendorid"] },
+      { vendor: values.vendorid },
     ],
   })
     .skip(0)

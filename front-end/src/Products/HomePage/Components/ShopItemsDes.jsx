@@ -13,12 +13,23 @@ import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../../Context";
 import axios from "axios";
 
-const ShopItemsDes = ({ title, price, img, _id }) => {
+const ShopItemsDes = ({
+  name,
+  price,
+  image,
+  _id,
+  vendor,
+  description,
+  rating,
+  brand,
+}) => {
   const {
     state,
     dispatch: ctxDispatch,
     fetchcartItems,
+    setbuyNow,
   } = useContext(GlobalContext);
+  console.log(price);
   const { cart, userInfo } = state;
   const navigate = useNavigate();
   const [display1, setdisplay1] = useState("none");
@@ -76,8 +87,25 @@ const ShopItemsDes = ({ title, price, img, _id }) => {
     navigate(`/productdetail/${_id}`, { state: item });
   };
 
-  const handleBasket = () => {};
-
+  const handleBasket = () => {
+    const _id = userInfo?.user?._id;
+    if (_id) {
+      setbuyNow({
+        id: _id,
+        name,
+        brand,
+        price: price,
+        image: image,
+        description,
+        rating,
+        quantity: 1,
+        vendor,
+      });
+      navigate("/checkout");
+    } else {
+      navigate("/signin");
+    }
+  };
   return (
     <motion.div
       variants={staggerContainer}
@@ -98,17 +126,20 @@ const ShopItemsDes = ({ title, price, img, _id }) => {
             setopen(false);
           }}
         >
-          <motion.img
-            src={img}
-            alt=''
-            style={{
-              objectFit: "cover",
-              objectPosition: "center",
-              width: "100%",
-              height: { md: "300px", xs: "150px" },
-              borderRadius: "5px",
-            }}
-          />
+          <Box sx={{ height: { md: "250px", xs: "150px" }, width: "100%" }}>
+            <img
+              src={image}
+              alt='image1'
+              style={{
+                width: "100%",
+                objectFit: "cover",
+                objectPosition: "center",
+                // height: { md: "300px", xs: "150px" },
+                height: "100%",
+                borderRadius: "5px",
+              }}
+            />
+          </Box>
           <AnimatePresence>
             {open && (
               <motion.p
@@ -148,7 +179,17 @@ const ShopItemsDes = ({ title, price, img, _id }) => {
           <AnimatePresence>
             {open && (
               <motion.div
-                onClick={() => handleClicker({ title, price, img })}
+                onClick={() =>
+                  handleClicker({
+                    name,
+                    price,
+                    image,
+                    vendor,
+                    description,
+                    rating,
+                    _id,
+                  })
+                }
                 whileHover={{
                   background: "#eb2d42",
                   color: "white",
@@ -234,7 +275,7 @@ const ShopItemsDes = ({ title, price, img, _id }) => {
               },
             }}
           >
-            {title}
+            {name}
           </Typography>
           <Typography
             variant='p'

@@ -15,7 +15,23 @@ import Slider from "./Components/Slider";
 import Vendors from "./Components/Vendors";
 
 const Home1 = () => {
-  const { setdashboardOpen } = useContext(GlobalContext);
+  const { setdashboardOpen, navlistitems } = useContext(GlobalContext);
+
+  const updatelist = () => {
+    let data1 = navlistitems;
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    console.log(data);
+
+    let objIndex = navlistitems.findIndex((obj) => obj.title === "Home");
+    navlistitems[objIndex].active = true;
+    console.log(navlistitems);
+  };
+  useEffect(() => {
+    updatelist();
+  }, []);
   useEffect(() => {
     setdashboardOpen(false);
   });

@@ -81,7 +81,7 @@ const Sell = () => {
         await SignOut("sell");
         ctxDispatch({ type: "USER_SIGNIN", payload: data });
         localStorage.setItem("userInfo", JSON.stringify(data));
-        navigate("/");
+        navigate("/products");
       }
     } catch (err) {
       if (err.response.data.errors) {

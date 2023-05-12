@@ -99,7 +99,7 @@ const ProductsPage = () => {
   // console.log(vendorid);
   // console.log("token", token); //123
 
-  const { setdashboardOpen, switchbtn, navlistitems } =
+  const { setdashboardOpen, switchbtn, navlistitems, state } =
     useContext(GlobalContext);
   useEffect(() => {
     setdashboardOpen(false);
@@ -129,7 +129,7 @@ const ProductsPage = () => {
     maxprice: value1[1],
     category: "shirts",
     limit: page,
-    vendorid: value,
+    vendorid: value?.vendorid ? value?.vendorid : state?.userInfo?.user?._id,
   });
 
   const handleChange2 = (event) => {
@@ -172,20 +172,9 @@ const ProductsPage = () => {
 
   const fetchData = async () => {
     console.log("yess");
+    console.log(state?.userInfo?.user?.status);
     setstatus(true);
-    if (switchbtn === 1 || value.vendorid === undefined) {
-      try {
-        let { data } = await axios.post("/api/filterproducts", filterQueries);
-        setproducts(data);
-        setstatus(false);
-        seterror({ ...error, check: false });
-        let total_pages = Math.ceil(data.length / 9);
-        settotalPages(total_pages);
-        console.log(data);
-      } catch (error) {
-        seterror({ ...error, check: true });
-      }
-    } else {
+    if (state?.userInfo?.user?.status === "vendor") {
       try {
         // setfilterQueries({ ...filterQueries, vendorid: vendorid });
         let { data } = await axios.post(
@@ -200,6 +189,37 @@ const ProductsPage = () => {
         console.log(data);
       } catch (error) {
         seterror({ ...error, check: true });
+      }
+    } else {
+      if (switchbtn === 1 || value.vendorid === undefined) {
+        try {
+          let { data } = await axios.post("/api/filterproducts", filterQueries);
+          console.log(data);
+          setproducts(data);
+          setstatus(false);
+          seterror({ ...error, check: false });
+          let total_pages = Math.ceil(data.length / 9);
+          settotalPages(total_pages);
+          console.log(data);
+        } catch (error) {
+          seterror({ ...error, check: true });
+        }
+      } else {
+        try {
+          // setfilterQueries({ ...filterQueries, vendorid: vendorid });
+          let { data } = await axios.post(
+            "/api/filtervendorProducts",
+            filterQueries
+          );
+          setproducts(data);
+          setstatus(false);
+          seterror({ ...error, check: false });
+          let total_pages = Math.ceil(data.length / 9);
+          settotalPages(total_pages);
+          console.log(data);
+        } catch (error) {
+          seterror({ ...error, check: true });
+        }
       }
     }
   };
@@ -266,7 +286,7 @@ const ProductsPage = () => {
       ) : (
         <Navbar2 title={"Online Store"} title1={"Home"} />
       )}
-      <Box sx={{ padding: "40px 13px" }}>
+      <Box sx={{ padding: "40px 60px" }}>
         <Grid container spacing={4} rowSpacing={4}>
           <Grid item md={4} sx={{ width: { md: "auto", xs: "100%" } }}>
             <Box

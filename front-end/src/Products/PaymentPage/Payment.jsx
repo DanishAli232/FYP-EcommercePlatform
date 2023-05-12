@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar";
 
 import {
@@ -29,7 +29,11 @@ import NavBar1 from "../../Components/NavBar1";
 import Paypal from "./Components/paypal";
 
 const Payment = () => {
-  const { allprice, state, cartitems, buyNow } = useContext(GlobalContext);
+  const { allprice, state, cartitems, buyNow, setdashboardOpen } =
+    useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   const [openBox, setopenBox] = useState({
     COD: false,
     Easypaisa: false,

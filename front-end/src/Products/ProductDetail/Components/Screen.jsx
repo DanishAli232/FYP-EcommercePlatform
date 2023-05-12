@@ -63,9 +63,14 @@ const ProductDetail = () => {
     fetchAddresses,
     switchbtn,
     setswitchbtn,
+    setdashboardOpen,
     fetchcartItems,
   } = useContext(GlobalContext);
   const { cart, userInfo } = state;
+
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   const [comment, setcomment] = useState({
     user: "",
     username: "",
@@ -112,6 +117,8 @@ const ProductDetail = () => {
     console.log(_id);
     if (_id) {
       if (cart.cartid) {
+        console.log("okk1");
+        console.log(cart.cartid.cartId);
         const { data } = await axios.patch(
           `/api/updatecartitems/${cart.cartid.cartId}`,
           {
@@ -121,6 +128,8 @@ const ProductDetail = () => {
         navigate("/cartpage");
         console.log(data);
       } else {
+        console.log("okk2");
+
         const { data } = await axios.post("/api/addcartitems", {
           products,
           _id,
@@ -563,7 +572,7 @@ const ProductDetail = () => {
                         cursor: "pointer",
                       }}
                     >
-                      Rs.99
+                      Rs.149
                     </Typography>
                   </Box>
                   <div

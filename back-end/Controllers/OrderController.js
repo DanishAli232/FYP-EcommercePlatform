@@ -27,8 +27,8 @@ export const postorder = async (req, res) => {
       shippingPrice: req.body.alldetail.allprice.alldelivery,
       // taxPrice: req.body.alldetail.taxPrice,
       totalPrice: req.body.alldetail.allprice.withdelivery,
-      isPaid: true,
-      paidAt: Date.now(),
+      isPaid: req.body.isPaid,
+      paidAt: req.body.paidAt,
       paymentResult: {
         status: "success",
         update_time: Date.now(),
@@ -40,18 +40,33 @@ export const postorder = async (req, res) => {
     const order = await newOrder.save();
     res.status(200).send({ message: "New Order Created", order });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(400).send({ message: "Something Went Wrong" });
   }
 };
 
 export const getorders = async (req, res) => {
+  const userId = req.query.uid;
+  const searchVal = req.query.sval;
+  let filter = {};
+  if (searchVal) {
+    filter = {
+      $or: [
+        // { totalPrice: searchVal },
+        { paymentMethod: { $regex: searchVal, $options: "i" } },
+        { name: { $regex: searchVal, $options: "i" } },
+      ],
+    };
+  }
   try {
-    const order = await Order.findById(req.params.id);
-    if (order) {
-      res.send(order);
-    }
+    const order = await Order.find({ user: userId, ...filter }).populate(
+      "user"
+    );
+    console.log(order);
+    res.send(order);
   } catch (error) {
+    console.log("error");
+    console.log(error);
     res.status(400).send({ message: "Something Went Wrong" });
   }
 };

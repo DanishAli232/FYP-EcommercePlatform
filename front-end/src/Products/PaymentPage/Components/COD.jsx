@@ -24,7 +24,7 @@ const COD = () => {
   const alldetail = {
     userInfo,
     DefaultAddress,
-    paymentMethod: "Stripe",
+    paymentMethod: "Cash on Delivery",
     allprice,
   };
   const ConfirmOrder = async () => {
@@ -34,6 +34,8 @@ const COD = () => {
         cartItems: cartDetails,
         userId: userInfo.user._id,
         alldetail,
+        isPaid: false,
+        paidAt: null,
       });
       console.log(data);
       if (data) {

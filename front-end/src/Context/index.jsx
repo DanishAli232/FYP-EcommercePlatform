@@ -34,11 +34,17 @@ const initialstate = {
       ? JSON.parse(localStorage.getItem("wishid"))
       : null,
   },
+  payments: localStorage.getItem("Payments")
+    ? JSON.parse(localStorage.getItem("Payments"))
+    : "",
   paymentMethod: localStorage.getItem("paymentMethod")
     ? localStorage.getItem("paymentMethod")
     : "",
   shippingAddress: localStorage.getItem("shippingAddress")
     ? JSON.parse(localStorage.getItem("shippingAddress"))
+    : null,
+  defaultAddress: localStorage.getItem("defaultAddress")
+    ? JSON.parse(localStorage.getItem("defaultAddress"))
     : null,
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
@@ -99,6 +105,18 @@ const reducer = (state, action) => {
         ...state,
         shippingAddress: action.payload,
       };
+    case "SHIPPING_ADDRESS":
+      localStorage.setItem("defaultAddress", JSON.stringify(action.payload));
+      return {
+        ...state,
+        defaultAddress: action.payload,
+      };
+    case "Payments":
+      localStorage.setItem("Payments", JSON.stringify(action.payload));
+      return {
+        ...state,
+        payments: action.payload,
+      };
     case "SAVE_PAYMENT_METHOD":
       return {
         ...state,
@@ -112,38 +130,99 @@ const reducer = (state, action) => {
 export const ContextState = ({ children }) => {
   const navigate = useNavigate();
   const [totalprice, settotalprice] = useState(0);
-  const [navlistitems, setnavlistitems] = useState([
-    {
-      title: "Home",
-      link: "/",
-      width: "38px",
-      active: true,
-    },
-    {
-      title: "About",
-      link: "/about",
-      width: "42px",
-      active: false,
-    },
-    {
-      title: "Products",
-      link: "/products",
-      width: "65px",
-      active: false,
-    },
-    {
-      title: "Categories",
-      link: "",
-      width: "73px",
-      active: false,
-    },
-    {
-      title: "Sell",
-      link: "/sell",
-      width: "28px",
-      active: false,
-    },
-  ]);
+  const [navlistitems, setnavlistitems] = useState();
+  useEffect(() => {
+    if (state?.userInfo?.user?.status === "vendor") {
+      setnavlistitems([
+        {
+          title: "About",
+          link: "/about",
+          width: "42px",
+          active: false,
+        },
+        {
+          title: "Products",
+          link: "/products",
+          width: "65px",
+          active: false,
+        },
+
+        {
+          title: "Sell",
+          link: "/sell",
+          width: "28px",
+          active: false,
+        },
+      ]);
+    } else if (state?.userInfo?.user?.status === "user") {
+      setnavlistitems([
+        {
+          title: "Home",
+          link: "/",
+          width: "38px",
+          active: true,
+        },
+        {
+          title: "About",
+          link: "/about",
+          width: "42px",
+          active: false,
+        },
+        {
+          title: "Products",
+          link: "/products",
+          width: "65px",
+          active: false,
+        },
+        {
+          title: "Categories",
+          link: "",
+          width: "73px",
+          active: false,
+        },
+        {
+          title: "Sell",
+          link: "/sell",
+          width: "28px",
+          active: false,
+        },
+      ]);
+    } else {
+      setnavlistitems([
+        {
+          title: "Home",
+          link: "/",
+          width: "38px",
+          active: true,
+        },
+        {
+          title: "About",
+          link: "/about",
+          width: "42px",
+          active: false,
+        },
+        {
+          title: "Products",
+          link: "/products",
+          width: "65px",
+          active: false,
+        },
+        {
+          title: "Categories",
+          link: "",
+          width: "73px",
+          active: false,
+        },
+        {
+          title: "Sell",
+          link: "/sell",
+          width: "28px",
+          active: false,
+        },
+      ]);
+    }
+  });
+
   const [allprice, setallprice] = useState({
     withdelivery: 0,
     withoutdelivery: 0,
@@ -182,6 +261,12 @@ export const ContextState = ({ children }) => {
     // });
     let defaultA = data1[0].addresslist.find((item) => {
       return (item.isDefault = true);
+    });
+    dispatch({
+      type: "SHIPPING_ADDRESS",
+      payload: {
+        defaultA,
+      },
     });
     setDefaultAddress(defaultA);
     setaddresslist(data1[0].addresslist);
@@ -243,16 +328,34 @@ export const ContextState = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    dispatch({
+      type: "SHIPPING_ADDRESS",
+      payload: {
+        DefaultAddress,
+      },
+    });
+  }, [DefaultAddress]);
+
   const setCartPrice = (cart) => {
     let tprice = 0;
     let withDeliveryCharges = 0;
     let alldelivery = 0;
     let itemstotal = 0;
+
     cart.map((item, i) => {
       tprice += item.product.price * item.quantity;
-      withDeliveryCharges += (item.product.price + 149) * item.quantity;
+      withDeliveryCharges += item.product.price * item.quantity + 149;
       itemstotal += item.product.price * item.quantity;
       alldelivery += 149;
+    });
+    dispatch({
+      type: "Payments",
+      payload: {
+        itemstotal: itemstotal,
+        withdelivery: withDeliveryCharges,
+        alldelivery: alldelivery,
+      },
     });
     setallprice({
       ...allprice,

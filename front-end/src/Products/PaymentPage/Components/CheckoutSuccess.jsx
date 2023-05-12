@@ -1,14 +1,24 @@
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { GlobalContext } from "../../../Context";
 
 const CheckoutSuccess = () => {
-  const { state, DefaultAddress, allprice, cartitems } =
-    useContext(GlobalContext);
+  const { state, allprice, cartitems } = useContext(GlobalContext);
   console.log(state);
+  const [cartDetails, setcartDetails] = useState([]);
   const { userInfo } = state;
   let paymentMethod = "Paypal";
+
+  useEffect(() => {
+    let data = cartitems.map((items, i) => {
+      return {
+        ...items,
+        totalprice: items.product.price * items.quantity + 149,
+      };
+    });
+    setcartDetails(data);
+  }, []);
 
   //   const dispatch = useDispatch();
   //   const cart = useSelector((state) => state.cart);
@@ -17,25 +27,21 @@ const CheckoutSuccess = () => {
   //     dispatch(clearCart());
   //   }, [dispatch]);
 
-  //   useEffect(() => {
-  //     dispatch(getTotals());
-  //   }, [cart, dispatch]);
-
-  console.log({cartitems,userInfo: userInfo.user._id,DefaultAddress,paymentMethod,allprice,email: state.userInfo.user.email})
-
   useEffect(() => {
-    // try {
-    //   axios.post(`/api/postorder`, {
-    //     orderItems: cartitems,
-    //     userId: userInfo.user._id,
-    //     DefaultAddress,
-    //     paymentMethod,
-    //     allprice,
-    //     email: state.userInfo.user.email,
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    const postOrder = async () => {
+      const alldetail = {
+        userInfo,
+        DefaultAddress: state.defaultAddress.DefaultAddress,
+        paymentMethod: "Stripe",
+        allprice: state.payments,
+      };
+      await axios.post("/api/postorder", {
+        cartItems: cartDetails,
+        userId: userInfo.user._id,
+        alldetail,
+      });
+    };
+    postOrder();
   }, []);
 
   return (
@@ -43,10 +49,6 @@ const CheckoutSuccess = () => {
       <h2>Checkout Successful</h2>
       <p>Your order might take some time to process.</p>
       <p>Check your order status at your profile after about 10mins.</p>
-      <p>
-        Incase of any inqueries contact the support at{" "}
-        <strong>support@onlineshop.com</strong>
-      </p>
     </Container>
   );
 };

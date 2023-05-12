@@ -12,7 +12,7 @@ var OrderRouter = express.Router();
 OrderRouter.post("/postorder", postorder);
 // OrderRouter.patch("/deletecartitem", deletecartitem);
 // OrderRouter.patch("/deletesingleitem", deletesinglecartitem);
-OrderRouter.get("/getorders/:id", getorders);
+OrderRouter.get("/getorders", getorders);
 OrderRouter.get("/getmineorders/:id", getmineorders);
 // OrderRouter.patch("/updatequantity", updatequantity);
 // OrderRouter.patch("/updatecartitems/:id", updatecartitems);

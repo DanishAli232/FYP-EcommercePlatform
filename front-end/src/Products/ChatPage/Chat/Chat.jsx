@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import queryString from "query-string";
 import io from "socket.io-client";
 
@@ -13,6 +13,7 @@ import axios from "axios";
 import { Box, Button, TextField } from "@mui/material";
 import NavBar1 from "../../../Components/NavBar1";
 import Navbar2 from "../../../Components/Navbar2";
+import { GlobalContext } from "../../../Context";
 
 const ENDPOINT = "http://localhost:3000";
 
@@ -23,6 +24,11 @@ const Chat = () => {
   const [vendor, setvendor] = useState("");
   const location = useLocation();
   const { state } = useLocation();
+  const { setdashboardOpen } = useContext(GlobalContext);
+
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
 
   const [userID, setuserID] = useState("");
   const [vendorID, setvendorID] = useState("");

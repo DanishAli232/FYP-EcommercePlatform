@@ -12,7 +12,7 @@ const PayButton = ({ cartItems }) => {
     let data = cartItems.map((items, i) => {
       return {
         ...items,
-        totalprice: items.product.price * items.quantity + 150,
+        totalprice: items.product.price * items.quantity + 149,
       };
     });
     setcartDetails(data);
@@ -32,11 +32,11 @@ const PayButton = ({ cartItems }) => {
       });
 
       if (data) {
-        await axios.post("/api/postorder", {
-          cartItems: cartDetails,
-          userId: userInfo.user._id,
-          alldetail,
-        });
+        // await axios.post("/api/postorder", {
+        //   cartItems: cartDetails,
+        //   userId: userInfo.user._id,
+        //   alldetail,
+        // });
         window.location.href = data.url;
       }
     } catch (error) {}

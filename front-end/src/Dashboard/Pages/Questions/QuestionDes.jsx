@@ -22,7 +22,13 @@ const QuestionDes = ({
         <img
           src={image}
           alt=''
-          style={{ width: "100px", height: "100px", borderRadius: "4px" }}
+          style={{
+            width: "100px",
+            height: "100px",
+            borderRadius: "4px",
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
         />
         <Typography>{name}</Typography>
       </Box>

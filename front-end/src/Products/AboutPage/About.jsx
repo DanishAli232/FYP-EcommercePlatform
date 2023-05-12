@@ -51,7 +51,10 @@ const Para1 = styled.p`
   font-family: "Kumbh Sans", sans-serif;
 `;
 const About = () => {
-  const { navlistitems } = useContext(GlobalContext);
+  const { navlistitems, setdashboardOpen } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   const [number, newNumber] = useState(0);
   const [number1, newNumber1] = useState(0);
   const [number2, newNumber2] = useState(0);

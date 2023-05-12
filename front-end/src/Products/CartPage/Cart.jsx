@@ -52,8 +52,12 @@ const Cart = () => {
     dispatch: ctxDispatch,
     totalprice,
     CheckVal,
+    setdashboardOpen,
     newCheckVal,
   } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   const { cart, userInfo } = state;
   const [message1, setmessage1] = useState("");
   const initialstate = {

@@ -374,3 +374,13 @@ export const ChangePassword = async (req, res) => {
     return res.status(500).send(errors);
   }
 };
+
+export const accountDetail = async (req, res) => {
+  try {
+    let data = await User1.findOne({ _id: req.params.id });
+    console.log(data);
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
