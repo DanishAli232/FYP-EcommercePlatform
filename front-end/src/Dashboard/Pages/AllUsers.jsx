@@ -26,6 +26,10 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import MuiAlert from "@mui/material/Alert";
 import { GlobalContext } from "../../Context";
+import {
+  DashboardContext,
+  DashboardGlobalContext,
+} from "../Context/DashboardContext";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -47,6 +51,7 @@ const AllUsers = () => {
   // const Alert = React.forwardRef(function Alert(props, ref) {
   //   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
   // });
+  const { adminContent, setVendorContent } = useContext(DashboardGlobalContext);
   const navigate = useNavigate();
   const [CheckVal, newCheckVal] = React.useState([]);
   const [show, newshow] = useState(false);
@@ -54,9 +59,25 @@ const AllUsers = () => {
   const [status, setStatus] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [searchVal, newSearchVal] = useState("");
-  const { setdashboardOpen } = useContext(GlobalContext);
+  const { setdashboardOpen, state } = useContext(GlobalContext);
+  const updatelist = () => {
+    let data1;
+
+    if (state?.userInfo?.user?.status === "admin") {
+      data1 = adminContent;
+    }
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    setVendorContent(data);
+    let objIndex = data1.findIndex((obj) => obj.title === "All Users");
+    data1[objIndex].active = true;
+  };
+
   useEffect(() => {
     setdashboardOpen(true);
+    updatelist();
   }, []);
 
   const ExpandableCell = ({ value }) => {

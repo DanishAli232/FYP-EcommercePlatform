@@ -8,6 +8,10 @@ import io from "socket.io-client";
 import MessagesVendor from "./ChatContent/Messages";
 import ScrollToBottom from "react-scroll-to-bottom";
 import Input from "./ChatContent/Input";
+import {
+  DashboardContext,
+  DashboardGlobalContext,
+} from "../Context/DashboardContext";
 
 const ENDPOINT = "http://localhost:3000";
 
@@ -32,8 +36,28 @@ const ChatVendor = () => {
       console.log(error);
     }
   };
+  const { VendorContent, setVendorContent } = useContext(
+    DashboardGlobalContext
+  );
+
+  const updatelist = () => {
+    let data1;
+
+    if (state?.userInfo?.user?.status === "vendor") {
+      data1 = VendorContent;
+    }
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    setVendorContent(data);
+    let objIndex = data1.findIndex((obj) => obj.title === "Chat");
+    data1[objIndex].active = true;
+  };
+
   useEffect(() => {
     setdashboardOpen(true);
+    updatelist();
     fetchCustomers();
   }, []);
   let socketRequest = () => {

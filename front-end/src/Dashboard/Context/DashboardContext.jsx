@@ -14,16 +14,14 @@ import Person4Icon from "@mui/icons-material/Person4";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useEffect } from "react";
 import { GlobalContext } from "../../Context";
+import axios from "axios";
 
 export const DashboardGlobalContext = React.createContext();
 
 export const DashboardContext = ({ children }) => {
   const { state } = useContext(GlobalContext);
-  console.log(state);
   const [navcontent, setnavcontent] = useState("Dashboard");
-  console.log(state?.userInfo?.user?.status);
   const [statuscheck, setstatus] = useState(state?.userInfo?.user?.status);
-  // const [statuscheck, setstatus] = useState("user");
   const [VendorContent, setVendorContent] = useState([
     {
       link: "/dashboard",
@@ -50,84 +48,56 @@ export const DashboardContext = ({ children }) => {
       icon: <QuestionAnswerIcon />,
     },
     {
-      link: "/chatvendor",
-      title: "Chat",
-      active: true,
-      icon: <ChatIcon />,
-    },
-    {
       link: "/addproduct",
       title: "Add Product",
       active: false,
       icon: <UploadFileIcon />,
     },
     {
-      link: "/dashboard",
-      title: "Logout",
+      link: "/coupons",
+      title: "Coupons",
       active: false,
-      icon: <LogoutIcon />,
+      icon: <UploadFileIcon />,
     },
+    {
+      link: "/chatvendor",
+      title: "Chat",
+      active: false,
+      icon: <ChatIcon />,
+    },
+
     {
       link: "/orders",
       title: "Orders",
-      active: true,
+      active: false,
       icon: <ViewStreamIcon />,
     },
     {
-      link: "/wishlist",
-      title: "Wishlist",
-      active: true,
-      icon: <FavoriteBorderIcon />,
-    },
-    {
-      link: "/allvendors",
-      title: "All Vendors",
+      link: "/signin",
+      title: "Logout",
       active: false,
-      icon: <Person4Icon />,
-    },
-    {
-      link: "/allusers",
-      title: "All Users",
-      active: false,
-      icon: <PeopleIcon />,
+      icon: <LogoutIcon />,
     },
   ]);
   const [UserContent, setUserContent] = useState([
     {
-      link: "/dashboard",
-      title: "Dashboard",
-      active: true,
-      icon: <DashboardIcon />,
-    },
-    {
       link: "/viewaccount",
       title: "View Account",
-      active: false,
+      active: true,
       icon: <AccountCircleIcon />,
     },
+
     {
-      link: "/allproducts",
-      title: "All Products",
+      link: "/orders",
+      title: "Orders",
       active: false,
-      icon: <FeedIcon />,
+      icon: <ViewStreamIcon />,
     },
     {
-      link: "/allquestions",
-      title: "All Questions",
+      link: "/wishlist",
+      title: "Wishlist",
       active: false,
-      icon: <QuestionAnswerIcon />,
-    },
-    {
-      link: "/chatvendor",
-      title: "Chat",
-      active: true,
-      icon: <ChatIcon />,
-    },
-    {
-      link: "/addproduct",
-      title: "Add Product",
-      active: false,
-      icon: <UploadFileIcon />,
+      icon: <FavoriteBorderIcon />,
     },
     {
       link: "/dashboard",
@@ -135,31 +105,43 @@ export const DashboardContext = ({ children }) => {
       active: false,
       icon: <LogoutIcon />,
     },
-    {
-      link: "/orders",
-      title: "Orders",
-      active: true,
-      icon: <ViewStreamIcon />,
-    },
-    {
-      link: "/wishlist",
-      title: "Wishlist",
-      active: true,
-      icon: <FavoriteBorderIcon />,
-    },
-    {
-      link: "/allvendors",
-      title: "All Vendors",
-      active: false,
-      icon: <Person4Icon />,
-    },
-    {
-      link: "/allusers",
-      title: "All Users",
-      active: false,
-      icon: <PeopleIcon />,
-    },
   ]);
+
+  const [account, setaccount] = useState([]);
+
+  const AccountDetails = async () => {
+    try {
+      if (state?.userInfo?.user?.status === "vendor") {
+        let vendorData = await axios.get(
+          `/api//getvendorsData?f=${state?.userInfo?.user?._id}`
+        );
+        let data1 = await Object.entries(vendorData.data).filter(
+          (item, arr) => {
+            if (
+              item[0] === "products" ||
+              item[0] === "payments" ||
+              item[0] === "__v" ||
+              item[0] === "updatedAt" ||
+              item[0] === "password"
+            ) {
+              let data = item[0];
+              return item[0] !== data;
+            } else {
+              return item;
+            }
+          }
+        );
+        setaccount(data1);
+      } else if (state?.userInfo?.user?.status === "user") {
+        let { data } = await axios.get(
+          `/api/accountdetail/${state.userInfo.user._id}`
+        );
+        setaccount(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const [adminContent, setAdminContent] = useState([
     {
@@ -186,35 +168,12 @@ export const DashboardContext = ({ children }) => {
       active: false,
       icon: <QuestionAnswerIcon />,
     },
-    {
-      link: "/chatvendor",
-      title: "Chat",
-      active: true,
-      icon: <ChatIcon />,
-    },
+
     {
       link: "/addproduct",
       title: "Add Product",
       active: false,
       icon: <UploadFileIcon />,
-    },
-    {
-      link: "/dashboard",
-      title: "Logout",
-      active: false,
-      icon: <LogoutIcon />,
-    },
-    {
-      link: "/orders",
-      title: "Orders",
-      active: true,
-      icon: <ViewStreamIcon />,
-    },
-    {
-      link: "/wishlist",
-      title: "Wishlist",
-      active: true,
-      icon: <FavoriteBorderIcon />,
     },
     {
       link: "/allvendors",
@@ -228,6 +187,12 @@ export const DashboardContext = ({ children }) => {
       active: false,
       icon: <PeopleIcon />,
     },
+    {
+      link: "/dashboard",
+      title: "Logout",
+      active: false,
+      icon: <LogoutIcon />,
+    },
   ]);
 
   const [open1, setOpen] = React.useState(false);
@@ -236,6 +201,12 @@ export const DashboardContext = ({ children }) => {
     <DashboardGlobalContext.Provider
       value={{
         navcontent,
+        AccountDetails,
+        account,
+        adminContent,
+        setAdminContent,
+        UserContent,
+        setUserContent,
         setVendorContent,
         VendorContent,
         setnavcontent,

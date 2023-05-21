@@ -13,6 +13,7 @@ export const postorder = async (req, res) => {
         price: x.product.price,
         quantity: x.quantity,
         product: x.product._id,
+        vendor: x.product.vendor,
       })),
       shippingAddress: {
         fullName: req.body.alldetail.DefaultAddress.fullname,
@@ -77,6 +78,20 @@ export const getmineorders = async (req, res) => {
     res.send(orders);
   } catch (error) {
     res.status(400).send({ message: "Something Went Wrong" });
+  }
+};
+
+export const getvendororders = async (req, res) => {
+  try {
+    const orders = await Order.find(
+      { "orderItems.vendor": req.query.uid }
+      // { "orderItems.$": 1 }
+    );
+
+    res.send(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Something Went Wrong" });
   }
 };
 

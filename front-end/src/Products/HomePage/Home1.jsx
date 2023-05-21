@@ -26,8 +26,10 @@ const Home1 = () => {
     console.log(data);
 
     let objIndex = navlistitems.findIndex((obj) => obj.title === "Home");
-    navlistitems[objIndex].active = true;
-    console.log(navlistitems);
+    if (objIndex) {
+      navlistitems[objIndex].active = true;
+      console.log(navlistitems);
+    }
   };
   useEffect(() => {
     updatelist();

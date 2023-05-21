@@ -3,6 +3,7 @@ import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   Container,
   Grid,
   IconButton,
@@ -28,8 +29,14 @@ import Footer1 from "../Components/Footer1";
 function SigninScreen() {
   const navigate = useNavigate();
 
-  const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
-
+  const {
+    state,
+    dispatch: ctxDispatch,
+    setdashboardOpen,
+  } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   const [error, setError] = useState({});
   const [severity, setseverity] = useState("error");
   const [open, setOpen] = React.useState(false);
@@ -57,6 +64,8 @@ function SigninScreen() {
   };
 
   const handleSubmit = async (e) => {
+    setStatus("loading");
+
     e.preventDefault();
 
     try {
@@ -70,7 +79,8 @@ function SigninScreen() {
         navigate("/");
       }
     } catch (err) {
-      setStatus(true);
+      console.log(err);
+      setStatus(false);
       setseverity("error");
       setOpen(true);
       setError(err.response.data.errors);
@@ -92,7 +102,7 @@ function SigninScreen() {
     } catch (error) {
       console.log(error.response.data.message);
       setmessage(error?.response?.data?.message);
-      setStatus(true);
+      setStatus("loading");
       setseverity("error");
       setOpen(true);
     }
@@ -351,6 +361,12 @@ function SigninScreen() {
                   }}
                 >
                   Login Now
+                  {status === "loading" && (
+                    <CircularProgress
+                      sx={{ ml: 1, color: "white" }}
+                      size='16px'
+                    />
+                  )}
                 </Button>
               </Box>
               <Box

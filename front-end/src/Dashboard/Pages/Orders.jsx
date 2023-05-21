@@ -26,6 +26,10 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import MuiAlert from "@mui/material/Alert";
 import { GlobalContext } from "../../Context";
+import {
+  DashboardContext,
+  DashboardGlobalContext,
+} from "../Context/DashboardContext";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -50,8 +54,31 @@ const Orders = () => {
   const [searchVal, newSearchVal] = useState("");
   const { setdashboardOpen, state } = useContext(GlobalContext);
 
+  const { VendorContent, UserContent, setVendorContent } = useContext(
+    DashboardGlobalContext
+  );
+
+  const updatelist = () => {
+    let data1;
+
+    if (state?.userInfo?.user?.status === "vendor") {
+      data1 = VendorContent;
+    } else if (state?.userInfo?.user?.status === "user") {
+      data1 = UserContent;
+    }
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    console.log(data);
+    setVendorContent(data);
+
+    let objIndex = data1.findIndex((obj) => obj.title === "Orders");
+    data1[objIndex].active = true;
+  };
   useEffect(() => {
     setdashboardOpen(true);
+    updatelist();
   }, []);
 
   const ExpandableCell = ({ value }) => {
@@ -78,23 +105,28 @@ const Orders = () => {
   ExpandableCell.propTypes = {
     value: PropTypes.any,
   };
-
+  let status0 = state?.userInfo?.user?.status;
   const columns = [
     {
-      field: "user.name",
+      field: status0 === "vendor" ? "shippingAddress.fullName" : "user.name",
       headerName: "Name",
       minWidth: 150,
       disableReorder: true,
       valueGetter: (value) => {
-        return value?.row?.user?.name;
+        return status0 === "vendor"
+          ? value?.row?.shippingAddress?.fullName
+          : value?.row?.user?.name;
       },
     },
     {
-      field: "user.email",
+      field:
+        status0 === "vendor" ? "paymentResult.email_address" : "user.email",
       headerName: "Email",
       width: 200,
       valueGetter: (value) => {
-        return value?.row?.user?.email;
+        return status0 === "vendor"
+          ? value?.row?.paymentResult?.email_address
+          : value?.row?.user?.email;
       },
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
@@ -202,9 +234,16 @@ const Orders = () => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(
-          `/api/getorders?uid=${state.userInfo.user._id}&&sval=${searchVal}`
-        );
+        let result;
+        if (state?.userInfo?.user?.status === "user") {
+          result = await axios.get(
+            `/api/getorders?uid=${state.userInfo.user._id}&&sval=${searchVal}`
+          );
+        } else if (state?.userInfo?.user?.status === "vendor") {
+          result = await axios.get(
+            `/api/getvendororders?uid=${state.userInfo.user._id}&&sval=${searchVal}`
+          );
+        }
         console.log(result.data);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {

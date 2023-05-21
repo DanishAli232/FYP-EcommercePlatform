@@ -28,6 +28,14 @@ const COD = () => {
     allprice,
   };
   const ConfirmOrder = async () => {
+    console.log({
+      cartItems: cartDetails,
+      userId: userInfo.user._id,
+      alldetail,
+      isPaid: false,
+      paidAt: null,
+    });
+
     setstatus(true);
     try {
       let { data } = await axios.post("/api/postorder", {

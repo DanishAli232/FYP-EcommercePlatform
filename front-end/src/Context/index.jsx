@@ -113,19 +113,6 @@ const reducer = (state, action) => {
   }
 };
 
-let jwtFromStorage = localStorage.getItem("jwtToken");
-
-jwtFromStorage = JSON.parse(jwtFromStorage);
-// console.log(jwtFromStorage.user.role);
-if (jwtFromStorage) {
-  const decodedToken = jwtDecode(jwtFromStorage.token);
-  if (decodedToken.exp * 1000 < Date.now()) {
-  } else {
-    initialstate.user = decodedToken;
-    initialstate.token = jwtFromStorage.token;
-  }
-}
-
 export const ContextState = ({ children }) => {
   const navigate = useNavigate();
   const [totalprice, settotalprice] = useState(0);
@@ -313,7 +300,6 @@ export const ContextState = ({ children }) => {
     //   payload: {
     //     data,
   };
-
   const SignOut = (vl) => {
     localStorage.removeItem("cartItem");
     localStorage.removeItem("cartid");
@@ -333,6 +319,20 @@ export const ContextState = ({ children }) => {
       navigate("/signin");
     }
   };
+  let jwtFromStorage = state?.userInfo?.token;
+  console.log(jwtFromStorage);
+
+  jwtFromStorage = JSON.parse(jwtFromStorage);
+  // console.log(jwtFromStorage.user.role);
+  if (jwtFromStorage) {
+    const decodedToken = jwtDecode(jwtFromStorage);
+    if (decodedToken.exp * 1000 < Date.now()) {
+      SignOut();
+    } else {
+      // initialstate.user = decodedToken;
+      // initialstate.token = jwtFromStorage.token;
+    }
+  }
 
   useEffect(() => {
     dispatch({

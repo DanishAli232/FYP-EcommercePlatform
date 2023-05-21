@@ -2,6 +2,7 @@ import express from "express";
 import {
   getmineorders,
   getorders,
+  getvendororders,
   postorder,
 } from "../Controllers/OrderController.js";
 
@@ -14,6 +15,7 @@ OrderRouter.post("/postorder", postorder);
 // OrderRouter.patch("/deletesingleitem", deletesinglecartitem);
 OrderRouter.get("/getorders", getorders);
 OrderRouter.get("/getmineorders/:id", getmineorders);
+OrderRouter.get("/getvendororders", getvendororders);
 // OrderRouter.patch("/updatequantity", updatequantity);
 // OrderRouter.patch("/updatecartitems/:id", updatecartitems);
 

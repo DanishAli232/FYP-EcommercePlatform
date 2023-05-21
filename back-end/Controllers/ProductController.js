@@ -167,6 +167,13 @@ export const filterProducts = async (req, res) => {
     values.limit = (values.limit - 1) * 9;
     console.log(values.limit);
   }
+  let rating0 = {};
+  if (values.stars === 0) {
+    rating0 = {};
+  } else {
+    rating0 = { rating: parseInt(values.stars) };
+  }
+
   let sortprice = {};
   if (values.sorting === "") {
     sortprice = {};
@@ -178,16 +185,15 @@ export const filterProducts = async (req, res) => {
 
   const product = await Product.find({
     $and: [
-      { category: "shoes" },
-      { price: { $gte: 0, $lte: 600 } },
-      { rating: 2 },
+      { category: values.category },
+      { price: { $gte: values.minprice, $lte: values.maxprice } },
+      // { rating0 },
     ],
   })
-    .skip(0)
+    .skip(values.limit)
     .limit(9)
     .sort(sortprice);
   console.log(product);
-  console.log(product.length);
   res.send(product);
   if (product) {
   } else {

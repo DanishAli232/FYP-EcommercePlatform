@@ -29,20 +29,12 @@ const ShopItemsDes = ({
     fetchcartItems,
     setbuyNow,
   } = useContext(GlobalContext);
-  console.log(price);
   const { cart, userInfo } = state;
   const navigate = useNavigate();
   const [display1, setdisplay1] = useState("none");
   const [open, setopen] = useState(false);
 
   const addToCartHandler = async () => {
-    console.log(cart.cartItem);
-
-    // const { data } = await axios.get(`/api/products/${product._id}`);
-    // if (data.countinstock < quantity) {
-    //   window.alert("Sorry, Product is out of Stock");
-    //   return;
-    // }
     const products = {
       productid: _id,
       quantity: 1,

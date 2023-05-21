@@ -1,9 +1,20 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import React from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { GlobalContext } from "../../../Context";
 
 const BillingPlan = () => {
+  const navigate = useNavigate();
+  const { state } = useContext(GlobalContext);
+  const [status, setstatus] = useState({
+    basic: null,
+    popular: null,
+    enterprise: null,
+  });
+
   return (
     <Box
       sx={{
@@ -113,27 +124,53 @@ const BillingPlan = () => {
             <TaskAltIcon sx={{ marginRight: "7px", color: "#8d8080ed" }} /> SEO
             Support
           </Typography>
-          <a href='https://buy.stripe.com/test_3cs02F4lEaW44GA8wy'>
-            <Button
-              sx={{
-                background:
-                  "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-                margin: "10px 0px 10px 0px",
-                border: "1px solid #c5b3b3b0",
+          <Button
+            onClick={async () => {
+              const currentDate = new Date();
+              const futureDate = new Date();
+              futureDate.setMonth(currentDate.getMonth() + 1);
+              setstatus({ ...status, basic: true });
+              let payment = {
+                amount: "10$",
+                status: "pending",
+                Date: currentDate,
+                recepient: "Muhammad Danish",
+                paymentMethod: "Stripe",
+                BillingPlan: "Basic",
+                nextpayment: futureDate,
+                currentpayment: "10$",
+                currentpaymentDate: currentDate,
+                vendor: state?.userInfo?.user?._id,
+              };
 
-                "&:hover": {
-                  background: "white",
-                  color: "rgb(52,71,103)",
-                },
-              }}
-            >
-              Choose Plan
-            </Button>
-          </a>
+              let { data } = await axios.post("/api/updatepayment", payment);
+              const successUrl = "https://localhost:3000/checkout-success";
+
+              window.location.href = `https://buy.stripe.com/test_3cs02F4lEaW44GA8wy?success_url=${encodeURIComponent(
+                successUrl
+              )}`;
+            }}
+            sx={{
+              background:
+                "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
+              color: "white",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              margin: "10px 0px 10px 0px",
+              border: "1px solid #c5b3b3b0",
+
+              "&:hover": {
+                background: "white",
+                color: "rgb(52,71,103)",
+              },
+            }}
+          >
+            Choose Plan{" "}
+            {status.basic && (
+              <CircularProgress sx={{ ml: 1, color: "white" }} size='16px' />
+            )}
+          </Button>
         </Box>
       </Box>
       <Box
@@ -174,7 +211,7 @@ const BillingPlan = () => {
           <Typography
             sx={{ position: "relative", top: "6px", marginLeft: "4px" }}
           >
-            / MONTH
+            / 4 MONTH
           </Typography>
         </Box>
         <Typography sx={{ margin: "10px 0px" }}>
@@ -235,27 +272,52 @@ const BillingPlan = () => {
           >
             <TaskAltIcon sx={{ marginRight: "7px", color: "white" }} /> SEO
             Support
-          </Typography>
-          <a href='https://buy.stripe.com/test_3csg1D9FY2py0qk5kl'>
-            {" "}
-            <Button
-              sx={{
-                color: "rgb(52,71,103)",
-                background: "white",
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-                margin: "10px 0px 10px 0px",
-                border: "1px solid #c5b3b3b0",
+          </Typography>{" "}
+          <Button
+            onClick={async () => {
+              const currentDate = new Date();
+              const futureDate = new Date();
+              futureDate.setMonth(currentDate.getMonth() + 4);
+              setstatus({ ...status, popular: true });
+              let payment = {
+                amount: "20$",
+                status: "pending",
+                Date: currentDate,
+                recepient: "Muhammad Danish",
+                paymentMethod: "Stripe",
+                BillingPlan: "Popular",
+                nextpayment: futureDate,
+                currentpayment: "20$",
+                currentpaymentDate: currentDate,
+                vendor: state?.userInfo?.user?._id,
+              };
+              let { data } = await axios.post("/api/updatepayment", payment);
+              const successUrl = "https://localhost:3000/checkout-success";
 
-                "&:hover": {
-                  background: "white",
-                },
-              }}
-            >
-              Choose Plan
-            </Button>
-          </a>
+              // window.location.href = `https://buy.stripe.com/test_3csg1D9FY2py0qk5kl?success_url=${encodeURIComponent(
+              //   successUrl
+              // )}`;
+              setstatus({ ...status, popular: false });
+            }}
+            sx={{
+              color: "rgb(52,71,103)",
+              background: "white",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              margin: "10px 0px 10px 0px",
+              border: "1px solid #c5b3b3b0",
+
+              "&:hover": {
+                background: "white",
+              },
+            }}
+          >
+            Choose Plan{" "}
+            {status.popular && (
+              <CircularProgress sx={{ ml: 1, color: "white" }} size='16px' />
+            )}
+          </Button>
         </Box>
       </Box>
       <Box
@@ -296,7 +358,7 @@ const BillingPlan = () => {
           <Typography
             sx={{ position: "relative", top: "6px", marginLeft: "4px" }}
           >
-            / MONTH
+            / 6 MONTH
           </Typography>
         </Box>
         <Typography sx={{ margin: "10px 0px" }}>
@@ -357,30 +419,55 @@ const BillingPlan = () => {
           >
             <TaskAltIcon sx={{ marginRight: "7px", color: "#8d8080ed" }} /> SEO
             Support
-          </Typography>
-          <a href='https://buy.stripe.com/test_4gwaHj9FYfckb4YbII'>
-            {" "}
-            <Button
-              sx={{
-                //   background: "white",
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-                margin: "10px 0px 10px 0px",
-                border: "1px solid #c5b3b3b0",
-                background:
-                  "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
-                color: "white",
+          </Typography>{" "}
+          <Button
+            onClick={async () => {
+              const currentDate = new Date();
+              const futureDate = new Date();
+              futureDate.setMonth(currentDate.getMonth() + 6);
+              setstatus({ ...status, enterprise: true });
+              let payment = {
+                amount: "50$",
+                status: "pending",
+                Date: currentDate,
+                recepient: "Muhammad Danish",
+                paymentMethod: "Stripe",
+                BillingPlan: "Enterprise",
+                nextpayment: futureDate,
+                currentpayment: "50$",
+                currentpaymentDate: currentDate,
+                vendor: state?.userInfo?.user?._id,
+              };
 
-                "&:hover": {
-                  background: "white",
-                  color: "rgb(52,71,103)",
-                },
-              }}
-            >
-              Choose Plan
-            </Button>
-          </a>
+              let { data } = await axios.post("/api/updatepayment", payment);
+              const successUrl = "https://localhost:3000/checkout-success";
+
+              window.location.href = `https://buy.stripe.com/test_4gwaHj9FYfckb4YbII?success_url=${encodeURIComponent(
+                successUrl
+              )}`;
+            }}
+            sx={{
+              //   background: "white",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              margin: "10px 0px 10px 0px",
+              border: "1px solid #c5b3b3b0",
+              background:
+                "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
+              color: "white",
+
+              "&:hover": {
+                background: "white",
+                color: "rgb(52,71,103)",
+              },
+            }}
+          >
+            Choose Plan{" "}
+            {status.enterprise && (
+              <CircularProgress sx={{ ml: 1, color: "white" }} size='16px' />
+            )}
+          </Button>
         </Box>
       </Box>
     </Box>

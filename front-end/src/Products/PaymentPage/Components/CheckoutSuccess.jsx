@@ -27,22 +27,22 @@ const CheckoutSuccess = () => {
   //     dispatch(clearCart());
   //   }, [dispatch]);
 
-  useEffect(() => {
-    const postOrder = async () => {
-      const alldetail = {
-        userInfo,
-        DefaultAddress: state.defaultAddress.DefaultAddress,
-        paymentMethod: "Stripe",
-        allprice: state.payments,
-      };
-      await axios.post("/api/postorder", {
-        cartItems: cartDetails,
-        userId: userInfo.user._id,
-        alldetail,
-      });
-    };
-    postOrder();
-  }, []);
+  // useEffect(() => {
+  //   const postOrder = async () => {
+  //     const alldetail = {
+  //       userInfo,
+  //       DefaultAddress: state.defaultAddress.DefaultAddress,
+  //       paymentMethod: "Stripe",
+  //       allprice: state.payments,
+  //     };
+  //     await axios.post("/api/postorder", {
+  //       cartItems: cartDetails,
+  //       userId: userInfo.user._id,
+  //       alldetail,
+  //     });
+  //   };
+  //   postOrder();
+  // }, []);
 
   return (
     <Container>

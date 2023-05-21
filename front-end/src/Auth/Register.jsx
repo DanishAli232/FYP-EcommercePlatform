@@ -28,8 +28,14 @@ import Footer1 from "../Components/Footer1";
 function SignupScreen() {
   const navigate = useNavigate();
 
-  const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
-
+  const {
+    state,
+    dispatch: ctxDispatch,
+    setdashboardOpen,
+  } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   const [error, setError] = useState({});
   const [open, setOpen] = React.useState(false);
   const [status, setStatus] = useState(null);

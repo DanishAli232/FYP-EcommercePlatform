@@ -19,16 +19,49 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Navbar, Sidebar } from "../Components";
 import MuiAlert from "@mui/material/Alert";
 import { GlobalContext } from "../../Context";
+import { DashboardGlobalContext } from "../Context/DashboardContext";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
 const Addproducts = () => {
+  const {
+    setnavcontent,
+    statuscheck,
+    adminContent,
+    setAdminContent,
+    UserContent,
+    setUserContent,
+    setVendorContent,
+    VendorContent,
+  } = useContext(DashboardGlobalContext);
+
   const { setdashboardOpen } = useContext(GlobalContext);
   const inputRef = useRef();
+  const { state } = useContext(GlobalContext);
+  const { userInfo } = state;
+  const updatelist = () => {
+    let data1;
+
+    if (state?.userInfo?.user?.status === "vendor") {
+      data1 = VendorContent;
+    } else if (state?.userInfo?.user?.status === "admin") {
+      data1 = adminContent;
+    }
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    setVendorContent(data);
+
+    let objIndex = data1.findIndex((obj) => obj.title === "Add Product");
+    data1[objIndex].active = true;
+  };
+
   useEffect(() => {
     setdashboardOpen(true);
+    updatelist();
   }, []);
   const [open, setOpen] = React.useState(false);
   const [categoryOpen, setcategoryOpen] = useState(false);
@@ -47,8 +80,6 @@ const Addproducts = () => {
     description: "",
     image: "",
   });
-  const { state } = useContext(GlobalContext);
-  const { userInfo } = state;
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -99,10 +130,21 @@ const Addproducts = () => {
       newalertMsg("Your Data Send SuccessFully");
       newseverity("success");
       setOpen(true);
+      setStatus(null);
+      setValues({
+        name: "",
+        category: "",
+        price: "",
+        countinstock: "",
+        brand: "",
+        description: "",
+        image: "",
+      });
     } catch (err) {
       console.log(err);
+      setStatus(null);
       setOpen(true);
-      newalertMsg(`Sorry! ${err.response.data.errors.message}`);
+      newalertMsg(`Invalid Input`);
       newseverity("error");
       seterror(err.response.data.errors);
     }
@@ -286,8 +328,7 @@ const Addproducts = () => {
                   className='create-2 a'
                   sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
                 >
-                  <input type='text' className='pakistan' ref={inputRef} />
-                  {/* <TextField
+                  <TextField
                     className='brand'
                     id='outlined-required'
                     label='Brand'
@@ -297,7 +338,7 @@ const Addproducts = () => {
                     helperText={error.brand}
                     error={!!error.brand}
                     sx={{ width: { md: "400px", xs: "100%" } }}
-                  /> */}
+                  />
                 </Box>
                 <br></br>{" "}
                 {/* <Box className='create-2 a'>
@@ -359,8 +400,15 @@ const Addproducts = () => {
 
                   <label htmlFor='contained-button-file'>
                     <Button
+                      sx={{
+                        border: "1px solid #f0353b",
+                        color: "#f0353b",
+                        background: "white",
+                        "&:hover": {
+                          background: "white",
+                        },
+                      }}
                       variant='contained'
-                      color='secondary'
                       component='span'
                     >
                       Upload Image
@@ -393,8 +441,16 @@ const Addproducts = () => {
                   <Button
                     type='submit'
                     variant='outlined'
-                    color='secondary'
-                    // sx={{ marginTop: "10px", marginBottom: "30px" }}
+                    // color='secondary'
+                    sx={{
+                      background: "#f0353b",
+                      color: "white",
+                      border: "1px solid #f0353b",
+                      "&:hover": {
+                        background: "#f0353b",
+                        border: "1px solid #f0353b",
+                      },
+                    }}
                   >
                     Add Product
                     {status === "loading" && (

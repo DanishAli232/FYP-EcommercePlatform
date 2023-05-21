@@ -1,5 +1,14 @@
 import { Close } from "@mui/icons-material";
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 
 import React, { useState, useContext, useEffect } from "react";
@@ -18,7 +27,15 @@ function VendorLogin() {
     dispatch: ctxDispatch,
     SignOut,
     navlistitems,
+    setdashboardOpen,
   } = useContext(GlobalContext);
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
+  const [severity, setseverity] = useState("error");
+  const [open, setOpen] = React.useState(false);
+  const [message, setmessage] = useState("");
+  const [status, setStatus] = useState(null);
   const [error, setError] = useState({});
   const [values, setValues] = useState({
     email: "",
@@ -60,7 +77,7 @@ function VendorLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setStatus("loading");
     try {
       let result = await axios.post(
         "http://localhost:5000/api/vendorlogin",
@@ -77,22 +94,22 @@ function VendorLogin() {
         navigate("/products");
       }
     } catch (err) {
+      setStatus(false);
+      setseverity("error");
+      setOpen(true);
       setError(err.response.data.errors);
+      setmessage("Invalid Input");
     }
   };
 
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size='small'
-        aria-label='close'
-        color='inherit'
-        onClick={clearError}
-      >
-        <Close fontSize='small' />
-      </IconButton>
-    </React.Fragment>
-  );
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setStatus(null);
+    setOpen(false);
+  };
+
   const Logo = styled.h1`
     color: #f0353b;
     font-family: Georgia, "Times New Roman", Times, serif;
@@ -238,6 +255,12 @@ function VendorLogin() {
                   }}
                 >
                   Login Now
+                  {status === "loading" && (
+                    <CircularProgress
+                      sx={{ ml: 1, color: "white" }}
+                      size='16px'
+                    />
+                  )}
                 </Button>
               </Box>
               <Box
@@ -271,6 +294,11 @@ function VendorLogin() {
           </Box>
         </Box>
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
       <Footer1 />
     </Box>
   );

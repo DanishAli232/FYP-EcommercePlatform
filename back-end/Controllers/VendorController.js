@@ -8,6 +8,39 @@ import {
 } from "../Validators/validateVendorInput.js";
 import generateToken from "../Utils/generateToken.js";
 
+export const updatePayments = async (req, res) => {
+  console.log(req.body);
+  const payment = req.body;
+
+  try {
+    const vendor = await Vendor.updateOne(
+      { _id: payment.vendor },
+      {
+        $push: {
+          payments: {
+            Amount: payment.amount,
+            status: payment.status,
+            Date: payment.Date,
+            Recepient: payment.recepient,
+            paymentMethod: payment.paymentMethod,
+          },
+        },
+        billingPlan: payment.BillingPlan,
+        nextpayment: payment.nextpayment,
+        currentpayment: payment.currentpayment,
+        currentpaymentDate: payment.currentpaymentDate,
+      },
+      { new: true }
+    );
+    console.log(vendor);
+
+    res.status(200).json(vendor);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 export const getallvendors = async (req, res) => {
   try {
     const q = req.query.q;
@@ -94,15 +127,15 @@ export const postvendor = async (req, res) => {
     //   $or: [{ email: values.email }, { handle: values.handle }],
     // });
 
-    let user = await Vendor.findOne({
-      email: values.email,
-    });
+    // let user = await Vendor.findOne({
+    //   email: values.email,
+    // });
 
-    if (user) {
-      return res.status(401).json({
-        errors: { message: "A Vendor with that email address already exists" },
-      });
-    }
+    // if (user) {
+    //   return res.status(401).json({
+    //     errors: { message: "A Vendor with that email address already exists" },
+    //   });
+    // }
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(values.password, salt);
@@ -110,6 +143,10 @@ export const postvendor = async (req, res) => {
     const newUser = await Vendor.create({
       ...values,
       password: hashedPassword,
+      billingPlan: "",
+      nextpayment: "",
+      currentpayment: "",
+      currentpaymentDate: null,
     });
     console.log(newUser);
     // const token = await new Token({
@@ -129,7 +166,7 @@ export const postvendor = async (req, res) => {
     res.json({ user: { ...newUser._doc, password: null }, token });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Not Email Send" });
+    res.status(500).json({ message: "Not Email " });
   }
 };
 
@@ -175,5 +212,19 @@ export const storeName = async (req, res) => {
     res.send(data);
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const postPayment = (req, res) => {
+  try {
+  } catch (error) {}
+};
+
+export const getVendorData = async (req, res) => {
+  try {
+    let data = await Vendor.findOne({ _id: req.query.f });
+    res.send(data);
+  } catch (error) {
+    res.send(error);
   }
 };

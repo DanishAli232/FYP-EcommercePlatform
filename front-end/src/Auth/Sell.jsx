@@ -18,8 +18,11 @@ const Sell = () => {
     dispatch: ctxDispatch,
     SignOut,
     navlistitems,
+    setdashboardOpen,
   } = useContext(GlobalContext);
-
+  useEffect(() => {
+    setdashboardOpen(false);
+  });
   const updatelist = () => {
     let data1 = navlistitems;
     let data = data1.map(function (x) {

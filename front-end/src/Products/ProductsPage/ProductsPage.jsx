@@ -94,7 +94,6 @@ const ProductsPage = () => {
   // const location = window.location.search;
   // const result = location.split("%")[2];
   const value = queryString.parse(window.location.search);
-  console.log(value.vendorid);
   // const vendorid = value.vendorid;
   // console.log(vendorid);
   // console.log("token", token); //123
@@ -104,7 +103,7 @@ const ProductsPage = () => {
   useEffect(() => {
     setdashboardOpen(false);
   });
-  const [value1, setValue1] = React.useState([1500, 6000]);
+  const [value1, setValue1] = React.useState([0, 6000]);
   const [sorting, setSorting] = React.useState("");
   const [products, setproducts] = useState([]);
   const [status, setstatus] = useState(false);
@@ -124,7 +123,7 @@ const ProductsPage = () => {
 
   const [filterQueries, setfilterQueries] = useState({
     sorting: sorting,
-    stars: "",
+    stars: 0,
     minprice: value1[0],
     maxprice: value1[1],
     category: "shirts",
@@ -363,7 +362,7 @@ const ProductsPage = () => {
                   valueLabelDisplay='auto'
                   getAriaValueText={valuetext}
                   disableSwap
-                  min={500}
+                  min={0}
                   max={20000}
                 />
               </Box>

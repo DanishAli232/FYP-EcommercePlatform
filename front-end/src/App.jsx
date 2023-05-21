@@ -14,6 +14,8 @@ import ChangePassword from "./Auth/ChangePassword";
 import Chat from "./Products/ChatPage/Chat/Chat";
 import Join from "./Products/ChatPage/Join/Join";
 import ChatVendor from "./Dashboard/Pages/Chat";
+import Sidebar1 from "./Dashboard/Components/Sidebar1";
+import Coupons from "./Dashboard/Pages/Coupons";
 
 const Home1 = React.lazy(() => import("./Products/HomePage/Home1"));
 const AllQuestions = React.lazy(() => import("./Dashboard/Pages/AllQuestions"));
@@ -68,43 +70,135 @@ function App() {
           </div>
         }
       >
-        {dashboardOpen && <Sidebar />}
+        {/* {dashboardOpen && <Sidebar />} */}
+        {dashboardOpen && <Sidebar1 />}
 
         <Routes>
-          <Route path='/' element={<Home1 />} />
-          <Route path='/productdetail/:id' element={<ProductDetail />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/join' element={<Join />} />
-          <Route path='/chat' element={<Chat />} />
-          <Route path='/vendorlogin' element={<VendorLogin />} />
-          <Route path='/wishlist' element={<Wishlist />} />
-          <Route path='/orders' element={<Orders />} />
-          <Route path='/allquestions' element={<AllQuestions />} />
-          <Route path='/chatvendor' element={<ChatVendor />} />
-          <Route path='/cartpage' element={<Cart />} />
-          <Route path='/checkout' element={<Checkout />} />
-          <Route path='/payment' element={<Payment />} />
-          <Route path='/signin' element={<SigninScreen />} />
-          <Route path='/signup' element={<SignupScreen />} />
-          <Route path='/checkout-success' element={<CheckoutSuccess />} />
-          <Route path='/email/:id/verify/:token' element={<ConfirmEmail />} />
-          <Route
-            path='/forgotpassword/:id/verify/:token'
-            element={<ForgotPassword />}
-          />
-          <Route path='/changepassword/:id' element={<ChangePassword />} />
-          {/* <Route path='/confirmemail' element={<ConfirmEmail />} /> */}
-          <Route path='/emailconfirmation' element={<EmailConfirmation />} />
-          <Route path='/products' element={<ProductsPage />} />
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/allusers' element={<AllUsers />} />
-          <Route path='/stores' element={<Stores />} />
-          <Route path='/viewaccount' element={<ViewAccount />} />
-          <Route path='/addproduct' element={<Addproducts />} />
-          <Route path='/allvendors' element={<AllVendors />} />
-          <Route path='/allproducts' element={<AllProducts />} />
-          <Route path='/updateproduct/:id' element={<Updateproduct />} />
-          <Route path='/sell' element={<Sell />} />
+          {state?.userInfo?.user?.status === "vendor" ? (
+            <>
+              <Route path='/' element={<ProductsPage />} />
+              <Route
+                path='/emailconfirmation'
+                element={<EmailConfirmation />}
+              />
+              <Route path='/products' element={<ProductsPage />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/coupons' element={<Coupons />} />
+              <Route path='/viewaccount' element={<ViewAccount />} />
+              <Route path='/addproduct' element={<Addproducts />} />
+              <Route path='/allproducts' element={<AllProducts />} />
+              <Route path='/updateproduct/:id' element={<Updateproduct />} />
+              <Route path='/sell' element={<Sell />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/join' element={<Join />} />
+              <Route path='/chat' element={<Chat />} />
+              <Route path='/vendorlogin' element={<VendorLogin />} />
+              <Route path='/orders' element={<Orders />} />
+              <Route path='/allquestions' element={<AllQuestions />} />
+              <Route path='/chatvendor' element={<ChatVendor />} />
+              <Route path='/signin' element={<SigninScreen />} />
+              <Route path='/signup' element={<SignupScreen />} />
+              <Route path='/checkout-success' element={<CheckoutSuccess />} />
+              <Route
+                path='/email/:id/verify/:token'
+                element={<ConfirmEmail />}
+              />
+              <Route path='/changepassword/:id' element={<ChangePassword />} />
+              <Route path='/confirmemail' element={<ConfirmEmail />} />
+              <Route
+                path='/emailconfirmation'
+                element={<EmailConfirmation />}
+              />
+            </>
+          ) : state?.userInfo?.user?.status === "admin" ? (
+            <>
+              {/* <Route path='/' element={<Home1 />} />
+              <Route path='/productdetail/:id' element={<ProductDetail />} /> */}
+              {/* <Route path='/about' element={<About />} /> */}
+              {/* <Route path='/join' element={<Join />} /> */}
+              {/* <Route path='/chat' element={<Chat />} /> */}
+              {/* <Route path='/vendorlogin' element={<VendorLogin />} /> */}
+              {/* <Route path='/wishlist' element={<Wishlist />} /> */}
+              <Route path='/orders' element={<Orders />} />
+              {/* <Route path='/allquestions' element={<AllQuestions />} /> */}
+              {/* <Route path='/chatvendor' element={<ChatVendor />} /> */}
+              {/* <Route path='/cartpage' element={<Cart />} /> */}
+              {/* <Route path='/checkout' element={<Checkout />} /> */}
+              {/* <Route path='/payment' element={<Payment />} /> */}
+              <Route path='/signin' element={<SigninScreen />} />
+              <Route path='/signup' element={<SignupScreen />} />
+              {/* <Route path='/checkout-success' element={<CheckoutSuccess />} /> */}
+              {/* <Route
+                path='/email/:id/verify/:token'
+                element={<ConfirmEmail />}
+              />
+              <Route
+                path='/forgotpassword/:id/verify/:token'
+                element={<ForgotPassword />}
+              /> */}
+              {/* <Route path='/changepassword/:id' element={<ChangePassword />} /> */}
+              {/* <Route path='/confirmemail' element={<ConfirmEmail />} /> */}
+              {/* <Route
+                path='/emailconfirmation'
+                element={<EmailConfirmation />}
+              /> */}
+              {/* <Route path='/products' element={<ProductsPage />} /> */}
+              <Route path='/dashboard' element={<Dashboard />} />
+              {/* <Route path='/coupons' element={<Coupons />} /> */}
+              <Route path='/allusers' element={<AllUsers />} />
+              <Route path='/stores' element={<Stores />} />
+              <Route path='/viewaccount' element={<ViewAccount />} />
+              <Route path='/addproduct' element={<Addproducts />} />
+              <Route path='/allvendors' element={<AllVendors />} />
+              <Route path='/allproducts' element={<AllProducts />} />
+              <Route path='/updateproduct/:id' element={<Updateproduct />} />
+              {/* <Route path='/sell' element={<Sell />} /> */}
+            </>
+          ) : (
+            <>
+              <Route path='/' element={<Home1 />} />
+              <Route path='/productdetail/:id' element={<ProductDetail />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/join' element={<Join />} />
+              <Route path='/chat' element={<Chat />} />
+              <Route path='/vendorlogin' element={<VendorLogin />} />
+              <Route path='/wishlist' element={<Wishlist />} />
+              <Route path='/orders' element={<Orders />} />
+              <Route path='/allquestions' element={<AllQuestions />} />
+              <Route path='/chatvendor' element={<ChatVendor />} />
+              <Route path='/cartpage' element={<Cart />} />
+              <Route path='/checkout' element={<Checkout />} />
+              <Route path='/payment' element={<Payment />} />
+              <Route path='/signin' element={<SigninScreen />} />
+              <Route path='/signup' element={<SignupScreen />} />
+              <Route path='/checkout-success' element={<CheckoutSuccess />} />
+              <Route
+                path='/email/:id/verify/:token'
+                element={<ConfirmEmail />}
+              />
+              <Route
+                path='/forgotpassword/:id/verify/:token'
+                element={<ForgotPassword />}
+              />
+              <Route path='/changepassword/:id' element={<ChangePassword />} />
+              {/* <Route path='/confirmemail' element={<ConfirmEmail />} /> */}
+              <Route
+                path='/emailconfirmation'
+                element={<EmailConfirmation />}
+              />
+              <Route path='/products' element={<ProductsPage />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/coupons' element={<Coupons />} />
+              <Route path='/allusers' element={<AllUsers />} />
+              <Route path='/stores' element={<Stores />} />
+              <Route path='/viewaccount' element={<ViewAccount />} />
+              <Route path='/addproduct' element={<Addproducts />} />
+              <Route path='/allvendors' element={<AllVendors />} />
+              <Route path='/allproducts' element={<AllProducts />} />
+              <Route path='/updateproduct/:id' element={<Updateproduct />} />
+              <Route path='/sell' element={<Sell />} />
+            </>
+          )}
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Suspense>

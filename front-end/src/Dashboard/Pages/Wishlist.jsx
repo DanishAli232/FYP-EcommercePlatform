@@ -26,6 +26,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import MuiAlert from "@mui/material/Alert";
 import { GlobalContext } from "../../Context";
+import { DashboardGlobalContext } from "../Context/DashboardContext";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -51,8 +52,33 @@ const Wishlist = () => {
   const [searchVal, newSearchVal] = useState("");
   const { setdashboardOpen, state } = useContext(GlobalContext);
 
+  const { VendorContent, adminContent, UserContent } = useContext(
+    DashboardGlobalContext
+  );
+
+  const updatelist = () => {
+    let data1;
+
+    if (state?.userInfo?.user?.status === "vendor") {
+      data1 = VendorContent;
+    } else if (state?.userInfo?.user?.status === "admin") {
+      data1 = adminContent;
+    } else if (state?.userInfo?.user?.status === "user") {
+      data1 = UserContent;
+    }
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    console.log(data);
+
+    let objIndex = data1.findIndex((obj) => obj.title === "Wishlist");
+    data1[objIndex].active = true;
+  };
+
   useEffect(() => {
     setdashboardOpen(true);
+    updatelist();
   }, []);
 
   const ExpandableCell = ({ value }) => {

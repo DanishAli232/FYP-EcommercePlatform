@@ -5,6 +5,10 @@ import { GlobalContext } from "../../Context";
 import { Navbar } from "../Components";
 import axios from "axios";
 import QuestionDes from "./Questions/QuestionDes";
+import {
+  DashboardContext,
+  DashboardGlobalContext,
+} from "../Context/DashboardContext";
 
 const AllQuestions = () => {
   const { setdashboardOpen, state } = useContext(GlobalContext);
@@ -12,8 +16,29 @@ const AllQuestions = () => {
   const [open, setOpen] = React.useState(false);
   const [message, setmessage] = useState("");
   const [product, setproduct] = useState([]);
+  const { VendorContent, setVendorContent } = useContext(
+    DashboardGlobalContext
+  );
+
+  const updatelist = () => {
+    let data1;
+
+    if (state?.userInfo?.user?.status === "vendor") {
+      data1 = VendorContent;
+    }
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    setVendorContent(data);
+
+    let objIndex = data1.findIndex((obj) => obj.title === "All Questions");
+    data1[objIndex].active = true;
+  };
+
   useEffect(() => {
     setdashboardOpen(true);
+    updatelist();
   }, []);
 
   const fetchQuestions = async () => {

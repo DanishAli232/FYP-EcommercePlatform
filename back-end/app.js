@@ -14,6 +14,7 @@ import AddressRouter from "./Routes/Address.Route.js";
 import StripeRouter from "./Routes/StripeRoute.js";
 import OrderRouter from "./Routes/OrderRoute.js";
 import ChatRouter from "./Routes/ChatRoute.js";
+import CouponRouter from "./Routes/CouponRoute.js";
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use("/api", AddressRouter);
 app.use("/api", StripeRouter);
 app.use("/api", OrderRouter);
 app.use("/api", ChatRouter);
+app.use("/api", CouponRouter);
 app.use("/", DemoRouter);
 app.use("*", handle404);
 

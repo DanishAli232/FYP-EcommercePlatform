@@ -4,25 +4,46 @@ import { Navbar } from "../Components";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { GlobalContext } from "../../Context";
 import axios from "axios";
+import {
+  DashboardContext,
+  DashboardGlobalContext,
+} from "../Context/DashboardContext";
 
 const ViewAccount = () => {
   const { setdashboardOpen, state } = useContext(GlobalContext);
-  const [account, setaccount] = useState({});
 
-  console.log(state.userInfo.user._id);
-  const AccountDetails = async () => {
-    try {
-      let { data } = await axios.get(
-        `/api/accountdetail/${state.userInfo.user._id}`
-      );
-      setaccount(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
+  const {
+    VendorContent,
+    adminContent,
+    UserContent,
+    setVendorContent,
+    AccountDetails,
+    account,
+  } = useContext(DashboardGlobalContext);
+
+  const updatelist = () => {
+    let data1;
+
+    if (state?.userInfo?.user?.status === "vendor") {
+      data1 = VendorContent;
+    } else if (state?.userInfo?.user?.status === "admin") {
+      data1 = adminContent;
+    } else if (state?.userInfo?.user?.status === "user") {
+      data1 = UserContent;
     }
+    let data = data1.map(function (x) {
+      x.active = false;
+      return x;
+    });
+    setVendorContent(data);
+
+    let objIndex = data1.findIndex((obj) => obj.title === "View Account");
+    data1[objIndex].active = true;
   };
+
   useEffect(() => {
     setdashboardOpen(true);
+    updatelist();
     AccountDetails();
   }, []);
   return (
@@ -85,12 +106,22 @@ const ViewAccount = () => {
                         fontSize: "1.25rem",
                       }}
                     >
-                      {account.name}
+                      {account.length !== 0
+                        ? state?.userInfo?.user?.status === "vendor"
+                          ? account && account[1][1]
+                          : state?.userInfo?.user?.status === "user" &&
+                            account.name
+                        : null}
                     </Typography>
                     <Typography
                       sx={{ color: "rgb(123, 128, 154)", fontSize: "0.875rem" }}
                     >
-                      {account.status}
+                      {account.length !== 0
+                        ? state?.userInfo?.user?.status === "vendor"
+                          ? account && account[4][1]
+                          : state?.userInfo?.user?.status === "user" &&
+                            account.status
+                        : null}
                     </Typography>
                   </Box>
                 </Box>
@@ -113,158 +144,39 @@ const ViewAccount = () => {
                     more painful in the short term (pain avoidance is creating
                     an illusion of equality)
                   </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginTop: "15px",
-                    }}
-                  >
-                    <Typography
+                  {account?.map((item, i) => (
+                    <Box
                       sx={{
-                        color: "rgb(52, 71, 103)",
-                        fontSize: "0.875rem",
-                        fontWeight: 700,
-                        marginRight: "20px",
-                        width: "100px",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginTop: "15px",
                       }}
                     >
-                      Full Name:
-                    </Typography>{" "}
-                    <Typography
-                      sx={{
-                        color: "rgb(123, 128, 154)",
-                        fontSize: "0.875rem",
-                        fontWeight: 400,
-                        width: "150px",
-                      }}
-                    >
-                      {account.name}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginTop: "6px",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: "rgb(52, 71, 103)",
-                        fontSize: "0.875rem",
-                        fontWeight: 700,
-                        marginRight: "20px",
-                        width: "100px",
-                      }}
-                    >
-                      Email:
-                    </Typography>{" "}
-                    <Typography
-                      sx={{
-                        color: "rgb(123, 128, 154)",
-                        fontSize: "0.875rem",
-                        fontWeight: 400,
-                        width: "150px",
-                      }}
-                    >
-                      {account.email}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginTop: "6px",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: "rgb(52, 71, 103)",
-                        fontSize: "0.875rem",
-                        fontWeight: 700,
-                        marginRight: "20px",
-                        width: "100px",
-                      }}
-                    >
-                      Phone No:
-                    </Typography>{" "}
-                    <Typography
-                      sx={{
-                        color: "rgb(123, 128, 154)",
-                        fontSize: "0.875rem",
-                        fontWeight: 400,
-                        width: "150px",
-                      }}
-                    >
-                      null
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginTop: "6px",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: "rgb(52, 71, 103)",
-                        fontSize: "0.875rem",
-                        fontWeight: 700,
-                        marginRight: "20px",
-                        width: "100px",
-                      }}
-                    >
-                      Verified:
-                    </Typography>{" "}
-                    <Typography
-                      sx={{
-                        color: "rgb(123, 128, 154)",
-                        fontSize: "0.875rem",
-                        fontWeight: 400,
-                        width: "150px",
-                      }}
-                    >
-                      {account.verified && "true"}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box sx={{ marginTop: "30px" }}>
-                  {/* <Typography
-                    sx={{
-                      color: "rgb(52, 71, 103)",
-                      fontWeight: 600,
-                      lineHeight: 1.625,
-                    }}
-                  >
-                    All News
-                  </Typography> */}
-                  <Box>
-                    {/* <Grid
-                      container
-                      spacing={2}
-                      rowSpacing={1}
-                      columnSpacing={1}
-                    >
-                      {data1.TrendingNews.map((item1) => (
-                        <Grid
-                          width='100%'
-                          item
-                          key={item1._id}
-                          sm={6}
-                          md={4}
-                          lg={3}
-                        >
-                          <SecDes trending={item1} />
-                        </Grid> 
-                    ))}
-                     </Grid> */}
-                  </Box>
+                      <Typography
+                        sx={{
+                          color: "rgb(52, 71, 103)",
+                          fontSize: "0.875rem",
+                          fontWeight: 700,
+                          marginRight: "20px",
+                          width: "200px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {item[0]}:
+                      </Typography>{" "}
+                      <Typography
+                        sx={{
+                          color: "rgb(123, 128, 154)",
+                          fontSize: "0.875rem",
+                          fontWeight: 400,
+                          width: "150px",
+                        }}
+                      >
+                        {item[1] ? item[1] : "null"}
+                      </Typography>
+                    </Box>
+                  ))}
                 </Box>
               </Box>
             </Box>
