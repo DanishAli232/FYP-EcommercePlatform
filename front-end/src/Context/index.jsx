@@ -4,23 +4,9 @@ import React, { createContext, useContext, useReducer, useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// import jwtDecode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 
 export const GlobalContext = React.createContext();
-
-// let jwtFromStorage = localStorage.getItem("jwtToken");
-
-// jwtFromStorage = JSON.parse(jwtFromStorage);
-// // console.log(jwtFromStorage.user.role);
-// if (jwtFromStorage) {
-//   const decodedToken = jwtDecode(jwtFromStorage.token);
-//   if (decodedToken.exp * 1000 < Date.now()) {
-//     localStorage.removeItem("jwtToken");
-//   } else {
-//     initialState.user = decodedToken;
-//     initialState.token = jwtFromStorage.token;
-//   }
-// }
 
 const initialstate = {
   cart: {
@@ -127,10 +113,31 @@ const reducer = (state, action) => {
   }
 };
 
+let jwtFromStorage = localStorage.getItem("jwtToken");
+
+jwtFromStorage = JSON.parse(jwtFromStorage);
+// console.log(jwtFromStorage.user.role);
+if (jwtFromStorage) {
+  const decodedToken = jwtDecode(jwtFromStorage.token);
+  if (decodedToken.exp * 1000 < Date.now()) {
+  } else {
+    initialstate.user = decodedToken;
+    initialstate.token = jwtFromStorage.token;
+  }
+}
+
 export const ContextState = ({ children }) => {
   const navigate = useNavigate();
   const [totalprice, settotalprice] = useState(0);
   const [navlistitems, setnavlistitems] = useState();
+
+  // useEffect(() => {
+  //   if (state?.userInfo?.user?.status === "vendor") {
+  //     navigate("/sell");
+  //   }
+  // }, []);
+  const [state, dispatch] = useReducer(reducer, initialstate);
+
   useEffect(() => {
     if (state?.userInfo?.user?.status === "vendor") {
       setnavlistitems([
@@ -221,14 +228,13 @@ export const ContextState = ({ children }) => {
         },
       ]);
     }
-  });
+  }, [state?.userInfo?.user]);
 
   const [allprice, setallprice] = useState({
     withdelivery: 0,
     withoutdelivery: 0,
     itemstotal: 0,
   });
-  const [state, dispatch] = useReducer(reducer, initialstate);
   const [dashboardOpen, setdashboardOpen] = useState(false);
   const [buyNow, setbuyNow] = useState({});
   const [AddressBoxOpen, setAddressBoxOpen] = useState(false);
