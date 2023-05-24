@@ -197,7 +197,7 @@ const NavBar1 = () => {
                     height: "42px",
                   }}
                 >
-                  {navlistitems.map((item, i) => (
+                  {navlistitems?.map((item, i) => (
                     <NavList key={i} {...item} listClick={listClick} />
                   ))}
                 </ul>
@@ -425,7 +425,11 @@ const NavBar1 = () => {
                             textAlign='center'
                             onClick={() => {
                               if (state?.userInfo?.user?.status === "user") {
-                                navigate("/viewaccount");
+                                if (setting.value === "Dashboard") {
+                                  navigate("/viewaccount");
+                                } else {
+                                  SignOut();
+                                }
                               } else {
                                 if (setting.nav) {
                                   navigate(setting.nav);

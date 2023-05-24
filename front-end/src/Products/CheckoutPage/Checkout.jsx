@@ -28,6 +28,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import LoadingBox from "../../Components/LoadingBox";
 import NavBar1 from "../../Components/NavBar1";
+import Footer1 from "../../Components/Footer1";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -129,41 +130,6 @@ const Checkout = () => {
         <Grid container>
           <Grid item md={8}>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "100%",
-                  marginRight: "10px",
-                  backgroundColor: "white",
-                  marginTop: "20px",
-                  flexDirection: "row",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    fontSize: "12px",
-                  }}
-                >
-                  <Checkbox sx={{ color: "#757575" }} />
-                  <Typography sx={{ color: "#757575" }}>Select All</Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <DeleteOutlineOutlinedIcon sx={{ color: "#757575" }} />
-                  <Typography sx={{ color: "#757575", paddingRight: "12px" }}>
-                    Delete All
-                  </Typography>
-                </Box>
-              </Box>
               <Address />
               {loading ? (
                 <LoadingBox />
@@ -355,7 +321,7 @@ const Checkout = () => {
                 }}
               >
                 <Typography>Total</Typography>
-                <Typography sx={{ fontSize: "18px", color: "#f57224" }}>
+                <Typography sx={{ fontSize: "18px", color: "#f0353b" }}>
                   Rs.{" "}
                   {Object.keys(buyNow).length === 0
                     ? allprice.withdelivery
@@ -366,11 +332,11 @@ const Checkout = () => {
                 {" "}
                 <Button
                   sx={{
-                    backgroundColor: "#f57224",
+                    backgroundColor: "#f0353b",
                     color: "white",
                     width: "100%",
                     "&:hover": {
-                      backgroundColor: "#f57224",
+                      backgroundColor: "#d90429",
                     },
                   }}
                 >
@@ -402,6 +368,7 @@ const Checkout = () => {
           {message}
         </Alert>
       </Snackbar>
+      <Footer1 />
     </Box>
   );
 };

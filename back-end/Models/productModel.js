@@ -21,6 +21,13 @@ const productSchema = new mongoose.Schema(
         answer: { type: String },
       },
     ],
+    reviews: [
+      {
+        userid: { type: Schema.Types.ObjectId, ref: "User1" },
+        username: { type: String },
+        review: { type: String },
+      },
+    ],
   },
   {
     timestamps: true,

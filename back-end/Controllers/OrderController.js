@@ -95,6 +95,16 @@ export const getvendororders = async (req, res) => {
   }
 };
 
+export const fetchOrderProducts = async (req, res) => {
+  try {
+    let data = await Order.find({ user: req.query.id }).select("orderItems");
+    console.log(data);
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // orderRouter.put(
 //   "/:id/pay",
 //   isAuth,

@@ -238,7 +238,7 @@ const CartList = ({
           }}
         >
           <Typography
-            sx={{ color: " #f57224", fontSize: { sm: "1rem", xs: "12px" } }}
+            sx={{ color: " #f0353b", fontSize: { sm: "1rem", xs: "12px" } }}
           >
             Rs. {price}
           </Typography>

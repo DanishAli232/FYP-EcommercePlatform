@@ -64,7 +64,7 @@ const AllVendors = () => {
   const updatelist = () => {
     let data1;
 
-    if (state?.userInfo?.user?.status === "vendor") {
+    if (state?.userInfo?.user?.status === "admin") {
       data1 = adminContent;
     }
     let data = data1.map(function (x) {
@@ -185,45 +185,45 @@ const AllVendors = () => {
       cellClassName: "font-tabular-nums",
     },
 
-    {
-      field: "switch",
-      headerName: "switch",
-      width: 70,
-      renderCell: (cellValues) => {
-        const handleClick = (cellvalues) => {
-          if (cellvalues.row.status === "vendor") {
-            try {
-              axios.patch(`/api/statusupdate/${cellvalues.id}`, {
-                status: "admin",
-              });
-            } catch (error) {
-              console.log(error);
-            }
-            cellvalues.row.status = "admin";
-          } else if (cellvalues.row.status === "admin") {
-            try {
-              axios.patch(`/api/statusupdate/${cellvalues.id}`, {
-                status: "vendor",
-              });
-            } catch (error) {
-              console.log(error);
-            }
-            cellvalues.row.status = "vendor";
-          }
-        };
+    // {
+    //   field: "switch",
+    //   headerName: "switch",
+    //   width: 70,
+    //   renderCell: (cellValues) => {
+    //     const handleClick = (cellvalues) => {
+    //       if (cellvalues.row.status === "vendor") {
+    //         try {
+    //           axios.patch(`/api/statusupdate/${cellvalues.id}`, {
+    //             status: "admin",
+    //           });
+    //         } catch (error) {
+    //           console.log(error);
+    //         }
+    //         cellvalues.row.status = "admin";
+    //       } else if (cellvalues.row.status === "admin") {
+    //         try {
+    //           axios.patch(`/api/statusupdate/${cellvalues.id}`, {
+    //             status: "vendor",
+    //           });
+    //         } catch (error) {
+    //           console.log(error);
+    //         }
+    //         cellvalues.row.status = "vendor";
+    //       }
+    //     };
 
-        // console.log(cellvalues);
+    //     // console.log(cellvalues);
 
-        return (
-          <Switch
-            {...label1}
-            onClick={(event) => {
-              handleClick(cellValues);
-            }}
-          />
-        );
-      },
-    },
+    //     return (
+    //       <Switch
+    //         {...label1}
+    //         onClick={(event) => {
+    //           handleClick(cellValues);
+    //         }}
+    //       />
+    //     );
+    //   },
+    // },
     {
       field: "delete",
       headerName: "",

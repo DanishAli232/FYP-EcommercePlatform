@@ -44,12 +44,12 @@ const JazzCash = () => {
   }, []);
 
   const checkForm = () => {
-    const {
-      reciever: _receiver,
-      amount,
-      sendername: _sendername,
-      storename: _productname,
-    } = formData;
+    // const {
+    //   reciever: _receiver,
+    //   amount,
+    //   sendername: _sendername,
+    //   storename: _productname,
+    // } = formData;
     // if ((!_receiver && !amount && !_sendername && !_productname)) {
     //   console.log("Empty Form Data");
     // }
@@ -59,11 +59,55 @@ const JazzCash = () => {
   return (
     <div>
       {!currentAccount ? (
-        <Button onClick={connectWallet}>
-          <p className='text-white text-base font-semibold'>Connect Wallet</p>
-        </Button>
+        <Box
+          sx={{
+            backgroundColor: "#ededed",
+            marginTop: "10px",
+            height: "85px",
+            padding: "10px 20px",
+            width: "93%",
+          }}
+        >
+          <Button
+            sx={{
+              backgroundColor: "#f0353b",
+              color: "white",
+              width: "98%",
+              height: "44px",
+              marginTop: "19px",
+              "&:hover": {
+                backgroundColor: "#d90429",
+              },
+            }}
+            onClick={connectWallet}
+          >
+            <p className='text-white text-base font-semibold'>Connect Wallet</p>
+          </Button>
+        </Box>
       ) : (
-        <Box>
+        // <Button
+        //   sx={{
+        //     backgroundColor: "#f0353b",
+        //     color: "white",
+        //     width: "98%",
+        //     height: "44px",
+        //     marginTop: "19px",
+        //     "&:hover": {
+        //       backgroundColor: "#d90429",
+        //     },
+        //   }}
+        //   onClick={connectWallet}
+        // >
+        //   <p className='text-white text-base font-semibold'>Connect Wallet</p>
+        // </Button>
+        <Box
+          sx={{
+            marginTop: "21px",
+            background: "#ededed",
+            padding: "19px",
+            width: "93%",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -144,7 +188,19 @@ const JazzCash = () => {
               variant='standard'
             />
           </Box>
-          <Button onClick={checkForm}>Send Amount</Button>
+          <Button
+            sx={{
+              backgroundColor: "#f0353b",
+              color: "white",
+              width: "100%",
+              "&:hover": {
+                backgroundColor: "#d90429",
+              },
+            }}
+            onClick={checkForm}
+          >
+            Send Amount
+          </Button>
         </Box>
       )}
     </div>

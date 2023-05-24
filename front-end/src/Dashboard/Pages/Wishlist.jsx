@@ -52,9 +52,8 @@ const Wishlist = () => {
   const [searchVal, newSearchVal] = useState("");
   const { setdashboardOpen, state } = useContext(GlobalContext);
 
-  const { VendorContent, adminContent, UserContent } = useContext(
-    DashboardGlobalContext
-  );
+  const { VendorContent, adminContent, UserContent, setUserContent } =
+    useContext(DashboardGlobalContext);
 
   const updatelist = () => {
     let data1;
@@ -70,7 +69,7 @@ const Wishlist = () => {
       x.active = false;
       return x;
     });
-    console.log(data);
+    setUserContent(data);
 
     let objIndex = data1.findIndex((obj) => obj.title === "Wishlist");
     data1[objIndex].active = true;

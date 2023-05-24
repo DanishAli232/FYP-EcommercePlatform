@@ -10,7 +10,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import NavBar1 from "../../Components/NavBar1";
 // import img1 from "../Assets/watch2.jpg";
 import styled from "styled-components";
@@ -91,12 +91,7 @@ function valuetext(value) {
 const minDistance = 10;
 
 const ProductsPage = () => {
-  // const location = window.location.search;
-  // const result = location.split("%")[2];
-  const value = queryString.parse(window.location.search);
-  // const vendorid = value.vendorid;
-  // console.log(vendorid);
-  // console.log("token", token); //123
+  let value = queryString.parse(window.location.search);
 
   const { setdashboardOpen, switchbtn, navlistitems, state } =
     useContext(GlobalContext);
@@ -111,12 +106,34 @@ const ProductsPage = () => {
     message: "Something Went Wrong",
     check: false,
   });
+  let value11 =
+    typeof value.category === "string" && value.category.length < 20;
   const [categories, setcategories] = useState([
-    { title: "Shirts", qty: 14, active: true },
-    { title: "Shoes", qty: 24, active: false },
-    { title: "Accessories", qty: 30, active: false },
-    { title: "Hats", qty: 20, active: false },
-    { title: "Watches", qty: 34, active: false },
+    {
+      title: "Shirts",
+      qty: 14,
+      active: value11 && value.category === "Shirts" ? true : false,
+    },
+    {
+      title: "Shoes",
+      qty: 24,
+      active: value11 && value.category === "Shoes" ? true : false,
+    },
+    {
+      title: "Accessories",
+      qty: 30,
+      active: value11 && value.category === "Accessories" ? true : false,
+    },
+    {
+      title: "Hats",
+      qty: 20,
+      active: value11 && value.category === "Hats" ? true : false,
+    },
+    {
+      title: "Watches",
+      qty: 34,
+      active: value11 && value.category === "Watches" ? true : false,
+    },
   ]);
   const [page, setPage] = React.useState(1);
   const [totalPages, settotalPages] = useState(0);
@@ -126,7 +143,10 @@ const ProductsPage = () => {
     stars: 0,
     minprice: value1[0],
     maxprice: value1[1],
-    category: "shirts",
+    category:
+      typeof value.category === "string" && value.category.length < 20
+        ? value.category
+        : "",
     limit: page,
     vendorid: value?.vendorid ? value?.vendorid : state?.userInfo?.user?._id,
   });
@@ -144,12 +164,13 @@ const ProductsPage = () => {
     { value: "1.0", active: false },
   ]);
 
+  useEffect(() => {}, []);
+
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
 
   const handleChange1 = (event, newValue, activeThumb) => {
-    console.log(newValue);
     if (!Array.isArray(newValue)) {
       return;
     }
@@ -245,7 +266,6 @@ const ProductsPage = () => {
 
   useEffect(() => {
     fetchData();
-    console.log(filterQueries);
   }, [filterQueries, switchbtn]);
 
   // useEffect(() => {
@@ -277,6 +297,7 @@ const ProductsPage = () => {
       limit: value,
     });
   };
+
   return (
     <Box>
       <NavBar1 />
@@ -296,7 +317,7 @@ const ProductsPage = () => {
                 borderRadius: "4px",
               }}
             >
-              {switchbtn === 1 && (
+              {state?.userInfo?.user?.status === "user" && (
                 <Box>
                   <Title1>Product Categories</Title1>
                   <ul style={{ margin: 0, padding: 0 }}>
@@ -335,7 +356,7 @@ const ProductsPage = () => {
                         }}
                       >
                         {item.title}
-                        <Total>{item.qty}</Total>
+                        <Total></Total>
                       </li>
                     ))}
                   </ul>

@@ -34,7 +34,7 @@ import {
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
-      return { ...state, loading: true }; //keep the previous value and only update loading to true
+      return { ...state, loading: true };
     case "FETCH_SUCCESS":
       return { ...state, user: action.payload, loading: false };
     case "FETCH_FAIL":
@@ -152,25 +152,20 @@ const AllUsers = () => {
     {
       field: "email",
       headerName: "Email",
-      width: 300,
-      // renderCell: (params) => <ExpandableCell {...params} />,
-    },
-    {
-      field: "phoneno",
-      headerName: "PhoneNo",
       width: 150,
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
+
     {
       field: "status",
       headerName: "Status",
-      width: 100,
+      width: 150,
       // renderCell: (params) => <ExpandableCell {...params} />,
     },
     {
       field: "createdAt",
       headerName: " Created At",
-      width: 100,
+      width: 150,
       valueFormatter: ({ value }) => value.slice(0, 10),
       cellClassName: "font-tabular-nums",
     },
@@ -178,7 +173,7 @@ const AllUsers = () => {
     {
       field: "switch",
       headerName: "switch",
-      width: 70,
+      width: 150,
       renderCell: (cellValues) => {
         const handleClick = (cellvalues) => {
           if (cellvalues.row.status === "admin") {
@@ -217,7 +212,7 @@ const AllUsers = () => {
     {
       field: "delete",
       headerName: "",
-      width: 50,
+      width: 150,
       renderCell: (cellValues) => {
         const DeleteRow = async (cellvalues) => {
           window.location.reload();

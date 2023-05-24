@@ -28,11 +28,10 @@ const Card = () => {
         backgroundColor: "#ededed",
         marginTop: "10px",
         height: "85px",
-        padding: "40px 20px",
+        padding: "10px 20px",
         width: "93%",
       }}
     >
-      <Typography>This link will go to you Payment Page</Typography>
       <PayButton cartItems={cartitems} />
 
       {/* <Button

@@ -168,9 +168,14 @@ export const filterProducts = async (req, res) => {
     console.log(values.limit);
   }
   let rating0 = {};
-  if (values.stars === 0) {
-    rating0 = {};
+  let category = {};
+  if (values.category === "") {
+    category = {};
   } else {
+    category = { category: values.category };
+  }
+
+  if (values.stars && parseInt(values.stars) !== 0) {
     rating0 = { rating: parseInt(values.stars) };
   }
 
@@ -185,9 +190,9 @@ export const filterProducts = async (req, res) => {
 
   const product = await Product.find({
     $and: [
-      { category: values.category },
+      category,
       { price: { $gte: values.minprice, $lte: values.maxprice } },
-      // { rating0 },
+      rating0,
     ],
   })
     .skip(values.limit)
@@ -300,12 +305,26 @@ export const postAnswer = async (req, res) => {
 export const vendorProducts = async (req, res) => {
   console.log(req.body);
   let values = req.body;
+
   if (values.limit === 1) {
     values.limit = 0;
   } else {
     values.limit = (values.limit - 1) * 9;
     console.log(values.limit);
   }
+
+  let rating0 = {};
+  if (values.stars && parseInt(values.stars) !== 0) {
+    rating0 = { rating: parseInt(values.stars) };
+  }
+
+  let category = {};
+  if (values.category === "") {
+    category = {};
+  } else {
+    category = { category: values.category };
+  }
+
   let sortprice = {};
   if (values.sorting === "") {
     sortprice = {};
@@ -314,17 +333,16 @@ export const vendorProducts = async (req, res) => {
   } else if (values.sorting === "hightolow") {
     sortprice = { price: -1 };
   }
-  // let vl = values.vendorid.vendorid.trim();
-  // console.log(vl);
 
   const product = await Product.find({
     $and: [
-      { price: { $gte: 0, $lte: 600 } },
-      { rating: 2 },
+      category,
+      { price: { $gte: values.minprice, $lte: values.maxprice } },
+      rating0,
       { vendor: values.vendorid },
     ],
   })
-    .skip(0)
+    .skip(values.limit)
     .limit(9)
     .sort(sortprice);
   console.log(product);
@@ -333,6 +351,26 @@ export const vendorProducts = async (req, res) => {
   if (product) {
   } else {
     res.status(404).send({ message: "Product Not Found" });
+  }
+};
+
+export const postReview = async (req, res) => {
+  let id = req.query.id;
+  let uid = req.query.uid;
+  try {
+    let data = await Product.findById(
+      { _id: id },
+      {
+        $push: {
+          userid: uid,
+          username: req.body.username,
+          review: req.body.review,
+        },
+      }
+    );
+    console.log(data);
+  } catch (error) {
+    console.log(error);
   }
 };
 

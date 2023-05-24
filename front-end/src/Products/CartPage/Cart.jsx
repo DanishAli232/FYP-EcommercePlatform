@@ -187,7 +187,7 @@ const Cart = () => {
         }}
       >
         <Grid container>
-          <Grid item md={8} sx={{ width: "100%" }}>
+          <Grid item md={8} sx={{ width: "100%", paddingBottom: "40px" }}>
             <Box
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
@@ -375,10 +375,10 @@ const Cart = () => {
                 }}
               >
                 <Typography>Total</Typography>
-                <Typography sx={{ fontSize: "18px", color: "#f57224" }}>
+                <Typography sx={{ fontSize: "18px", color: "#f0353b" }}>
                   Rs.
                   {loading ? (
-                    <CircularProgress size='20px' sx={{ color: "#f57224" }} />
+                    <CircularProgress size='20px' sx={{ color: "#f0353b" }} />
                   ) : (
                     totalprice
                   )}
@@ -388,11 +388,11 @@ const Cart = () => {
                 {" "}
                 <Button
                   sx={{
-                    backgroundColor: "#f57224",
+                    backgroundColor: "#f0353b",
                     color: "white",
                     width: "100%",
                     "&:hover": {
-                      backgroundColor: "#f57224",
+                      backgroundColor: "#d90429",
                     },
                   }}
                 >

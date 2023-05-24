@@ -58,30 +58,29 @@ const COD = () => {
         backgroundColor: "#ededed",
         marginTop: "10px",
         height: "85px",
-        padding: "40px 20px",
+        padding: "10px 20px",
         width: "93%",
       }}
     >
-      <Typography>
-        You can pay in cash to our courier when you receive the goods at your
-        doorstep.
-      </Typography>
       <Button
-        onClick={ConfirmOrder}
         sx={{
-          backgroundColor: "#f57224",
-          marginTop: "20px",
+          backgroundColor: "#f0353b",
           color: "white",
-          width: "40%",
+          width: "98%",
+          height: "44px",
+          marginTop: "19px",
           "&:hover": {
-            backgroundColor: "#f57224",
+            backgroundColor: "#d90429",
           },
         }}
+        onClick={ConfirmOrder}
       >
-        Confirm Order
-        {status && (
-          <CircularProgress sx={{ ml: 1, color: "white" }} size='16px' />
-        )}
+        <p className='text-white text-base font-semibold'>
+          Confirm Order
+          {status && (
+            <CircularProgress sx={{ ml: 1, color: "white" }} size='16px' />
+          )}
+        </p>
       </Button>
     </Box>
   );

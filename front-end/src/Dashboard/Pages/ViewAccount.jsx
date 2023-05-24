@@ -46,6 +46,10 @@ const ViewAccount = () => {
     updatelist();
     AccountDetails();
   }, []);
+
+  useEffect(() => {
+    console.log(account);
+  }, [account]);
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
       <Grid container>
@@ -109,8 +113,9 @@ const ViewAccount = () => {
                       {account.length !== 0
                         ? state?.userInfo?.user?.status === "vendor"
                           ? account && account[1][1]
-                          : state?.userInfo?.user?.status === "user" &&
-                            account.name
+                          : (state?.userInfo?.user?.status === "user" ||
+                              state?.userInfo?.user?.status === "admin") &&
+                            account[1][1]
                         : null}
                     </Typography>
                     <Typography
@@ -119,8 +124,9 @@ const ViewAccount = () => {
                       {account.length !== 0
                         ? state?.userInfo?.user?.status === "vendor"
                           ? account && account[4][1]
-                          : state?.userInfo?.user?.status === "user" &&
-                            account.status
+                          : (state?.userInfo?.user?.status === "user" ||
+                              state?.userInfo?.user?.status === "admin") &&
+                            account[3][1]
                         : null}
                     </Typography>
                   </Box>
@@ -144,39 +150,76 @@ const ViewAccount = () => {
                     more painful in the short term (pain avoidance is creating
                     an illusion of equality)
                   </Typography>
-                  {account?.map((item, i) => (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        marginTop: "15px",
-                      }}
-                    >
-                      <Typography
+                  {state?.userInfo?.user?.status === "vendor" &&
+                    account?.map((item, i) => (
+                      <Box
                         sx={{
-                          color: "rgb(52, 71, 103)",
-                          fontSize: "0.875rem",
-                          fontWeight: 700,
-                          marginRight: "20px",
-                          width: "200px",
-                          textTransform: "uppercase",
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          marginTop: "15px",
                         }}
                       >
-                        {item[0]}:
-                      </Typography>{" "}
-                      <Typography
+                        <Typography
+                          sx={{
+                            color: "rgb(52, 71, 103)",
+                            fontSize: "0.875rem",
+                            fontWeight: 700,
+                            marginRight: "20px",
+                            width: "200px",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {item[0]}:
+                        </Typography>{" "}
+                        <Typography
+                          sx={{
+                            color: "rgb(123, 128, 154)",
+                            fontSize: "0.875rem",
+                            fontWeight: 400,
+                            width: "150px",
+                          }}
+                        >
+                          {item[1] ? item[1] : "null"}
+                        </Typography>
+                      </Box>
+                    ))}
+                  {account.length !== 0 &&
+                    (state?.userInfo?.user?.status === "admin" ||
+                      state?.userInfo?.user?.status === "user") &&
+                    account?.map((item, i) => (
+                      <Box
                         sx={{
-                          color: "rgb(123, 128, 154)",
-                          fontSize: "0.875rem",
-                          fontWeight: 400,
-                          width: "150px",
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          marginTop: "15px",
                         }}
                       >
-                        {item[1] ? item[1] : "null"}
-                      </Typography>
-                    </Box>
-                  ))}
+                        <Typography
+                          sx={{
+                            color: "rgb(52, 71, 103)",
+                            fontSize: "0.875rem",
+                            fontWeight: 700,
+                            marginRight: "20px",
+                            width: "200px",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {item[0]}:
+                        </Typography>{" "}
+                        <Typography
+                          sx={{
+                            color: "rgb(123, 128, 154)",
+                            fontSize: "0.875rem",
+                            fontWeight: 400,
+                            width: "150px",
+                          }}
+                        >
+                          {item[1] ? item[1] : "null"}
+                        </Typography>
+                      </Box>
+                    ))}
                 </Box>
               </Box>
             </Box>

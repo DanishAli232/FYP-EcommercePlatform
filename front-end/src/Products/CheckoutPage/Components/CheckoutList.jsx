@@ -104,7 +104,7 @@ const CheckoutList = ({
             flexDirection: "column",
           }}
         >
-          <Typography sx={{ color: " #f57224" }}>Rs. {price}</Typography>
+          <Typography sx={{ color: "#f0353b" }}>Rs. {price}</Typography>
           <Box
             sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}
           >
@@ -182,7 +182,7 @@ const CheckoutList = ({
             Recieve in next five days
           </Typography>
         </Box>
-        <Typography sx={{ color: "#f57224", fontSize: "18px" }}>
+        <Typography sx={{ color: "#f0353b", fontSize: "18px" }}>
           Rs. {price * quantity + 149}
         </Typography>
       </Box>

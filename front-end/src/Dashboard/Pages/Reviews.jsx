@@ -1,4 +1,12 @@
-import { Alert, Box, Button, Grid, Snackbar, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { GlobalContext } from "../../Context";
@@ -9,16 +17,18 @@ import {
   DashboardContext,
   DashboardGlobalContext,
 } from "../Context/DashboardContext";
+import Scrollbars from "react-custom-scrollbars-2";
+import ReviewList from "./Reviews/index";
 
-const AllQuestions = () => {
+const Reviews = () => {
   const { setdashboardOpen, state } = useContext(GlobalContext);
   const [status, setstatus] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [message, setmessage] = useState("");
   const [product, setproduct] = useState([]);
-  const { VendorContent, setVendorContent, adminContent } = useContext(
-    DashboardGlobalContext
-  );
+  const [orders, setorders] = useState([]);
+  const { VendorContent, adminContent, setUserContent, UserContent } =
+    useContext(DashboardGlobalContext);
 
   const updatelist = () => {
     let data1;
@@ -27,29 +37,58 @@ const AllQuestions = () => {
       data1 = VendorContent;
     } else if (state?.userInfo?.user?.status === "admin") {
       data1 = adminContent;
+    } else if (state?.userInfo?.user?.status === "user") {
+      data1 = UserContent;
     }
     let data = data1.map(function (x) {
       x.active = false;
       return x;
     });
-    setVendorContent(data);
+    setUserContent(data);
 
-    let objIndex = data1.findIndex((obj) => obj.title === "All Questions");
+    let objIndex = data1.findIndex((obj) => obj.title === "Reviews");
     data1[objIndex].active = true;
   };
+
+  const fetchRecords = async () => {
+    try {
+      let { data } = await axios.get(
+        `/api/fetchorderproducts?id=${state?.userInfo?.user?._id}`
+      );
+      let data0 = data.map((item) => {
+        return item.orderItems;
+      });
+
+      const updatedOrders = [];
+      for (let i = 0; i < data0.length; i++) {
+        if (data0[i][0]) {
+          for (let j = 0; j < data0[i].length; j++) {
+            console.log(data0[i][j]);
+            updatedOrders.push(data0[i][j]);
+          }
+        }
+      }
+      setorders([...orders, ...updatedOrders]);
+
+      // console.log(data0);
+      // console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(orders);
+  }, [orders]);
+
+  useEffect(() => {
+    fetchRecords();
+  }, []);
 
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
   }, []);
-
-  const fetchQuestions = async () => {
-    const { data } = await axios.get(
-      `/api/fetchcomments/${state.userInfo.user._id}`
-    );
-    console.log(data);
-    setproduct(data);
-  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -60,16 +99,14 @@ const AllQuestions = () => {
     setmessage("");
   };
 
-  useEffect(() => {
-    fetchQuestions();
-  }, []);
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
       <Grid container>
         <Grid item md={2}></Grid>
         <Grid item md={10}>
           <Navbar />
-          <Box sx={{ minHeight: "569px" }}>
+
+          <Box sx={{ height: "500px" }}>
             <Box
               sx={{
                 backgroundColor: "white",
@@ -103,23 +140,13 @@ const AllQuestions = () => {
                     lineHeight: "32px",
                   }}
                 >
-                  Custom Questions & Answers
+                  Reviews
                 </Typography>
-                {state?.userInfo?.user?.status === "vendor" ? (
-                  product.map((item, i) => (
-                    <QuestionDes
-                      {...item}
-                      key={i}
-                      status={status}
-                      setstatus={setstatus}
-                      setopen={setOpen}
-                      setmessage={setmessage}
-                      fetchQuestions={fetchQuestions}
-                    />
-                  ))
-                ) : (
-                  <></>
-                )}
+                <Scrollbars style={{ height: "500px" }}>
+                  {orders.map((items) => (
+                    <ReviewList {...items} status={status} />
+                  ))}
+                </Scrollbars>
               </Box>
             </Box>
           </Box>
@@ -134,4 +161,4 @@ const AllQuestions = () => {
   );
 };
 
-export default AllQuestions;
+export default Reviews;

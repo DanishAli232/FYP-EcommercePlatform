@@ -48,7 +48,7 @@ let reviews = [
   },
 ];
 
-const ProductDetail = () => {
+const ProductDetail = (isModel, modelName) => {
   const [quantity, setquantity] = useState(1);
   const [storename, setstorename] = useState("");
   const [allcomment, setallcomment] = useState([]);
@@ -250,6 +250,12 @@ const ProductDetail = () => {
       let { data } = await axios.post("/api/addcomment", comment);
       allComment();
     } catch (error) {}
+  };
+  // Redirect for 3d view
+  const viewIn3D = () => {
+    if (isModel === true) {
+      navigate(`../../../Assets/Files/${modelName}`);
+    }
   };
 
   // useEffect(() => {
@@ -754,6 +760,22 @@ const ProductDetail = () => {
                       justifyContent: "center",
                     }}
                   >
+                    <Button
+                      onClick={viewIn3D}
+                      sx={{
+                        backgroundColor: "#ffd814",
+                        width: "79%",
+                        color: "#0F1111",
+                        fontSize: "13px",
+                        borderRadius: "20px",
+                        marginTop: "18px",
+                        "&:hover": {
+                          backgroundColor: "#ebce01",
+                        },
+                      }}
+                    >
+                      3D View
+                    </Button>
                     <Button
                       onClick={addToCartHandler}
                       sx={{

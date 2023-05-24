@@ -16,6 +16,7 @@ import Join from "./Products/ChatPage/Join/Join";
 import ChatVendor from "./Dashboard/Pages/Chat";
 import Sidebar1 from "./Dashboard/Components/Sidebar1";
 import Coupons from "./Dashboard/Pages/Coupons";
+import Reviews from "./Dashboard/Pages/Reviews";
 
 const Home1 = React.lazy(() => import("./Products/HomePage/Home1"));
 const AllQuestions = React.lazy(() => import("./Dashboard/Pages/AllQuestions"));
@@ -112,6 +113,7 @@ function App() {
             </>
           ) : state?.userInfo?.user?.status === "admin" ? (
             <>
+              <Route path='/' element={<Dashboard />} />
               {/* <Route path='/' element={<Home1 />} />
               <Route path='/productdetail/:id' element={<ProductDetail />} /> */}
               {/* <Route path='/about' element={<About />} /> */}
@@ -120,7 +122,7 @@ function App() {
               {/* <Route path='/vendorlogin' element={<VendorLogin />} /> */}
               {/* <Route path='/wishlist' element={<Wishlist />} /> */}
               <Route path='/orders' element={<Orders />} />
-              {/* <Route path='/allquestions' element={<AllQuestions />} /> */}
+              <Route path='/allquestions' element={<AllQuestions />} />
               {/* <Route path='/chatvendor' element={<ChatVendor />} /> */}
               {/* <Route path='/cartpage' element={<Cart />} /> */}
               {/* <Route path='/checkout' element={<Checkout />} /> */}
@@ -159,6 +161,7 @@ function App() {
               <Route path='/' element={<Home1 />} />
               <Route path='/productdetail/:id' element={<ProductDetail />} />
               <Route path='/about' element={<About />} />
+              <Route path='/reviews' element={<Reviews />} />
               <Route path='/join' element={<Join />} />
               <Route path='/chat' element={<Chat />} />
               <Route path='/vendorlogin' element={<VendorLogin />} />

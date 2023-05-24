@@ -6,6 +6,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatIcon from "@mui/icons-material/Chat";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FeedIcon from "@mui/icons-material/Feed";
+import ReviewsIcon from "@mui/icons-material/Reviews";
 import PeopleIcon from "@mui/icons-material/People";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 
@@ -100,7 +101,13 @@ export const DashboardContext = ({ children }) => {
       icon: <FavoriteBorderIcon />,
     },
     {
-      link: "/dashboard",
+      link: "/reviews",
+      title: "Reviews",
+      active: false,
+      icon: <ReviewsIcon />,
+    },
+    {
+      link: "/signin",
       title: "Logout",
       active: false,
       icon: <LogoutIcon />,
@@ -132,11 +139,26 @@ export const DashboardContext = ({ children }) => {
           }
         );
         setaccount(data1);
-      } else if (state?.userInfo?.user?.status === "user") {
+      } else if (
+        state?.userInfo?.user?.status === "user" ||
+        state?.userInfo?.user?.status === "admin"
+      ) {
         let { data } = await axios.get(
           `/api/accountdetail/${state.userInfo.user._id}`
         );
-        setaccount(data);
+        let data1 = await Object.entries(data).filter((item, arr) => {
+          if (
+            item[0] === "__v" ||
+            item[0] === "updatedAt" ||
+            item[0] === "password"
+          ) {
+            let data = item[0];
+            return item[0] !== data;
+          } else {
+            return item;
+          }
+        });
+        setaccount(data1);
       }
     } catch (error) {
       console.log(error);
@@ -188,7 +210,7 @@ export const DashboardContext = ({ children }) => {
       icon: <PeopleIcon />,
     },
     {
-      link: "/dashboard",
+      link: "/signin",
       title: "Logout",
       active: false,
       icon: <LogoutIcon />,

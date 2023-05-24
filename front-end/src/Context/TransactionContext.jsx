@@ -213,36 +213,36 @@ export const TransactionsProvider = ({ children }) => {
         const _amount = convertToHex(amount); //convert amount into hexadecimal
         console.log(_amount);
 
-        // await ethereum.request({
-        //   method: "eth_sendTransaction",
-        //   params: [
-        //     {
-        //       from: currentAccount,
-        //       to: _receiver,
-        //       // hexadecimal
-        //       gas: "0x5208", // 21000 GWEI 0.000021
-        //       value: _amount, // 0.00001
-        //     },
-        //   ],
-        // });
-        // console.log("OK");
-        // const transactionHash = await transactionsContract.methods
-        //   .payOrder(_productname, _amount, _sendername, _receiver)
-        //   .call();
-        // setIsLoading(true);
-        // console.log(`Loading - ${transactionHash.hash}`);
-        // //wait for the transaction to be finished
-        // await transactionHash.wait();
-        // console.log(`Success - ${transactionHash.hash}`);
-        // setIsLoading(false);
-        // const getAllTransactions = await transactionsContract.methods
-        //   .getAllTransactions()
-        //   .call();
-        // console.log(getAllTransactions);
-        // // const transactionsCount =
-        // //   await transactionsContract.getTransactionCount();
-        // // setTransactionCount(transactionsCount.toNumber());
-        // window.location.reload();
+        await ethereum.request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: currentAccount,
+              to: _receiver,
+              // hexadecimal
+              gas: "0x5208", // 21000 GWEI 0.000021
+              value: _amount, // 0.00001
+            },
+          ],
+        });
+        console.log("OK");
+        const transactionHash = await transactionsContract.methods
+          .payOrder(_productname, _amount, _sendername, _receiver)
+          .call();
+        setIsLoading(true);
+        console.log(`Loading - ${transactionHash.hash}`);
+        //wait for the transaction to be finished
+        await transactionHash.wait();
+        console.log(`Success - ${transactionHash.hash}`);
+        setIsLoading(false);
+        const getAllTransactions = await transactionsContract.methods
+          .getAllTransactions()
+          .call();
+        console.log(getAllTransactions);
+        // const transactionsCount =
+        //   await transactionsContract.getTransactionCount();
+        // setTransactionCount(transactionsCount.toNumber());
+        window.location.reload();
       } else {
         console.log("No ethereum object");
       }

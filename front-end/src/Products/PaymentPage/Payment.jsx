@@ -7,13 +7,14 @@ import {
   Checkbox,
   Container,
   Grid,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import easypaisa from "../../Assets/easypaisa.png";
 import { loadStripe } from "@stripe/stripe-js";
 
-import jazzcash from "../../Assets/jazzcash.png";
+import jazzcash from "../../Assets/ethereum.png";
 import cod from "../../Assets/cod.png";
 import credit from "../../Assets/credit.png";
 
@@ -27,8 +28,10 @@ import HBL from "./Components/HBL";
 import paypal from "../../Assets/paypal.png";
 import NavBar1 from "../../Components/NavBar1";
 import Paypal from "./Components/paypal";
+import Footer1 from "../../Components/Footer1";
 
 const Payment = () => {
+  const navigate = useNavigate();
   const { allprice, state, cartitems, buyNow, setdashboardOpen } =
     useContext(GlobalContext);
   useEffect(() => {
@@ -135,51 +138,54 @@ const Payment = () => {
                     <Typography>Paypal</Typography>
                   </Box>
                 </Box>
-                <Box
-                  sx={{
-                    ...style,
-                    marginLeft: "10px",
-                    backgroundColor: background.hbl,
-                  }}
-                  onClick={() => {
-                    setopenBox({
-                      COD: false,
-                      Easypaisa: false,
-                      HBL: true,
-                      Card: false,
-                      JazzCash: false,
-                    });
-                    setbackground({
-                      ...background,
-                      cod: "white",
-                      card: "white",
-                      easypaisa: "white",
-                      hbl: "#ededed",
-                      jazzcash: "white",
-                    });
-                  }}
-                >
+                <Tooltip title='Not Available' arrow>
                   <Box
                     sx={{
-                      display: "flex",
-                      height: "61px",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "space-between",
+                      ...style,
+                      cursor: "default",
+                      marginLeft: "10px",
+                      backgroundColor: "#ededed",
+                    }}
+                    onClick={() => {
+                      setopenBox({
+                        COD: false,
+                        Easypaisa: false,
+                        HBL: true,
+                        Card: false,
+                        JazzCash: false,
+                      });
+                      setbackground({
+                        ...background,
+                        cod: "white",
+                        card: "white",
+                        easypaisa: "white",
+                        hbl: "#ededed",
+                        jazzcash: "white",
+                      });
                     }}
                   >
-                    <Typography
+                    <Box
                       sx={{
-                        color: "blue",
-                        fontWeight: "800",
-                        fontSize: "25px",
+                        display: "flex",
+                        height: "61px",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "space-between",
                       }}
                     >
-                      HBL
-                    </Typography>
-                    <Typography>HBL Bank Account</Typography>
+                      <Typography
+                        sx={{
+                          color: "blue",
+                          fontWeight: "800",
+                          fontSize: "25px",
+                        }}
+                      >
+                        HBL
+                      </Typography>
+                      <Typography>HBL Bank Account</Typography>
+                    </Box>
                   </Box>
-                </Box>
+                </Tooltip>
                 <Box
                   sx={{
                     ...style,
@@ -216,7 +222,7 @@ const Payment = () => {
                     <img
                       src={jazzcash}
                       alt=''
-                      style={{ width: "64px", height: "32px" }}
+                      style={{ width: "42px", height: "32px" }}
                     />
                     <Typography>Using Etherium</Typography>
                   </Box>
@@ -406,9 +412,11 @@ const Payment = () => {
                 <Typography>Total</Typography>
                 <Typography sx={{ fontSize: "18px", color: "#f57224" }}>
                   Rs.{" "}
-                  {Object.keys(buyNow).length === 0
-                    ? allprice.withdelivery
-                    : buyNow.price + 150}{" "}
+                  {allprice.withdelivery !== 0
+                    ? Object.keys(buyNow).length === 0
+                      ? allprice.withdelivery
+                      : buyNow.price + 150
+                    : navigate("/cartpage")}
                 </Typography>
               </Box>
               <Link to='/payment'> </Link>
@@ -416,6 +424,7 @@ const Payment = () => {
           </Grid>
         </Grid>
       </Box>
+      <Footer1 />
     </Box>
   );
 };

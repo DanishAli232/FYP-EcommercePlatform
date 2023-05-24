@@ -10,15 +10,7 @@ import styled from "styled-components";
 import { listVariants } from "../FramerMotion/motion";
 import { GlobalContext } from "../Context";
 
-const catlist = [
-  "Shoes",
-  "Shirts",
-  "Frames",
-  "Bed Sheet",
-  "Clocks",
-  "Dining Table",
-  "Chairs",
-];
+const catlist = ["Shirts", "Shoes", "Accessories", "Hats", "Watches"];
 
 const List = styled.li`
   padding: 5px;
@@ -45,6 +37,10 @@ const NavList = ({ title, width, link, active, listClick }) => {
       setopen(false);
     }
   }, [active]);
+
+  const handleCategory = (item) => {
+    window.location.href = `/products?category=${item}`;
+  };
 
   return (
     <Box
@@ -135,7 +131,9 @@ const NavList = ({ title, width, link, active, listClick }) => {
               style={{ listStyleType: "none", margin: "0px", padding: "0px" }}
             >
               {catlist.map((item) => (
-                <List style={{}}>{item}</List>
+                <List style={{}} onClick={() => handleCategory(item)}>
+                  {item}
+                </List>
               ))}
             </ul>
           </Scrollbars>

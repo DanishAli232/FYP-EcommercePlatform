@@ -14,6 +14,7 @@ import {
   getallproducts,
   getproducts,
   postAnswer,
+  postReview,
   updateproduct,
   vendorProducts,
 } from "../Controllers/ProductController.js";
@@ -72,6 +73,7 @@ ProductRouter.get("/fetchcomments/:vid", fetchComments);
 ProductRouter.get("/fetchPages", fetchPages);
 ProductRouter.get("/filterproducts/:searchvl", filterSearchProduct);
 ProductRouter.post("/postanswer/:pid/:cid", postAnswer);
+ProductRouter.post("/postreview/:pid/:cid", postReview);
 ProductRouter.post("/filtervendorProducts", vendorProducts);
 
 export default ProductRouter;

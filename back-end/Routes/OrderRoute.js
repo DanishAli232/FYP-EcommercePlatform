@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  fetchOrderProducts,
   getmineorders,
   getorders,
   getvendororders,
@@ -16,6 +17,7 @@ OrderRouter.post("/postorder", postorder);
 OrderRouter.get("/getorders", getorders);
 OrderRouter.get("/getmineorders/:id", getmineorders);
 OrderRouter.get("/getvendororders", getvendororders);
+OrderRouter.get("/fetchorderproducts", fetchOrderProducts);
 // OrderRouter.patch("/updatequantity", updatequantity);
 // OrderRouter.patch("/updatecartitems/:id", updatecartitems);
 

@@ -320,10 +320,7 @@ export const ContextState = ({ children }) => {
     }
   };
   let jwtFromStorage = state?.userInfo?.token;
-  console.log(jwtFromStorage);
 
-  jwtFromStorage = JSON.parse(jwtFromStorage);
-  // console.log(jwtFromStorage.user.role);
   if (jwtFromStorage) {
     const decodedToken = jwtDecode(jwtFromStorage);
     if (decodedToken.exp * 1000 < Date.now()) {

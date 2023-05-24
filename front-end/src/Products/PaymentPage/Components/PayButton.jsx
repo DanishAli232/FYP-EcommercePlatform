@@ -32,11 +32,11 @@ const PayButton = ({ cartItems }) => {
       });
 
       if (data) {
-        // await axios.post("/api/postorder", {
-        //   cartItems: cartDetails,
-        //   userId: userInfo.user._id,
-        //   alldetail,
-        // });
+        await axios.post("/api/postorder", {
+          cartItems: cartDetails,
+          userId: userInfo.user._id,
+          alldetail,
+        });
         window.location.href = data.url;
       }
     } catch (error) {}
@@ -45,18 +45,19 @@ const PayButton = ({ cartItems }) => {
   return (
     <>
       <Button
-        onClick={() => handleCheckout()}
         sx={{
-          backgroundColor: "#f57224",
-          marginTop: "20px",
+          backgroundColor: "#f0353b",
           color: "white",
-          width: "30%",
+          width: "98%",
+          height: "44px",
+          marginTop: "19px",
           "&:hover": {
-            backgroundColor: "#f57224",
+            backgroundColor: "#d90429",
           },
         }}
+        onClick={() => handleCheckout()}
       >
-        Payment
+        <p className='text-white text-base font-semibold'>Confirm Order</p>
       </Button>
     </>
   );

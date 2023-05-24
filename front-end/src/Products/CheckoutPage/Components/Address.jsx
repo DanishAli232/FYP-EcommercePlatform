@@ -40,7 +40,7 @@ const Address = () => {
         backgroundColor: "white",
         display: "flex",
         flexDirection: "column",
-        marginTop: "15px",
+        marginTop: "20px",
         padding: "13px",
       }}
     >

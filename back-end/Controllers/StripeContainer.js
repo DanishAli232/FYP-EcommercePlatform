@@ -104,7 +104,7 @@ export const StripCheckoutSession = async (req, res) => {
     customer_email: "balochdanish2020@gmail.com",
   });
 
-  res.send({ url: session.url });
+  // res.send({ url: session.url });
 };
 
 export const plan_stripe = (req, res) => {};
