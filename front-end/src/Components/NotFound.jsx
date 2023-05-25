@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const H1 = styled.h1`
@@ -45,6 +46,7 @@ const Button = styled.button`
 `;
 
 const NotFound = () => {
+  const navigate = useNavigate();
   return (
     <div
       className='not-found'
@@ -63,7 +65,13 @@ const NotFound = () => {
         <br />
         It turned to a 404 Error
       </P>
-      <Button>Back To Home</Button>
+      <Button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Back To Home
+      </Button>
     </div>
   );
 };

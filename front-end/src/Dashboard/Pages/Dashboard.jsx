@@ -26,8 +26,14 @@ import Stripe1 from "./Stripe";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { statuscheck, open1, VendorContent, adminContent, setVendorContent } =
-    useContext(DashboardGlobalContext);
+  const {
+    statuscheck,
+    open1,
+    VendorContent,
+    adminContent,
+    setVendorContent,
+    setAdminContent,
+  } = useContext(DashboardGlobalContext);
 
   // const [displaySideBar, newdisplaySideBar] = useState("none");
   // const [DazeIconDisplay, newDazeIconDisplay] = useState("flex");
@@ -44,18 +50,22 @@ const Dashboard = () => {
 
     if (state?.userInfo?.user?.status === "vendor") {
       data1 = VendorContent;
+      let data = data1?.map(function (x) {
+        x.active = false;
+        return x;
+      });
+      setVendorContent(data);
     } else if (state?.userInfo?.user?.status === "admin") {
       data1 = adminContent;
+      let data = data1?.map(function (x) {
+        x.active = false;
+        return x;
+      });
+      setAdminContent(data);
     }
-    let data = data1.map(function (x) {
-      x.active = false;
-      return x;
-    });
-    console.log(data);
-    setVendorContent(data);
 
     // setVendorContent((item) => {
-    let objIndex = data1.findIndex((obj) => obj.title === "Dashboard");
+    let objIndex = data1?.findIndex((obj) => obj?.title === "Dashboard");
     data1[objIndex].active = true;
     console.log(objIndex);
     // });

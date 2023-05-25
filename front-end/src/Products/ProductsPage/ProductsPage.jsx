@@ -317,7 +317,8 @@ const ProductsPage = () => {
                 borderRadius: "4px",
               }}
             >
-              {state?.userInfo?.user?.status === "user" && (
+              {(state?.userInfo?.user?.status === "user" ||
+                !state?.userInfo?.user?.status) && (
                 <Box>
                   <Title1>Product Categories</Title1>
                   <ul style={{ margin: 0, padding: 0 }}>

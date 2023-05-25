@@ -30,24 +30,6 @@ import styled from "styled-components";
 
 const MagnifierDiv = styled.div``;
 
-let reviews = [
-  {
-    personName: "Danish",
-    stars: "4",
-    desc: 'I was surprised when I found out that this had an in-screen fingerprint reader. All my previous phones had one on the back. Andi it works fine FOR ME, I dont know how good it is at preventing others from trying to open it with their prints. Try asking someone on the street: "Hey, could you put your thumb on my phone here, please?" Id get locked up in no time, right?',
-  },
-  {
-    personName: "Danish",
-    stars: "4",
-    desc: 'I was surprised when I found out that this had an in-screen fingerprint reader. All my previous phones had one on the back. Andi it works fine FOR ME, I dont know how good it is at preventing others from trying to open it with their prints. Try asking someone on the street: "Hey, could you put your thumb on my phone here, please?" Id get locked up in no time, right?',
-  },
-  {
-    personName: "Danish",
-    stars: "4",
-    desc: 'I was surprised when I found out that this had an in-screen fingerprint reader. All my previous phones had one on the back. Andi it works fine FOR ME, I dont know how good it is at preventing others from trying to open it with their prints. Try asking someone on the street: "Hey, could you put your thumb on my phone here, please?" Id get locked up in no time, right?',
-  },
-];
-
 const ProductDetail = (isModel, modelName) => {
   const [quantity, setquantity] = useState(1);
   const [storename, setstorename] = useState("");
@@ -71,12 +53,17 @@ const ProductDetail = (isModel, modelName) => {
   useEffect(() => {
     setdashboardOpen(false);
   });
+
+  const [reviews, setReviews] = useState([]);
+
   const [comment, setcomment] = useState({
     user: "",
     username: "",
     productid: "",
     comment: "",
   });
+
+  const [rateval, setrateval] = useState(0);
 
   const [imagestyle, setimagestyle] = useState({
     position: "",
@@ -205,6 +192,7 @@ const ProductDetail = (isModel, modelName) => {
       let { data } = await axios.get(`/api/allcomment/${state1._id}`);
       console.log(data);
       setallcomment(data.comments);
+      setReviews(data.reviews);
     } catch (error) {
       console.log(error);
     }
@@ -326,7 +314,24 @@ const ProductDetail = (isModel, modelName) => {
                   color: "#565959",
                 }}
               >
-                Do you want to see product in Augmented Reality?
+                <Button
+                  onClick={() => {
+                    navigate("/camera");
+                  }}
+                  sx={{
+                    backgroundColor: "#ffd814",
+                    width: "79%",
+                    color: "#0F1111",
+                    fontSize: "13px",
+                    borderRadius: "20px",
+                    marginTop: "18px",
+                    "&:hover": {
+                      backgroundColor: "#ebce01",
+                    },
+                  }}
+                >
+                  3D View
+                </Button>
               </Typography>
             </Box>
           </Grid>
@@ -345,7 +350,7 @@ const ProductDetail = (isModel, modelName) => {
                     alignItems: "center",
                   }}
                 >
-                  <Rating Rating={3.5} numReviews={15} />
+                  <Rating Rating={rateval} numReviews={reviews.length} />
                   <FavoriteBorderIcon
                     sx={{
                       cursor: "pointer",
@@ -367,7 +372,7 @@ const ProductDetail = (isModel, modelName) => {
                 <Typography sx={{ fontSize: "30px", color: "#f85606" }}>
                   Rs. {state1.price}
                 </Typography>
-                <div
+                {/* <div
                   style={{
                     width: "96%",
                     border: "1px solid #b3afaf29",
@@ -381,9 +386,8 @@ const ProductDetail = (isModel, modelName) => {
                     alignItems: "center",
                     marginTop: "20px",
                   }}
-                >
-                  {" "}
-                  <Typography sx={{ color: "#757575", fontSize: "14px" }}>
+                > */}{" "}
+                {/* <Typography sx={{ color: "#757575", fontSize: "14px" }}>
                     Quantity
                   </Typography>
                   <Box
@@ -395,8 +399,8 @@ const ProductDetail = (isModel, modelName) => {
                     }}
                   >
                     <Quantity qty={quantity} setqty={setquantity} />
-                  </Box>
-                </Box>
+                  </Box> */}
+                {/* </Box> */}
                 <div
                   style={{
                     width: "96%",
@@ -760,22 +764,6 @@ const ProductDetail = (isModel, modelName) => {
                       justifyContent: "center",
                     }}
                   >
-                    <Button
-                      onClick={viewIn3D}
-                      sx={{
-                        backgroundColor: "#ffd814",
-                        width: "79%",
-                        color: "#0F1111",
-                        fontSize: "13px",
-                        borderRadius: "20px",
-                        marginTop: "18px",
-                        "&:hover": {
-                          backgroundColor: "#ebce01",
-                        },
-                      }}
-                    >
-                      3D View
-                    </Button>
                     <Button
                       onClick={addToCartHandler}
                       sx={{

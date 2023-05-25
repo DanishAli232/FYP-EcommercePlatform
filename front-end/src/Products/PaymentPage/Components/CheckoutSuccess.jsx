@@ -2,12 +2,16 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { GlobalContext } from "../../../Context";
+import { Button } from "@mui/material";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const CheckoutSuccess = () => {
+  const navigate = useNavigate();
   const { state, allprice, cartitems } = useContext(GlobalContext);
   console.log(state);
   const [cartDetails, setcartDetails] = useState([]);
   const { userInfo } = state;
+
   let paymentMethod = "Paypal";
 
   useEffect(() => {
@@ -49,6 +53,23 @@ const CheckoutSuccess = () => {
       <h2>Checkout Successful</h2>
       <p>Your order might take some time to process.</p>
       <p>Check your order status at your profile after about 10mins.</p>
+      <Button
+        sx={{
+          backgroundColor: "#f0353b",
+          color: "white",
+          width: "30%",
+          height: "44px",
+          marginTop: "19px",
+          "&:hover": {
+            backgroundColor: "#d90429",
+          },
+        }}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <p className='text-white text-base font-semibold'>Continue Shopping </p>
+      </Button>
     </Container>
   );
 };
@@ -67,6 +88,6 @@ const Container = styled.div`
 
   h2 {
     margin-bottom: 0.5rem;
-    color: #029e02;
+    color: #f0353b;
   }
 `;

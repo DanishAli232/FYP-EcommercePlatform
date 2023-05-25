@@ -22,7 +22,6 @@ import ReviewList from "./Reviews/index";
 
 const Reviews = () => {
   const { setdashboardOpen, state } = useContext(GlobalContext);
-  const [status, setstatus] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [message, setmessage] = useState("");
   const [product, setproduct] = useState([]);
@@ -94,7 +93,6 @@ const Reviews = () => {
     if (reason === "clickaway") {
       return;
     }
-    setstatus(false);
     setOpen(false);
     setmessage("");
   };
@@ -144,7 +142,11 @@ const Reviews = () => {
                 </Typography>
                 <Scrollbars style={{ height: "500px" }}>
                   {orders.map((items) => (
-                    <ReviewList {...items} status={status} />
+                    <ReviewList
+                      {...items}
+                      setOpen={setOpen}
+                      setmessage={setmessage}
+                    />
                   ))}
                 </Scrollbars>
               </Box>

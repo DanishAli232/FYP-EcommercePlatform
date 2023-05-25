@@ -217,6 +217,11 @@ const ViewAccount = () => {
                           }}
                         >
                           {item[1] ? item[1] : "null"}
+                          {item[0] === "verified"
+                            ? item[1] === true
+                              ? "true"
+                              : "false"
+                            : null}
                         </Typography>
                       </Box>
                     ))}

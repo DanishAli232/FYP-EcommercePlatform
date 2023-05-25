@@ -1,19 +1,42 @@
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Rating,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../Context";
 
-const ReviewList = ({ image, name, status, _id }) => {
+const ReviewList = ({ image, name, product, setOpen, setmessage }) => {
+  const [status, setstatus] = useState(false);
   const { state } = useContext(GlobalContext);
+  const [value, setValue] = useState(0);
   const [answer, setanswer] = useState("");
 
+  useEffect(() => {
+    console.log(value);
+  }, [value]);
+
   const postReview = async () => {
-    let data0 = { username: name, answer };
-    let data = await axios.post(
-      `/api/postreview?id=${_id}&&uid=${state?.userInfo?.user?._id}`,
-      data0
-    );
-    console.log(data);
+    setstatus(true);
+    try {
+      let data0 = { username: state?.userInfo?.user?.name, answer, value };
+      let data = await axios.post(
+        `/api/postreview?id=${product}&&uid=${state?.userInfo?.user?._id}`,
+        data0
+      );
+      if (data) {
+        setstatus(false);
+        setOpen(true);
+        setmessage("Review Submitted");
+      }
+    } catch (error) {
+      setstatus(false);
+      setOpen(true);
+      setmessage("Something Went Wrong");
+    }
   };
 
   return (
@@ -31,6 +54,13 @@ const ReviewList = ({ image, name, status, _id }) => {
           }}
         />
         <Typography>{name}</Typography>
+        <Rating
+          name='simple-controlled'
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+        />
       </Box>
       <Box
         sx={{
@@ -71,7 +101,7 @@ const ReviewList = ({ image, name, status, _id }) => {
           }}
         >
           Answer
-          {status && <CircularProgress size='20px' sx={{ color: "#f57224" }} />}
+          {status && <CircularProgress size='20px' sx={{ color: "white" }} />}
         </Button>
       </Box>
     </Box>

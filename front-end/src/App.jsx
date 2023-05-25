@@ -17,6 +17,7 @@ import ChatVendor from "./Dashboard/Pages/Chat";
 import Sidebar1 from "./Dashboard/Components/Sidebar1";
 import Coupons from "./Dashboard/Pages/Coupons";
 import Reviews from "./Dashboard/Pages/Reviews";
+import CameraOverlay from "./Products/ProductDetail/Components/AR";
 
 const Home1 = React.lazy(() => import("./Products/HomePage/Home1"));
 const AllQuestions = React.lazy(() => import("./Dashboard/Pages/AllQuestions"));
@@ -202,6 +203,7 @@ function App() {
               <Route path='/sell' element={<Sell />} />
             </>
           )}
+          <Route path='/camera' element={<CameraOverlay />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Suspense>

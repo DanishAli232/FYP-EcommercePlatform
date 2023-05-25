@@ -73,7 +73,7 @@ ProductRouter.get("/fetchcomments/:vid", fetchComments);
 ProductRouter.get("/fetchPages", fetchPages);
 ProductRouter.get("/filterproducts/:searchvl", filterSearchProduct);
 ProductRouter.post("/postanswer/:pid/:cid", postAnswer);
-ProductRouter.post("/postreview/:pid/:cid", postReview);
+ProductRouter.post("/postreview", postReview);
 ProductRouter.post("/filtervendorProducts", vendorProducts);
 
 export default ProductRouter;

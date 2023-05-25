@@ -223,7 +223,7 @@ const Addproducts = () => {
                     type='number'
                     InputProps={{
                       endAdornment: (
-                        <InputAdornment position='start'>$</InputAdornment>
+                        <InputAdornment position='start'>pkr</InputAdornment>
                       ),
                     }}
                     placeholder='00'
@@ -286,9 +286,9 @@ const Addproducts = () => {
                       >
                         <MenuItem value=''>Select Category</MenuItem>
 
-                        <MenuItem value={"shoes"}>Shoes</MenuItem>
-                        <MenuItem value={"shirts"}>Shirts</MenuItem>
-                        <MenuItem value={"pictures"}>Pictures</MenuItem>
+                        <MenuItem value={"Shoes"}>Shoes</MenuItem>
+                        <MenuItem value={"Shirts"}>Shirts</MenuItem>
+                        <MenuItem value={"Pictures"}>Pictures</MenuItem>
                         <MenuItem
                           value={"add"}
                           onClick={() => {

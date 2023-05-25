@@ -3,7 +3,7 @@ import React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import StarIcon from "@mui/icons-material/Star";
 
-const Reviews = ({ key, personName, desc, stars }) => {
+const Reviews = ({ key, username, review, rating }) => {
   return (
     <Box sx={{ width: "100%", padding: "25px 0px" }} key={key}>
       <Box sx={{ display: "flex", flexDirection: "column", width: "71%" }}>
@@ -24,13 +24,13 @@ const Reviews = ({ key, personName, desc, stars }) => {
               paddingLeft: "7px",
             }}
           >
-            {personName}
+            {username}
           </Typography>
         </Box>
         <Box>
           <Rating
             name='text-feedback'
-            value={stars}
+            value={rating}
             readOnly
             sx={{
               //   color: active ? "#faaf00" : "#adaaa8",
@@ -54,7 +54,7 @@ const Reviews = ({ key, personName, desc, stars }) => {
               lineHeight: "20px",
             }}
           >
-            {desc}
+            {review}
           </Typography>
         </Box>
       </Box>

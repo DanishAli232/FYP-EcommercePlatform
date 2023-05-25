@@ -240,7 +240,7 @@ export const allComments = async (req, res) => {
     return res.status(400).send("Invalid product ID.");
   }
   try {
-    const findProduct = await Product.findById(id).select("comments");
+    const findProduct = await Product.findById(id).select("comments reviews");
     console.log(findProduct);
     res.send(findProduct);
   } catch (error) {
@@ -357,16 +357,22 @@ export const vendorProducts = async (req, res) => {
 export const postReview = async (req, res) => {
   let id = req.query.id;
   let uid = req.query.uid;
+  console.log(id, uid);
+  console.log(req.body);
   try {
-    let data = await Product.findById(
-      { _id: id },
+    let data = await Product.findByIdAndUpdate(
+      id,
       {
         $push: {
-          userid: uid,
-          username: req.body.username,
-          review: req.body.review,
+          reviews: {
+            userid: uid,
+            username: req.body.username,
+            review: req.body.answer,
+            rating: req.body.value,
+          },
         },
-      }
+      },
+      { new: true }
     );
     console.log(data);
   } catch (error) {

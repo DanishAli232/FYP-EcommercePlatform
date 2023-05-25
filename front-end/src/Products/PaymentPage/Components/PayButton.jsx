@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../Context";
@@ -6,6 +6,7 @@ import { GlobalContext } from "../../../Context";
 const PayButton = ({ cartItems }) => {
   const { state, allprice, DefaultAddress } = useContext(GlobalContext);
   const [cartDetails, setcartDetails] = useState([]);
+  const [status, setstatus] = useState(false);
   const { userInfo } = state;
 
   useEffect(() => {
@@ -18,6 +19,7 @@ const PayButton = ({ cartItems }) => {
     setcartDetails(data);
   }, []);
   const handleCheckout = async () => {
+    setstatus(true);
     const alldetail = {
       userInfo,
       DefaultAddress,
@@ -39,6 +41,7 @@ const PayButton = ({ cartItems }) => {
         });
         window.location.href = data.url;
       }
+      setstatus(false);
     } catch (error) {}
   };
 
@@ -57,7 +60,12 @@ const PayButton = ({ cartItems }) => {
         }}
         onClick={() => handleCheckout()}
       >
-        <p className='text-white text-base font-semibold'>Confirm Order</p>
+        <p className='text-white text-base font-semibold'>
+          Confirm Order{" "}
+          {status && (
+            <CircularProgress sx={{ ml: 1, color: "white" }} size='16px' />
+          )}
+        </p>
       </Button>
     </>
   );
