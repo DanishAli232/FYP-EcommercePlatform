@@ -51,7 +51,9 @@ const AllUsers = () => {
   // const Alert = React.forwardRef(function Alert(props, ref) {
   //   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
   // });
-  const { adminContent, setVendorContent } = useContext(DashboardGlobalContext);
+  const { adminContent, setVendorContent, setsidebar } = useContext(
+    DashboardGlobalContext
+  );
   const navigate = useNavigate();
   const [CheckVal, newCheckVal] = React.useState([]);
   const [show, newshow] = useState(false);
@@ -78,6 +80,7 @@ const AllUsers = () => {
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
+    setsidebar("none");
   }, []);
 
   const ExpandableCell = ({ value }) => {
@@ -308,7 +311,7 @@ const AllUsers = () => {
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "0px",
-              width: "91%",
+              width: { sm: "91%", xs: "73%" },
               marginTop: "89px",
               paddingLeft: { md: "45px", xs: "10px" },
               paddingRight: { md: "45px", xs: "10px" },
@@ -319,7 +322,7 @@ const AllUsers = () => {
                 disabled
                 sx={{
                   paddingLeft: { md: "0px", xs: "0px" },
-                  fontSize: "17px",
+                  fontSize: { md: "17px", xs: "12px" },
                   color: "red",
                   cursor: "pointer",
                 }}
@@ -330,7 +333,7 @@ const AllUsers = () => {
               <Button
                 sx={{
                   paddingLeft: { md: "0px", xs: "0px" },
-                  fontSize: "17px",
+                  fontSize: { md: "17px", xs: "12px" },
                   color: "red",
                   cursor: "pointer",
                 }}
@@ -368,8 +371,8 @@ const AllUsers = () => {
           <Box
             sx={{
               height: 538,
-              width: "92%",
-              padding: { md: "42px", xs: "4px" },
+              width: { sm: "92%", xs: "96%" },
+              padding: { md: "42px", xs: "5px" },
               paddingTop: "0px !important",
             }}
           >

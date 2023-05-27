@@ -73,7 +73,7 @@ const CheckoutList = ({
           sx={{
             display: "flex",
             flexDirection: "row",
-            width: "400px",
+            width: { sm: "400px", xs: "100%" },
             alignItems: "center",
           }}
         >
@@ -89,7 +89,7 @@ const CheckoutList = ({
           />
           <Typography
             sx={{
-              paddingLeft: "12px",
+              paddingLeft: { sm: "12px", xs: "4px" },
               fontSize: "14px",
               color: "#212121",
             }}
@@ -102,9 +102,14 @@ const CheckoutList = ({
             display: "flex",
             alignItems: "center",
             flexDirection: "column",
+            marginRight: { sm: "auto", xs: "8px" },
           }}
         >
-          <Typography sx={{ color: "#f0353b" }}>Rs. {price}</Typography>
+          <Typography
+            sx={{ color: "#f0353b", fontSize: { sm: "auto", xs: "15px" } }}
+          >
+            Rs. {price}
+          </Typography>
           <Box
             sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}
           >
@@ -114,16 +119,15 @@ const CheckoutList = ({
                 {...label}
                 icon={<DeleteOutlineOutlinedIcon />}
                 checkedIcon={<DeleteOutlineOutlinedIcon />}
-                sx={
-                  {
-                    // color: color,
-                    // fontSize: "22px",
-                    // cursor: "pointer",
-                    // "&:hover": {
-                    //   color: "red",
-                    // },
-                  }
-                }
+                sx={{
+                  marginLeft: { sm: "auto", xs: "18px" },
+                  // color: color,
+                  // fontSize: "22px",
+                  // cursor: "pointer",
+                  // "&:hover": {
+                  //   color: "red",
+                  // },
+                }}
               />
             </Tooltip>
           </Box>
@@ -156,7 +160,7 @@ const CheckoutList = ({
         <Box
           sx={{
             border: "0.5px solid #007787",
-            width: "220px",
+            width: { md: "220px", xs: "106px" },
             padding: "10px",
           }}
         >

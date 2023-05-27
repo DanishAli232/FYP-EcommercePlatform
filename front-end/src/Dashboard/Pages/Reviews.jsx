@@ -26,8 +26,13 @@ const Reviews = () => {
   const [message, setmessage] = useState("");
   const [product, setproduct] = useState([]);
   const [orders, setorders] = useState([]);
-  const { VendorContent, adminContent, setUserContent, UserContent } =
-    useContext(DashboardGlobalContext);
+  const {
+    VendorContent,
+    adminContent,
+    setUserContent,
+    UserContent,
+    setsidebar,
+  } = useContext(DashboardGlobalContext);
 
   const updatelist = () => {
     let data1;
@@ -82,6 +87,7 @@ const Reviews = () => {
 
   useEffect(() => {
     fetchRecords();
+    setsidebar("none");
   }, []);
 
   useEffect(() => {
@@ -101,7 +107,14 @@ const Reviews = () => {
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
       <Grid container>
         <Grid item md={2}></Grid>
-        <Grid item md={10}>
+        <Grid
+          item
+          md={10}
+          sx={{
+            width: { sm: "auto", xs: "100%" },
+            padding: { sm: "", xs: "5px" },
+          }}
+        >
           <Navbar />
 
           <Box sx={{ height: "500px" }}>

@@ -41,7 +41,7 @@ const ReviewList = ({ image, name, product, setOpen, setmessage }) => {
 
   return (
     <Box sx={{ marginTop: "30px" }}>
-      <Box sx={{ textAlign: "center", width: "100px" }}>
+      <Box sx={{ textAlign: "", width: "100px" }}>
         <img
           src={image}
           alt={name}
@@ -71,7 +71,7 @@ const ReviewList = ({ image, name, product, setOpen, setmessage }) => {
           marginTop: "30px",
         }}
       >
-        <span style={{ width: "58%" }}>
+        <Box style={{ width: { sm: "58%", xs: "100%" }, marginRight: "14px" }}>
           <input
             type='text'
             value={answer}
@@ -87,7 +87,7 @@ const ReviewList = ({ image, name, product, setOpen, setmessage }) => {
               border: "1px solid #cdc6c6",
             }}
           />
-        </span>
+        </Box>
         <Button
           onClick={postReview}
           sx={{

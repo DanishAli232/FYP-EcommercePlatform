@@ -29,7 +29,7 @@ const Card = () => {
         marginTop: "10px",
         height: "85px",
         padding: "10px 20px",
-        width: "93%",
+        width: "95%",
       }}
     >
       <PayButton cartItems={cartitems} />

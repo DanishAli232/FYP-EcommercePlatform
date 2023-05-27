@@ -56,8 +56,12 @@ const Checkout = () => {
     setCartPrice,
     state,
     allprice,
+    setbuyNow,
+    setallprice,
     buyNow,
     cartitems,
+    dispatch: ctxDispatch,
+
     setcartitems,
     setdashboardOpen,
   } = useContext(GlobalContext);
@@ -108,6 +112,62 @@ const Checkout = () => {
     }
   };
 
+  const [voucher, setvoucher] = useState("");
+  const handleVoucher = (event) => {
+    setvoucher(event.target.value);
+  };
+
+  const handleVoucherBtn = async () => {
+    if (voucher === "") {
+      setOpen(true);
+      setmessage("Please Provide Voucher Code");
+      setseverity("error");
+    } else if (state?.userInfo?.user?.couponcode?.code !== null) {
+      if (voucher == state?.userInfo?.user?.couponcode[0]?.code) {
+        console.log(allprice.withdelivery);
+        let price =
+          (allprice.withdelivery *
+            (-state?.userInfo?.user?.couponcode[0]?.discountper.slice(0, 2) +
+              100)) /
+          100;
+        if (Object.keys(buyNow).length !== 0) {
+          setbuyNow({
+            ...buyNow,
+            price:
+              ((buyNow.price + 149) *
+                (-state?.userInfo?.user?.couponcode[0]?.discountper.slice(
+                  0,
+                  2
+                ) +
+                  100)) /
+              100,
+          });
+        }
+
+        let { data } = await axios.get(
+          `/api/updatecouponcode?user=${state?.userInfo?.user?._id}`
+        );
+        ctxDispatch({ type: "USER_SIGNIN", payload: data });
+        localStorage.setItem("userInfo", JSON.stringify(data));
+
+        setallprice({ ...allprice, withdelivery: price });
+        setOpen(true);
+        setmessage(
+          "Discount appllied to your Amount and you have no voucher left"
+        );
+        setseverity("success");
+      } else {
+        setOpen(true);
+        setmessage("Your Voucher code is wrong");
+        setseverity("error");
+      }
+    } else {
+      setOpen(true);
+      setmessage("You Have No Voucher Code");
+      setseverity("error");
+    }
+  };
+
   useEffect(() => {
     fetchData();
     console.log(allprice);
@@ -120,7 +180,9 @@ const Checkout = () => {
       <NavBar1 />
       <Box
         sx={{
-          paddingX: "39px",
+          // paddingX: "39px",
+          padding: { md: "5px 69px", xs: "5px 13px" },
+
           // marginTop: "30px",
           backgroundColor: "#f4f4f4",
           minHeight: "100vh",
@@ -128,7 +190,7 @@ const Checkout = () => {
         }}
       >
         <Grid container>
-          <Grid item md={8}>
+          <Grid item md={8} sx={{ width: "100%" }}>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Address />
               {loading ? (
@@ -170,21 +232,15 @@ const Checkout = () => {
                   setStatus={setStatus}
                 />
               )}
-              {/* {cartitems.map((item, i) => (
-                <CheckoutList
-                  key={i}
-                  title={item.title}
-                  storename={item.storename}
-                  price={item.price}
-                  image={item.image}
-                />
-              ))} */}
             </Box>
           </Grid>
           <Grid item md={4}>
             <Box
               sx={{
-                marginLeft: "15px",
+                marginLeft: {
+                  sm: "15px",
+                  xs: "0",
+                },
                 backgroundColor: "white",
                 marginTop: "20px",
                 paddingX: "10px",
@@ -218,11 +274,14 @@ const Checkout = () => {
                       width: "70%",
                     }}
                     type='text'
+                    value={voucher}
+                    onChange={(e) => handleVoucher(e)}
                     name='voucher'
                     placeholder='Enter Voucher Code'
                     id='voucher'
                   />
                   <Button
+                    onClick={handleVoucherBtn}
                     sx={{
                       backgroundColor: "#25a5d8",
                       color: "#fff",

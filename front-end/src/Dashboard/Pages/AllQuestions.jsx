@@ -16,9 +16,8 @@ const AllQuestions = () => {
   const [open, setOpen] = React.useState(false);
   const [message, setmessage] = useState("");
   const [product, setproduct] = useState([]);
-  const { VendorContent, setVendorContent, adminContent } = useContext(
-    DashboardGlobalContext
-  );
+  const { VendorContent, setVendorContent, adminContent, setsidebar } =
+    useContext(DashboardGlobalContext);
 
   const updatelist = () => {
     let data1;
@@ -41,6 +40,7 @@ const AllQuestions = () => {
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
+    setsidebar("none");
   }, []);
 
   const fetchQuestions = async () => {

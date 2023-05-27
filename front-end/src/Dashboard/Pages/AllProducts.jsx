@@ -46,8 +46,13 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 const label1 = { inputProps: { "aria-label": "Switch demo" } };
 
 const AllProducts = () => {
-  const { statuscheck, VendorContent, setVendorContent, adminContent } =
-    useContext(DashboardGlobalContext);
+  const {
+    statuscheck,
+    VendorContent,
+    setVendorContent,
+    adminContent,
+    setsidebar,
+  } = useContext(DashboardGlobalContext);
 
   // const Alert = React.forwardRef(function Alert(props, ref) {
   //   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
@@ -81,6 +86,7 @@ const AllProducts = () => {
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
+    setsidebar("none");
   }, []);
 
   const ExpandableCell = ({ value }) => {
@@ -348,7 +354,7 @@ const AllProducts = () => {
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "0px",
-              width: "91%",
+              width: { sm: "91%", xs: "73%" },
               marginTop: "89px",
               paddingLeft: { md: "45px", xs: "10px" },
               paddingRight: { md: "45px", xs: "10px" },
@@ -359,7 +365,7 @@ const AllProducts = () => {
                 disabled
                 sx={{
                   paddingLeft: { md: "0px", xs: "0px" },
-                  fontSize: "17px",
+                  fontSize: { md: "17px", xs: "13px" },
                   color: "red",
                   cursor: "pointer",
                 }}
@@ -370,7 +376,8 @@ const AllProducts = () => {
               <Button
                 sx={{
                   paddingLeft: { md: "0px", xs: "0px" },
-                  fontSize: "17px",
+                  fontSize: { md: "17px", xs: "13px" },
+
                   color: "red",
                   cursor: "pointer",
                 }}
@@ -408,8 +415,8 @@ const AllProducts = () => {
           <Box
             sx={{
               height: 538,
-              width: "92%",
-              padding: { md: "42px", xs: "4px" },
+              width: { sm: "92%", xs: "96%" },
+              padding: { md: "42px", xs: "5px" },
               paddingTop: "0px !important",
             }}
           >

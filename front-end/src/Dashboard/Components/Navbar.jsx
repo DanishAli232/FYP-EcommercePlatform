@@ -12,19 +12,24 @@ import {
 } from "../Context/DashboardContext";
 
 const Navbar = () => {
-  const { navcontent } = useContext(DashboardGlobalContext);
+  const { navcontent, sidebar, setsidebar } = useContext(
+    DashboardGlobalContext
+  );
   const [DazeIconDisplay, newDazeIconDisplay] = useState("flex");
   const [MoveIconDisplay, newMoveIconDisplay] = useState("none");
 
   const DazebtnClicker = () => {
     // newdisplaySideBar("flex");
     newMoveIconDisplay("flex");
+    setsidebar("block");
+
     newDazeIconDisplay("none");
   };
 
   const MorevertbtnClicker = () => {
     // newdisplaySideBar("none");
     newMoveIconDisplay("none");
+    setsidebar("none");
     newDazeIconDisplay("flex");
   };
   return (
@@ -40,7 +45,7 @@ const Navbar = () => {
           margin: { md: "23px 33px", xs: "10px 5px" },
           marginTop: { md: "10px !important", xs: "13px" },
 
-          width: { md: "76%", xs: "98%" },
+          width: { md: "76%", xs: "88%" },
           zIndex: "9",
           boxShadow:
             "rgba(255, 255, 255, 0.9) 0rem 0rem 0.0625rem 0.0625rem inset, rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem",

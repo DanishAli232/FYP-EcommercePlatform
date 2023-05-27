@@ -122,7 +122,7 @@ const CouponList = () => {
     },
     {
       field: "maxprice",
-      headerName: "Maximum Price",
+      headerName: "Maximum Points",
       width: 150,
       //   valueGetter: (value) => {
       //     return value?.row?.product?.price;
@@ -131,7 +131,37 @@ const CouponList = () => {
     },
     {
       field: "discountper",
-      headerName: "Discpunt Percentage",
+      headerName: "Discount Percentage",
+      width: 150,
+      //   valueGetter: (value) => {
+      //     return value?.row?.product?.brand;
+      //   },
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "expire",
+      headerName: "Expire Date",
+      width: 150,
+      // valueFormatter: ({ value }) => value.slice(0, 10),
+      cellClassName: "font-tabular-nums",
+
+      //   valueGetter: (value) => {
+      //     return value?.row?.product?.brand;
+      //   },
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "couponcode",
+      headerName: "Coupon Code",
+      width: 150,
+      //   valueGetter: (value) => {
+      //     return value?.row?.product?.brand;
+      //   },
+      // renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: "noofused",
+      headerName: "No of Used",
       width: 150,
       //   valueGetter: (value) => {
       //     return value?.row?.product?.brand;
@@ -241,7 +271,7 @@ const CouponList = () => {
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "0px",
-          width: "100%",
+          width: { sm: "96%", xs: "70%" },
           //   paddingLeft: { md: "45px", xs: "10px" },
           //   paddingRight: { md: "45px", xs: "10px" },
         }}
@@ -249,20 +279,22 @@ const CouponList = () => {
         <Box></Box>
         <Box sx={{ position: "relative", top: "-68px", right: "11px" }}>
           <FormControl fullWidth sx={{ m: 1 }} variant='standard'>
-            <Input
+            {/* <Input
               id='standard-adornment-amount'
               value={searchVal}
               onChange={filterResult}
               startAdornment={<SearchIcon />}
               placeholder='Search'
-            />
+            /> */}
           </FormControl>
         </Box>
       </Box>
       <Box
         sx={{
           height: 526,
-          width: "100%",
+          marginTop: { md: "", xs: "29px" },
+          width: { sm: "100%", xs: "96%" },
+          padding: { md: "", xs: "5px" },
           position: "relative",
           top: "-53px",
           //   padding: { md: "42px", xs: "4px" },

@@ -45,7 +45,7 @@ const Address = () => {
       }}
     >
       {DefaultAddress.length !== 0 && (
-        <Box>
+        <Box sx={{}}>
           <Typography
             sx={{ fontSize: "14px", fontWeight: 500, color: "#1a1a1a" }}
           >
@@ -56,6 +56,11 @@ const Address = () => {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
+              width: {
+                sm: "auto",
+                xs: "100%",
+              },
+              overflow: { sm: "none", xs: "hidden" },
             }}
           >
             {" "}

@@ -52,9 +52,16 @@ const Wishlist = () => {
   const [searchVal, newSearchVal] = useState("");
   const { setdashboardOpen, state } = useContext(GlobalContext);
 
-  const { VendorContent, adminContent, UserContent, setUserContent } =
-    useContext(DashboardGlobalContext);
-
+  const {
+    VendorContent,
+    adminContent,
+    UserContent,
+    setUserContent,
+    setsidebar,
+  } = useContext(DashboardGlobalContext);
+  useEffect(() => {
+    setsidebar("none");
+  }, []);
   const updatelist = () => {
     let data1;
 
@@ -291,7 +298,7 @@ const Wishlist = () => {
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "0px",
-              width: "91%",
+              width: { sm: "91%", xs: "73%" },
               marginTop: "89px",
               paddingLeft: { md: "45px", xs: "10px" },
               paddingRight: { md: "45px", xs: "10px" },
@@ -324,8 +331,8 @@ const Wishlist = () => {
           <Box
             sx={{
               height: 538,
-              width: "92%",
-              padding: { md: "42px", xs: "4px" },
+              width: { sm: "92%", xs: "96%" },
+              padding: { md: "42px", xs: "5px" },
               paddingTop: "0px !important",
             }}
           >

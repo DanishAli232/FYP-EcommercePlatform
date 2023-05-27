@@ -10,8 +10,7 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import React from "react";
-
+import React, { useState } from "react";
 const CouponFields = ({
   values,
   error,
@@ -19,6 +18,16 @@ const CouponFields = ({
   handleSubmit,
   status,
 }) => {
+  // const [selectedDate, setSelectedDate] = useState(null);
+
+  // const handleDateChange = (date) => {
+  //   setSelectedDate(date);
+  // };
+
+  // const isDateDisabled = (date) => {
+  //   const today = new Date();
+  //   return date < today;
+  // };
   return (
     <div>
       {" "}
@@ -46,11 +55,8 @@ const CouponFields = ({
         <TextField
           id='outlined-required'
           className='Maximum price'
-          label='Maximum Price'
+          label='Maximum Points'
           type='number'
-          InputProps={{
-            endAdornment: <InputAdornment position='start'>$</InputAdornment>,
-          }}
           placeholder='00'
           InputLabelProps={{
             shrink: true,
@@ -68,12 +74,68 @@ const CouponFields = ({
         className='create-2 a'
         sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
       >
+        <TextField
+          id='outlined-required'
+          className='noofused'
+          label='No Of Used'
+          type='number'
+          InputProps={{
+            endAdornment: <InputAdornment position='start'></InputAdornment>,
+          }}
+          placeholder='0'
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={values.noofuse}
+          onChange={handleChange}
+          name='noofused'
+          helperText={error?.noofuse}
+          error={!!error?.noofuse}
+          sx={{ width: { md: "400px", xs: "100%" } }}
+        />
+      </Box>
+      <br></br>
+      <Box
+        className='create-2 a'
+        sx={{ marginBottom: { md: "0px", xs: "0px" } }}
+      >
+        <TextField
+          id='outlined-required'
+          label='Coupon Code'
+          className='title'
+          value={values?.couponcode}
+          onChange={handleChange}
+          name='couponcode'
+          helperText={error?.couponcode}
+          error={!!error?.couponcode}
+          sx={{ width: { md: "400px", xs: "100%" } }}
+        />
+      </Box>
+      <br></br>
+      {/* <DatePicker
+      selected={selectedDate}
+      onChange={handleDateChange}
+      minDate={new Date()}
+      filterDate={isDateDisabled}
+    /> */}
+      <label for='date'>Date:</label>
+      <input
+        type='date'
+        id='date'
+        name='expire'
+        onChange={handleChange}
+      ></input>
+      <br></br>
+      <Box
+        className='create-2 a'
+        sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+      >
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <Select
             className='discountper'
             name='discountper'
             sx={{
-              width: "399px",
+              width: { md: "399px", xs: "149%" },
               color: "#888",
               // background: "#f7f6f6",
               cursor: "pointer",

@@ -255,7 +255,7 @@ const NavBar1 = () => {
                       {" "}
                       <Button
                         sx={{
-                          display: { md: "none", xs: "flex" },
+                          display: { sm: "none", xs: "flex" },
                           color: "#fff",
                           lineHeight: "34px",
                           minWidth: "0px",
@@ -273,7 +273,7 @@ const NavBar1 = () => {
                         />
                       </Button>{" "}
                     </Link>
-                    <MenuOption />
+                    <MenuOption navlistitems={navlistitems} />
                   </Box>
                 </Box>
               )}
@@ -362,7 +362,7 @@ const NavBar1 = () => {
                       navigate("/cartpage");
                     }}
                     sx={{
-                      display: { md: "none", xs: "flex" },
+                      display: { sm: "none", xs: "flex" },
                       color: "#fff",
                       lineHeight: "34px",
                       minWidth: "0px",

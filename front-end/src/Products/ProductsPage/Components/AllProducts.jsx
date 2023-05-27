@@ -63,37 +63,41 @@ const AllProducts = ({
       quantity: 1,
       totalprice: price,
     };
-    const id = userInfo.user._id;
-    if (cart.cartid) {
-      const { data } = await axios.patch(
-        `/api/updatecartitems/${cart.cartid.cartId}`,
-        {
+    const id = userInfo?.user?._id;
+    if (id) {
+      if (cart.cartid) {
+        const { data } = await axios.patch(
+          `/api/updatecartitems/${cart.cartid.cartId}`,
+          {
+            products,
+          }
+        );
+        navigate("/cartpage");
+        console.log(data);
+      } else {
+        const { data } = await axios.post("/api/addcartitems", {
           products,
-        }
-      );
-      navigate("/cartpage");
-      console.log(data);
-    } else {
-      const { data } = await axios.post("/api/addcartitems", {
-        products,
-        id,
-      });
-      console.log(data);
-      fetchcartItems();
-      ctxDispatch({
-        type: "CART_ADD_ITEM",
-        payload: {
-          products,
-        },
-      });
-      navigate("/cartpage");
+          id,
+        });
+        console.log(data);
+        fetchcartItems();
+        ctxDispatch({
+          type: "CART_ADD_ITEM",
+          payload: {
+            products,
+          },
+        });
+        navigate("/cartpage");
 
-      // ctxDispatch({
-      //   type: "CART_ID",
-      //   payload: {
-      //     data,
-      //   },
-      // });
+        // ctxDispatch({
+        //   type: "CART_ID",
+        //   payload: {
+        //     data,
+        //   },
+        // });
+      }
+    } else {
+      navigate("/signin");
     }
 
     // navigate("/cartpage");

@@ -139,6 +139,7 @@ const About = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            textAlign: "center",
             justifyContent: "center",
             background: "#fff",
             backgroundColor: "#fbfbfb",
@@ -178,9 +179,9 @@ const About = () => {
             sx={{
               fontSize: { md: "18px", xs: "16px" },
               lineHeight: { md: "28px", xs: "26px" },
+              textAlign: { md: "center", xs: "justify" },
               color: "#888",
               marginTop: { md: "0px", xs: "7px" },
-              textAlign: "center",
 
               fontFamily: '"Kumbh Sans", sans-serif',
             }}
@@ -194,16 +195,30 @@ const About = () => {
         </Box>
         <Box sx={{ margin: "60px 0px" }}>
           <Grid container spacing={3} rowSpacing={3} columnSpacing={3}>
-            <Grid item md={3}>
+            <Grid
+              item
+              md={3}
+              sx={{
+                width: { md: "auto", xs: "100%" },
+                marginBottom: { md: "auto", xs: "12px" },
+              }}
+            >
               <Div>
                 <Div1>
-                  <GroupsIcon />
+                  <GroupsIcon sx={{ fontSize: "37px" }} />
                 </Div1>
                 <Para> {number}</Para>
                 <Para1>Happy Clients</Para1>
               </Div>
             </Grid>
-            <Grid item md={3}>
+            <Grid
+              item
+              md={3}
+              sx={{
+                width: { md: "auto", xs: "100%" },
+                marginBottom: { md: "auto", xs: "12px" },
+              }}
+            >
               <Div>
                 <Div1>
                   <GroupsIcon sx={{ fontSize: "37px" }} />
@@ -212,19 +227,33 @@ const About = () => {
                 <Para1>Hard Workers</Para1>
               </Div>
             </Grid>
-            <Grid item md={3}>
+            <Grid
+              item
+              md={3}
+              sx={{
+                width: { md: "auto", xs: "100%" },
+                marginBottom: { md: "auto", xs: "12px" },
+              }}
+            >
               <Div>
                 <Div1>
-                  <GroupsIcon />
+                  <GroupsIcon sx={{ fontSize: "37px" }} />
                 </Div1>
                 <Para>{number2}</Para>
                 <Para1>Projects</Para1>
               </Div>
             </Grid>
-            <Grid item md={3}>
+            <Grid
+              item
+              md={3}
+              sx={{
+                width: { md: "auto", xs: "100%" },
+                marginBottom: { md: "auto", xs: "12px" },
+              }}
+            >
               <Div>
                 <Div1>
-                  <GroupsIcon />
+                  <GroupsIcon sx={{ fontSize: "37px" }} />
                 </Div1>
                 <Para>{number3}</Para>
                 <Para1>Hours Of Support</Para1>

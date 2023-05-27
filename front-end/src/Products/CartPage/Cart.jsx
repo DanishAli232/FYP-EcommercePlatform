@@ -329,7 +329,7 @@ const Cart = () => {
                   Rs. {totalprice}
                 </Typography>
               </Box>
-              <Box
+              {/* <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -345,6 +345,8 @@ const Cart = () => {
                   }}
                   type='text'
                   name='voucher'
+                  value={voucher}
+                  onChange={(e) => handleVoucher(e)}
                   placeholder='Enter Voucher Code'
                   id='voucher'
                 />
@@ -363,7 +365,7 @@ const Cart = () => {
                 >
                   Apply
                 </Button>
-              </Box>
+              </Box> */}
 
               <Box
                 sx={{

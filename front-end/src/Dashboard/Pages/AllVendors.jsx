@@ -51,7 +51,9 @@ const AllVendors = () => {
   // const Alert = React.forwardRef(function Alert(props, ref) {
   //   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
   // });
-  const { adminContent, setVendorContent } = useContext(DashboardGlobalContext);
+  const { adminContent, setVendorContent, setsidebar } = useContext(
+    DashboardGlobalContext
+  );
 
   const navigate = useNavigate();
   const [CheckVal, newCheckVal] = React.useState([]);
@@ -82,6 +84,7 @@ const AllVendors = () => {
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
+    setsidebar("none");
   }, []);
 
   const ExpandableCell = ({ value }) => {
@@ -325,7 +328,8 @@ const AllVendors = () => {
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "0px",
-              width: "91%",
+              width: { sm: "91%", xs: "73%" },
+
               marginTop: "89px",
               paddingLeft: { md: "45px", xs: "10px" },
               paddingRight: { md: "45px", xs: "10px" },
@@ -336,7 +340,7 @@ const AllVendors = () => {
                 disabled
                 sx={{
                   paddingLeft: { md: "0px", xs: "0px" },
-                  fontSize: "17px",
+                  fontSize: { md: "17px", xs: "13px" },
                   color: "red",
                   cursor: "pointer",
                 }}
@@ -347,7 +351,7 @@ const AllVendors = () => {
               <Button
                 sx={{
                   paddingLeft: { md: "0px", xs: "0px" },
-                  fontSize: "17px",
+                  fontSize: { md: "17px", xs: "13px" },
                   color: "red",
                   cursor: "pointer",
                 }}
@@ -385,8 +389,8 @@ const AllVendors = () => {
           <Box
             sx={{
               height: 538,
-              width: "92%",
-              padding: { md: "42px", xs: "4px" },
+              width: { sm: "92%", xs: "96%" },
+              padding: { md: "42px", xs: "5px" },
               paddingTop: "0px !important",
             }}
           >

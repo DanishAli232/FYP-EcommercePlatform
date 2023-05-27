@@ -19,7 +19,8 @@ const BillingPlan = () => {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: { md: "row", xs: "column" },
+
         justifyContent: "space-around",
         marginTop: "20px",
       }}
@@ -30,7 +31,8 @@ const BillingPlan = () => {
           height: "auto",
           marginRight: "7px",
           background: "white",
-          width: "280px",
+          width: { md: "280px", xs: "248px" },
+          marginBottom: { md: "0px", xs: "14px" },
           transition: "0.3s ease-in",
           borderRadius: "15px",
           padding: "10px",
@@ -182,7 +184,8 @@ const BillingPlan = () => {
           background:
             "linear-gradient(195deg, rgb(73, 163, 241), rgb(26, 115, 232))",
           color: "white",
-          width: "280px",
+          width: { md: "280px", xs: "248px" },
+          marginBottom: { md: "0px", xs: "14px" },
           transition: "0.3s ease-in",
           borderRadius: "15px",
           padding: "10px",
@@ -326,7 +329,9 @@ const BillingPlan = () => {
           height: "auto",
           marginRight: "7px",
           background: "white",
-          width: "280px",
+          width: { md: "280px", xs: "248px" },
+          marginBottom: { md: "0px", xs: "14px" },
+
           transition: "0.3s ease-in",
           borderRadius: "15px",
           padding: "10px",

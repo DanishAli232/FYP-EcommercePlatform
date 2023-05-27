@@ -35,6 +35,7 @@ const Addproducts = () => {
     setUserContent,
     setVendorContent,
     VendorContent,
+    setsidebar,
   } = useContext(DashboardGlobalContext);
 
   const { setdashboardOpen } = useContext(GlobalContext);
@@ -62,6 +63,7 @@ const Addproducts = () => {
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
+    setsidebar("none");
   }, []);
   const [open, setOpen] = React.useState(false);
   const [categoryOpen, setcategoryOpen] = useState(false);
@@ -170,8 +172,10 @@ const Addproducts = () => {
             sx={{
               backgroundColor: "white",
               minHeight: "599px",
+
               marginTop: "89px",
-              marginLeft: { md: "33px", xs: "0px" },
+              marginLeft: { md: "33px", xs: "4px" },
+              width: { md: "auto", xs: "110%" },
               marginRight: { md: "35px", xs: "0px" },
               marginBottom: "10px",
               borderRadius: "0.75rem",
@@ -271,7 +275,7 @@ const Addproducts = () => {
                         className='category'
                         name='category'
                         sx={{
-                          width: "399px",
+                          width: { md: "399px", xs: "185%" },
                           color: "#888",
                           // background: "#f7f6f6",
                           cursor: "pointer",

@@ -7,7 +7,6 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { AllStyle } from "../Styles";
 import { Link } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ViewStreamIcon from "@mui/icons-material/ViewStream";
@@ -24,9 +23,6 @@ import Alerts from "./Alert";
 import { GlobalContext } from "../../Context";
 
 const Sidebar1 = () => {
-  const { setdashboardOpen } = useContext(GlobalContext);
-  const { state, SignOut } = useContext(GlobalContext);
-
   const {
     setnavcontent,
     statuscheck,
@@ -35,9 +31,28 @@ const Sidebar1 = () => {
     setAdminContent,
     UserContent,
     setUserContent,
+    sidebar,
     setVendorContent,
     VendorContent,
   } = useContext(DashboardGlobalContext);
+  let AllStyle = {
+    sidebar1: {
+      height: "95vh",
+      color: "white",
+      position: "fixed",
+      background: "linear-gradient(195deg, rgb(66, 66, 74), rgb(25, 25, 25))",
+      padding: "10px",
+      margin: "10px",
+      borderRadius: "0.75rem",
+      boxShadow: "rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem",
+      transition:
+        "box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+      zIndex: "10",
+      display: { sm: "block", xs: sidebar },
+    },
+  };
+  const { setdashboardOpen } = useContext(GlobalContext);
+  const { state, SignOut } = useContext(GlobalContext);
 
   const HandleClicker = (value) => {
     if (value === "Logout") {

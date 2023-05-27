@@ -290,7 +290,8 @@ const Stores = () => {
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "0px",
-              width: "91%",
+              width: { sm: "91%", xs: "73%" },
+
               marginTop: "89px",
               paddingLeft: { md: "45px", xs: "10px" },
               paddingRight: { md: "45px", xs: "10px" },
@@ -350,8 +351,8 @@ const Stores = () => {
           <Box
             sx={{
               height: 538,
-              width: "92%",
-              padding: { md: "42px", xs: "4px" },
+              width: { sm: "92%", xs: "96%" },
+              padding: { md: "42px", xs: "5px" },
               paddingTop: "0px !important",
             }}
           >

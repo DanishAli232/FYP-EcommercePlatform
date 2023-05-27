@@ -16,6 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { menudivVariants } from "../../FramerMotion/motion";
 import { Link, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../Context";
+import Scrollbars from "react-custom-scrollbars-2";
 
 const listitems = [
   {
@@ -51,7 +52,7 @@ const listitems = [
 ];
 
 const MenuOption = () => {
-  const { state, SignOut } = useContext(GlobalContext);
+  const { state, SignOut, navlistitems } = useContext(GlobalContext);
   const [menuOpen, setmenuOpen] = useState(false);
   const navigate = useNavigate();
   const settings = [
@@ -129,7 +130,7 @@ const MenuOption = () => {
               <CloseIcon />
             </Box>
             <Box sx={{ padding: "10px" }}>
-              {listitems.map((item, i) => (
+              {navlistitems?.map((item, i) => (
                 <Box key={i}>
                   <Link to={item.link}>
                     {" "}
@@ -199,6 +200,30 @@ const MenuOption = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* {title === "Categories" && categoryOpen && (
+        <Box
+          sx={{
+            width: "200px",
+            height: "200px",
+            background: "#fdfdfd",
+            border: "1px solid",
+            position: "fixed",
+            top: "55px",
+          }}
+        >
+          <Scrollbars>
+            <ul
+              style={{ listStyleType: "none", margin: "0px", padding: "0px" }}
+            >
+              {catlist.map((item) => (
+                <List style={{}} onClick={() => handleCategory(item)}>
+                  {item}
+                </List>
+              ))}
+            </ul>
+          </Scrollbars>
+        </Box>
+      )} */}
     </Box>
   );
 };

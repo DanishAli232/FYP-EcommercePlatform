@@ -33,6 +33,7 @@ const Dashboard = () => {
     adminContent,
     setVendorContent,
     setAdminContent,
+    setsidebar,
   } = useContext(DashboardGlobalContext);
 
   // const [displaySideBar, newdisplaySideBar] = useState("none");
@@ -65,9 +66,9 @@ const Dashboard = () => {
     }
 
     // setVendorContent((item) => {
-    let objIndex = data1?.findIndex((obj) => obj?.title === "Dashboard");
-    data1[objIndex].active = true;
-    console.log(objIndex);
+    // let objIndex = data1?.findIndex((obj) => obj?.title === "Dashboard");
+    // data1[objIndex].active = true;
+    // console.log(objIndex);
     // });
 
     // setVendorContent(objIndex);
@@ -75,6 +76,7 @@ const Dashboard = () => {
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
+    setsidebar("none");
   }, []);
 
   // const [break1, newbreak1] = useState(true);
@@ -564,7 +566,7 @@ const Dashboard = () => {
                     <Box
                       sx={{
                         display: "flex",
-                        flexDirection: "row",
+                        flexDirection: { md: "row", xs: "column" },
                         // justifyContent: "space-between",
                         // width: "100%",
                       }}
@@ -742,7 +744,7 @@ const Dashboard = () => {
                   // // height: "200px",
                   // padding: "31px",
                   // background: "white",
-                  margin: "25px 40px",
+                  margin: { md: "25px 40px", xs: "25px 19px" },
                   marginBottom: "55px",
                   // borderRadius: "5px",
                 }}
@@ -764,7 +766,8 @@ const Dashboard = () => {
                   // // height: "200px",
                   // padding: "31px",
                   // background: "white",
-                  margin: "25px 40px",
+                  display: { md: "block", xs: "none" },
+                  margin: { md: "25px 40px", xs: "25px 19px" },
                   // borderRadius: "5px",
                 }}
               >

@@ -306,9 +306,25 @@ const ProductsPage = () => {
       ) : (
         <Navbar2 title={"Online Store"} title1={"Home"} />
       )}
-      <Box sx={{ padding: "40px 60px" }}>
-        <Grid container spacing={4} rowSpacing={4}>
-          <Grid item md={4} sx={{ width: { md: "auto", xs: "100%" } }}>
+      <Box
+        sx={{
+          padding: { md: "40px 60px", xs: "40px 13px" },
+          width: { sm: "auto", xs: "91%" },
+        }}
+      >
+        <Grid container spacing={4} rowSpacing={4} sx={{}}>
+          <Grid
+            item
+            md={4}
+            sx={{
+              width: {
+                md: "100%",
+                xs: "100%",
+                // paddingLeft: { sm: "32px", xs: "0px" },
+                // paddingRight: { sm: "32px", xs: "0px" },
+              },
+            }}
+          >
             <Box
               sx={{
                 padding: { md: "30px", xs: "19px 19px" },
@@ -376,7 +392,7 @@ const ProductsPage = () => {
               >
                 {value1[0]} - {value1[1]}
               </Typography>
-              <Box sx={{ width: 300 }}>
+              <Box sx={{ width: { md: 300, xs: "100%" } }}>
                 <Slider
                   getAriaLabel={() => "Minimum distance"}
                   value={value1}
@@ -533,7 +549,7 @@ const ProductsPage = () => {
                         width: "100%",
                         marginTop: "50px",
                         position: "absolute",
-                        bottom: "0px",
+                        bottom: "-27px",
                       }}
                     >
                       <Pagination

@@ -105,7 +105,7 @@ const JazzCash = () => {
             marginTop: "21px",
             background: "#ededed",
             padding: "19px",
-            width: "93%",
+            width: "95%",
           }}
         >
           <Box

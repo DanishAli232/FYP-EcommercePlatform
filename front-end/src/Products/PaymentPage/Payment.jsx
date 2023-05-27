@@ -53,11 +53,13 @@ const Payment = () => {
   });
   const style = {
     display: "flex",
+    width: { sm: "150px", xs: "100%" },
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     height: "150px",
-    width: "150px",
+    marginBottom: { sm: "0px", xs: "20px" },
+    // width: "150px",
     "&:hover": {
       backgroundColor: "#ededed",
     },
@@ -69,7 +71,9 @@ const Payment = () => {
       <NavBar1 />
       <Box
         sx={{
-          paddingX: "39px",
+          // paddingX: "39px",
+          padding: { md: "5px 69px", xs: "5px 13px" },
+
           // marginTop: "30px",
           backgroundColor: "#f4f4f4",
           minHeight: "100vh",
@@ -87,7 +91,7 @@ const Payment = () => {
           Select Payment Method
         </Typography>
         <Grid container>
-          <Grid item md={8}>
+          <Grid item md={8} sx={{ width: { sm: "auto", xs: "100%" } }}>
             <Box
               sx={{
                 marginTop: "20px",
@@ -97,8 +101,9 @@ const Payment = () => {
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "row",
+                  flexDirection: { sm: "row", xs: "column" },
                   alignItems: "center",
+                  width: { sm: "auto", xs: "100%" },
                 }}
               >
                 <Box
@@ -133,7 +138,10 @@ const Payment = () => {
                     <img
                       src={paypal}
                       alt=''
-                      style={{ width: "111px", height: "27px" }}
+                      style={{
+                        width: "111px",
+                        height: "27px",
+                      }}
                     />
                     <Typography>Paypal</Typography>
                   </Box>
@@ -321,7 +329,8 @@ const Payment = () => {
           <Grid item md={4}>
             <Box
               sx={{
-                marginLeft: "15px",
+                marginLeft: { sm: "25px", xs: "0px" },
+                width: { sm: "90%", xs: "100%" },
                 backgroundColor: "white",
                 marginTop: "20px",
                 paddingX: "10px",

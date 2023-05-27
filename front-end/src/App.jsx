@@ -11,7 +11,7 @@ import { GlobalContext } from "./Context";
 import { Sidebar } from "./Dashboard/Components";
 import ForgotPassword from "./Auth/ForgotPassword";
 import ChangePassword from "./Auth/ChangePassword";
-import Chat from "./Products/ChatPage/Chat/Chat";
+import Chat from "./Products/ChatPage/Chat/Chat.jsx";
 import Join from "./Products/ChatPage/Join/Join";
 import ChatVendor from "./Dashboard/Pages/Chat";
 import Sidebar1 from "./Dashboard/Components/Sidebar1";

@@ -21,6 +21,7 @@ export const DashboardGlobalContext = React.createContext();
 
 export const DashboardContext = ({ children }) => {
   const { state } = useContext(GlobalContext);
+  const [sidebar, setsidebar] = useState("none");
   const [navcontent, setnavcontent] = useState("Dashboard");
   const [statuscheck, setstatus] = useState(state?.userInfo?.user?.status);
   const [VendorContent, setVendorContent] = useState([
@@ -150,7 +151,8 @@ export const DashboardContext = ({ children }) => {
           if (
             item[0] === "__v" ||
             item[0] === "updatedAt" ||
-            item[0] === "password"
+            item[0] === "password" ||
+            item[0] === "couponcode"
           ) {
             let data = item[0];
             return item[0] !== data;
@@ -234,6 +236,8 @@ export const DashboardContext = ({ children }) => {
         setnavcontent,
         statuscheck,
         setstatus,
+        sidebar,
+        setsidebar,
         setOpen,
         open1,
       }}

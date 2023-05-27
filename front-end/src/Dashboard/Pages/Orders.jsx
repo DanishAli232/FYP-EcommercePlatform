@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import { LoadingBox, Navbar, Sidebar } from "../Components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { default as NewLink } from "@mui/material/Link";
+import { useTheme, useMediaQuery } from "@mui/material";
+
 import PropTypes from "prop-types";
 
 import {
@@ -54,9 +56,8 @@ const Orders = () => {
   const [searchVal, newSearchVal] = useState("");
   const { setdashboardOpen, state } = useContext(GlobalContext);
 
-  const { VendorContent, UserContent, setVendorContent } = useContext(
-    DashboardGlobalContext
-  );
+  const { VendorContent, UserContent, setVendorContent, setsidebar } =
+    useContext(DashboardGlobalContext);
 
   const updatelist = () => {
     let data1;
@@ -79,6 +80,10 @@ const Orders = () => {
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
+  }, []);
+
+  useEffect(() => {
+    setsidebar("none");
   }, []);
 
   const ExpandableCell = ({ value }) => {
@@ -252,7 +257,8 @@ const Orders = () => {
     };
     fetchData();
   }, [searchVal]);
-
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Box sx={{ backgroundColor: "rgb(240,242,245)", minHeight: "100vh" }}>
       <Grid container>
@@ -268,7 +274,7 @@ const Orders = () => {
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "0px",
-              width: "91%",
+              width: { sm: "91%", xs: "73%" },
               marginTop: "89px",
               paddingLeft: { md: "45px", xs: "10px" },
               paddingRight: { md: "45px", xs: "10px" },
@@ -301,8 +307,8 @@ const Orders = () => {
           <Box
             sx={{
               height: 538,
-              width: "92%",
-              padding: { md: "42px", xs: "4px" },
+              width: { sm: "92%", xs: "96%" },
+              padding: { md: "42px", xs: "5px" },
               paddingTop: "0px !important",
             }}
           >
@@ -314,7 +320,10 @@ const Orders = () => {
             ) : (
               <DataGrid
                 rows={orders}
-                columns={columns}
+                columns={columns.map((column) => ({
+                  ...column,
+                  disableColumnFilter: isSmallScreen, // Disable filter for small screens
+                }))}
                 pageSize={6}
                 getRowId={(row) => row._id}
                 getRowHeight={() => "auto"}

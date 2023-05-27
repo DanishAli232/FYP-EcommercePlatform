@@ -37,6 +37,7 @@ const Coupons = () => {
     setUserContent,
     setVendorContent,
     VendorContent,
+    setsidebar,
   } = useContext(DashboardGlobalContext);
 
   const { setdashboardOpen } = useContext(GlobalContext);
@@ -64,6 +65,7 @@ const Coupons = () => {
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
+    setsidebar("none");
   }, []);
   const [open, setOpen] = React.useState(false);
   const [categoryOpen, setcategoryOpen] = useState(false);
@@ -78,6 +80,9 @@ const Coupons = () => {
     discountper: "",
     maxprice: 0,
     description: "",
+    expire: "",
+    noofused: 0,
+    couponcode: "",
     vendor: state?.userInfo?.user?._id,
   });
   const [list, setlist] = useState([
@@ -98,6 +103,10 @@ const Coupons = () => {
     setValues({ ...values, [name]: value });
   };
 
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
+
   const handleSubmit = async () => {
     setStatus(true);
     try {
@@ -113,6 +122,9 @@ const Coupons = () => {
         discountper: "",
         maxprice: 0,
         description: "",
+        expire: "",
+        noofused: 0,
+        couponcode: "",
         vendor: state?.userInfo?.user?._id,
       });
     } catch (error) {
@@ -139,7 +151,7 @@ const Coupons = () => {
               backgroundColor: "white",
               minHeight: "599px",
               marginTop: "89px",
-              marginLeft: { md: "33px", xs: "0px" },
+              marginLeft: { md: "33px", xs: "8px" },
               marginRight: { md: "35px", xs: "0px" },
               marginBottom: "10px",
               borderRadius: "0.75rem",

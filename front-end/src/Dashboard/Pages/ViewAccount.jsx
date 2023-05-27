@@ -19,6 +19,7 @@ const ViewAccount = () => {
     setVendorContent,
     AccountDetails,
     account,
+    setsidebar,
   } = useContext(DashboardGlobalContext);
 
   const updatelist = () => {
@@ -45,6 +46,7 @@ const ViewAccount = () => {
     setdashboardOpen(true);
     updatelist();
     AccountDetails();
+    setsidebar("none");
   }, []);
 
   useEffect(() => {
@@ -56,11 +58,12 @@ const ViewAccount = () => {
         <Grid item md={2}></Grid>
         <Grid item md={10}>
           <Navbar />
-          <Box sx={{ minHeight: "569px" }}>
+          <Box sx={{ minHeight: "569px", padding: { sm: "", xs: "0px 8px" } }}>
             <Box
               sx={{
                 backgroundColor: "white",
                 marginTop: "89px",
+                width: { md: "auto", xs: "303px" },
                 marginLeft: { md: "32px", xs: "0px" },
                 marginRight: { md: "32px", xs: "0px" },
                 borderRadius: "0.75rem",
@@ -113,9 +116,11 @@ const ViewAccount = () => {
                       {account.length !== 0
                         ? state?.userInfo?.user?.status === "vendor"
                           ? account && account[1][1]
-                          : (state?.userInfo?.user?.status === "user" ||
-                              state?.userInfo?.user?.status === "admin") &&
-                            account[1][1]
+                          : state?.userInfo?.user?.status === "user"
+                          ? account[1][1]
+                          : state?.userInfo?.user?.status === "admin"
+                          ? account[2][1]
+                          : null
                         : null}
                     </Typography>
                     <Typography
@@ -166,7 +171,7 @@ const ViewAccount = () => {
                             fontSize: "0.875rem",
                             fontWeight: 700,
                             marginRight: "20px",
-                            width: "200px",
+                            width: { sm: "200px", xs: "auto" },
                             textTransform: "uppercase",
                           }}
                         >
@@ -202,7 +207,7 @@ const ViewAccount = () => {
                             fontSize: "0.875rem",
                             fontWeight: 700,
                             marginRight: "20px",
-                            width: "200px",
+                            width: { sm: "200px", xs: "auto" },
                             textTransform: "uppercase",
                           }}
                         >

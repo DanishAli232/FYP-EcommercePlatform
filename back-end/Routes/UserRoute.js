@@ -12,6 +12,8 @@ import {
   getall,
   login,
   statusupdate,
+  updateCouponCode,
+  updatePoints,
 } from "../Controllers/UserController.js";
 var UserRouter = express.Router();
 
@@ -28,5 +30,7 @@ UserRouter.post("/forgotpassword", forgotPassword);
 UserRouter.get("/:id/verify2/:token", Emailverify2);
 UserRouter.post("/changepassword", ChangePassword);
 UserRouter.get("/accountdetail/:id", accountDetail);
+UserRouter.get("/updatePoints", updatePoints);
+UserRouter.get("/updatecouponcode", updateCouponCode);
 
 export default UserRouter;

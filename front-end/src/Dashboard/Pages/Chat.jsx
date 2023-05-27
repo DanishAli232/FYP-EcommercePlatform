@@ -36,7 +36,7 @@ const ChatVendor = () => {
       console.log(error);
     }
   };
-  const { VendorContent, setVendorContent } = useContext(
+  const { VendorContent, setVendorContent, setsidebar } = useContext(
     DashboardGlobalContext
   );
 
@@ -58,6 +58,7 @@ const ChatVendor = () => {
   useEffect(() => {
     setdashboardOpen(true);
     updatelist();
+    setsidebar("none");
     fetchCustomers();
   }, []);
   let socketRequest = () => {

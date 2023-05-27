@@ -385,6 +385,7 @@ export const ContextState = ({ children }) => {
         fetchcartItems,
         switchbtn,
         setswitchbtn,
+        setallprice,
         setCartPrice,
         fetchAddresses,
         setnavlistitems,
