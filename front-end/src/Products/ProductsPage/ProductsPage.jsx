@@ -181,7 +181,7 @@ const ProductsPage = () => {
     },
   ]);
   const [page, setPage] = React.useState(1);
-  const [totalPages, settotalPages] = useState(0);
+  const [totalPages, settotalPages] = useState(1);
 
   const [filterQueries, setfilterQueries] = useState({
     sorting: sorting,
@@ -250,8 +250,10 @@ const ProductsPage = () => {
         setstatus(false);
         seterror({ ...error, check: false });
         let total_pages = Math.ceil(data.length / 9);
-        settotalPages(total_pages);
-        console.log(data);
+        console.log(total_pages);
+        if (data.length === 9) {
+          settotalPages(totalPages + 1);
+        }
       } catch (error) {
         seterror({ ...error, check: true });
       }
@@ -259,13 +261,13 @@ const ProductsPage = () => {
       if (switchbtn === 1 || value.vendorid === undefined) {
         try {
           let { data } = await axios.post("/api/filterproducts", filterQueries);
-          console.log(data);
           setproducts(data);
           setstatus(false);
           seterror({ ...error, check: false });
           let total_pages = Math.ceil(data.length / 9);
-          settotalPages(total_pages);
-          console.log(data);
+          if (data.length === 9) {
+            settotalPages(totalPages + 1);
+          }
         } catch (error) {
           seterror({ ...error, check: true });
         }
@@ -280,7 +282,10 @@ const ProductsPage = () => {
           setstatus(false);
           seterror({ ...error, check: false });
           let total_pages = Math.ceil(data.length / 9);
-          settotalPages(total_pages);
+          // settotalPages(totalPages + 1);
+          if (data.length === 9) {
+            settotalPages(totalPages + 1);
+          }
           console.log(data);
         } catch (error) {
           seterror({ ...error, check: true });
@@ -450,7 +455,7 @@ const ProductsPage = () => {
                   getAriaValueText={valuetext}
                   disableSwap
                   min={0}
-                  max={20000}
+                  max={30000}
                 />
               </Box>
               <Title1>Discount</Title1>
@@ -602,7 +607,7 @@ const ProductsPage = () => {
                       }}
                     >
                       <Pagination
-                        count={page}
+                        count={totalPages}
                         page={page}
                         // classes={{ ul: classes.ul }}
                         onChange={handlePage}

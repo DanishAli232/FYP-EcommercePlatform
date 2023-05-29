@@ -134,8 +134,8 @@ const Addproducts = () => {
       setOpen(true);
       setStatus(null);
       setValues({
+        ...values,
         name: "",
-        category: "",
         price: "",
         countinstock: "",
         brand: "",

@@ -272,7 +272,7 @@ const ShopItemsDes = ({
               },
             }}
           >
-            {name}
+            {name.length >= 20 ? `${name.slice(0, 20)}...` : name}
           </Typography>
           <Typography
             variant='p'
