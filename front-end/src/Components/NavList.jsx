@@ -10,10 +10,10 @@ import styled from "styled-components";
 import { listVariants } from "../FramerMotion/motion";
 import { GlobalContext } from "../Context";
 
-const catlist = ["Shirts", "Shoes", "Accessories", "Hats", "Watches"];
+const catlist = ["Shirts", "Shoes", "Accessories", "Hats", "Watches", "Others"];
 
 const List = styled.li`
-  padding: 5px;
+  padding: 10px;
   font-family: Roboto-Regular;
   font-size: 15px;
   color: #757575;
@@ -119,9 +119,9 @@ const NavList = ({ title, width, link, active, listClick }) => {
         <Box
           sx={{
             width: "200px",
-            height: "200px",
+            height: "224px",
             background: "#fdfdfd",
-            border: "1px solid",
+            border: "1px solid #0000000a",
             position: "fixed",
             top: "55px",
           }}

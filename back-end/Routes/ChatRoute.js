@@ -7,6 +7,6 @@ import {
 var ChatRouter = express.Router();
 
 ChatRouter.get("/chatcustomers/:id", chatCustomer);
-ChatRouter.get("/chatcustomersusers/:id", chatCustomerUsers);
+ChatRouter.get("/chatcustomersusers/:id/:vid", chatCustomerUsers);
 
 export default ChatRouter;

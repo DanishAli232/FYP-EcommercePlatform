@@ -14,11 +14,18 @@ const ConfirmEmail = () => {
     console.log({ id, token });
     const updateData = async () => {
       try {
-        let { data } = await axios.get(`/api/${id}/verify/${token}`);
-        console.log(data);
-        ctxDispatch({ type: "USER_SIGNIN", payload: data });
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        setmessage("Registration is Complete");
+        if (state?.userInfo?.user?.status === "vendor") {
+          let { data } = await axios.get(`/api/${id}/verify3/${token}`);
+          ctxDispatch({ type: "USER_SIGNIN", payload: data });
+          localStorage.setItem("userInfo", JSON.stringify(data));
+          setmessage("Registration is Complete");
+        } else {
+          let { data } = await axios.get(`/api/${id}/verify/${token}`);
+          console.log(data);
+          ctxDispatch({ type: "USER_SIGNIN", payload: data });
+          localStorage.setItem("userInfo", JSON.stringify(data));
+          setmessage("Registration is Complete");
+        }
       } catch (error) {
         setmessage("Invalid Link");
       }

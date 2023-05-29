@@ -111,28 +111,15 @@ const ViewAccount = () => {
                         color: "rgb(52, 71, 103)",
                         fontWeight: 600,
                         fontSize: "1.25rem",
+                        textTransform: "capitalize",
                       }}
                     >
-                      {account.length !== 0
-                        ? state?.userInfo?.user?.status === "vendor"
-                          ? account && account[1][1]
-                          : state?.userInfo?.user?.status === "user"
-                          ? account[1][1]
-                          : state?.userInfo?.user?.status === "admin"
-                          ? account[2][1]
-                          : null
-                        : null}
+                      {account.length !== 0 && state?.userInfo?.user?.name}
                     </Typography>
                     <Typography
                       sx={{ color: "rgb(123, 128, 154)", fontSize: "0.875rem" }}
                     >
-                      {account.length !== 0
-                        ? state?.userInfo?.user?.status === "vendor"
-                          ? account && account[4][1]
-                          : (state?.userInfo?.user?.status === "user" ||
-                              state?.userInfo?.user?.status === "admin") &&
-                            account[3][1]
-                        : null}
+                      {account.length !== 0 && state?.userInfo?.user?.status}
                     </Typography>
                   </Box>
                 </Box>
@@ -149,12 +136,7 @@ const ViewAccount = () => {
                   </Typography>
                   <Typography
                     sx={{ color: "rgb(123, 128, 154)", fontWeight: 300 }}
-                  >
-                    Hi, I’m Alec Thompson, Decisions: If you can’t decide, the
-                    answer is no. If two equally difficult paths, choose the one
-                    more painful in the short term (pain avoidance is creating
-                    an illusion of equality)
-                  </Typography>
+                  ></Typography>
                   {state?.userInfo?.user?.status === "vendor" &&
                     account?.map((item, i) => (
                       <Box
@@ -222,11 +204,11 @@ const ViewAccount = () => {
                           }}
                         >
                           {item[1] ? item[1] : "null"}
-                          {item[0] === "verified"
+                          {/* {item[0] === "verified"
                             ? item[1] === true
                               ? "true"
                               : "false"
-                            : null}
+                            : null} */}
                         </Typography>
                       </Box>
                     ))}

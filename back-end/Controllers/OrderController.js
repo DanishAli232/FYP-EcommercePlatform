@@ -47,24 +47,45 @@ export const postorder = async (req, res) => {
 };
 
 export const getorders = async (req, res) => {
-  const userId = req.query.uid;
   const searchVal = req.query.sval;
-  let filter = {};
-  if (searchVal) {
-    filter = {
-      $or: [
-        // { totalPrice: searchVal },
-        { paymentMethod: { $regex: searchVal, $options: "i" } },
-        { name: { $regex: searchVal, $options: "i" } },
-      ],
-    };
-  }
+  const userId = req.query.uid;
+
+  console.log(q);
+
+  // const searchVal = req.query.sval;
+  // let filter = {};
+  // if (searchVal) {
+  //   filter = {
+  //     $or: [
+  //       // { totalPrice: searchVal },
+  //       { "user.name": { $regex: searchVal, $options: "i" } },
+
+  //       { paymentMethod: { $regex: searchVal, $options: "i" } },
+  //     ],
+  //   };
+  // }
   try {
-    const order = await Order.find({ user: userId, ...filter }).populate(
-      "user"
-    );
-    console.log(order);
-    res.send(order);
+    const keys = [
+      "user.name",
+      "user.email",
+      // "rating",
+      // "numReviews",
+      // "brand",a
+      // "countinstock",
+    ];
+    const search = (data) => {
+      return data.filter((item) =>
+        keys.some((key) => item[key].toLowerCase().includes(q))
+      );
+    };
+    // console.log(q);
+    const order = await Order.find({ user: userId }).populate("user");
+    res.send(search(order));
+    // const order = await Order.find({ user: userId, ...filter }).populate(
+    //   "user"
+    // );
+    // console.log(order);
+    // res.send(order);
   } catch (error) {
     console.log("error");
     console.log(error);

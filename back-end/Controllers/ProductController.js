@@ -375,6 +375,7 @@ export const postReview = async (req, res) => {
       { new: true }
     );
     console.log(data);
+    res.send(data);
   } catch (error) {
     console.log(error);
   }

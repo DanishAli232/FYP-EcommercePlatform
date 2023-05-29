@@ -184,7 +184,7 @@ const AllProducts = ({
               <motion.div
                 onClick={() =>
                   handleClicker({
-                    title,
+                    name: title,
                     price,
                     image,
                     vendor,
@@ -278,7 +278,7 @@ const AllProducts = ({
               },
             }}
           >
-            {title}
+            {title.length >= 20 ? `${title.slice(0, 20)}...` : title}
           </Typography>
           <Typography
             variant='p'

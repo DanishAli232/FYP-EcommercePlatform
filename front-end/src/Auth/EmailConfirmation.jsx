@@ -49,14 +49,14 @@ const EmailConfirmation = () => {
           provided to complete your registration.
         </Typography>
         <Box sx={{ backgroundColor: "black", height: "2px" }}></Box>
-        <Typography
+        {/* <Typography
           sx={{ textAlign: "center", display: "flex", flexDirection: "row" }}
         >
           If you not got any mail&nbsp;
           <span style={{ color: "#138dea", cursor: "pointer" }}>
             Resend Confirmation mail
           </span>
-        </Typography>
+        </Typography> */}
       </Box>
     </Box>
   );

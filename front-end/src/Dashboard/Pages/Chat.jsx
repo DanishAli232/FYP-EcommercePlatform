@@ -19,10 +19,11 @@ let socket;
 const ChatVendor = () => {
   const [OPEN, setOPEN] = useState(false);
   const [message, setMessage] = useState("");
+  const [uid0, setuid0] = useState("");
+  const [vid0, setvid0] = useState("");
   const [users, setusers] = useState([]);
   const [messages, setmessages] = useState([]);
   const { setdashboardOpen, state } = useContext(GlobalContext);
-  console.log(state);
   const fetchCustomers = async () => {
     console.log("okk1");
     try {
@@ -61,14 +62,14 @@ const ChatVendor = () => {
     setsidebar("none");
     fetchCustomers();
   }, []);
-  let socketRequest = () => {
+  let socketRequest = (uid, vid) => {
     socket = io(ENDPOINT);
 
     socket.emit(
       "join",
       {
-        userID: users[0]?.customer?._id,
-        vendorID: users[0]?.vendor?._id,
+        userID: uid,
+        vendorID: vid,
         username: state?.userInfo?.user?.storename,
         vendor: undefined,
       },
@@ -87,23 +88,32 @@ const ChatVendor = () => {
       ]);
     });
   };
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    let uniqueMessages1 = messages.filter(
+      (msg, index, self) =>
+        index ===
+        self.findIndex((m) => m.text === msg.text && m.sender === msg.sender)
+    );
+    setmessages(uniqueMessages1);
+  }, [messages]);
 
   const fetchChat = async (id) => {
     let data = users.find((item, i) => {
       return item.customer._id === id;
     });
+    console.log(data);
+    setuid0(data?.customer?._id);
+    setvid0(data?.vendor?._id);
     setmessages(data.chat);
     setOPEN(true);
-    socketRequest();
+    socketRequest(data.customer._id, data.vendor._id);
   };
 
   const sendMessage = (e) => {
     e.preventDefault();
     const messageData = {
-      sender: users[0].customer._id,
-      receiver: users[0].vendor._id,
+      sender: uid0,
+      receiver: vid0,
       message: message,
       name: state?.userInfo?.user?.storename,
     };

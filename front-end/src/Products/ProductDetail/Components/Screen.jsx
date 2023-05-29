@@ -36,6 +36,8 @@ const ProductDetail = (isModel, modelName) => {
   const [allcomment, setallcomment] = useState([]);
   const { state: state1 } = useLocation();
 
+  console.log(state1);
+
   const navigate = useNavigate();
   const {
     state,
@@ -187,11 +189,15 @@ const ProductDetail = (isModel, modelName) => {
     },
   ];
   const allComment = async () => {
-    console.log("okk");
     try {
       let { data } = await axios.get(`/api/allcomment/${state1._id}`);
-      console.log(data);
       setallcomment(data.comments);
+      const total = data?.reviews?.reduce(
+        (sum, rating) => sum + rating.rating,
+        0
+      );
+      const average = total / data?.reviews?.length;
+      setrateval(average.toFixed(2));
       setReviews(data.reviews);
     } catch (error) {
       console.log(error);
@@ -203,6 +209,9 @@ const ProductDetail = (isModel, modelName) => {
   }, []);
 
   useEffect(() => {
+    if (!state1?.image) {
+      navigate("/");
+    }
     storeName();
     if (userInfo) {
       fetchAddresses();
@@ -234,10 +243,14 @@ const ProductDetail = (isModel, modelName) => {
   };
 
   const postComment = async () => {
-    try {
-      let { data } = await axios.post("/api/addcomment", comment);
-      allComment();
-    } catch (error) {}
+    if (state?.userInfo?.user?._id) {
+      try {
+        let { data } = await axios.post("/api/addcomment", comment);
+        allComment();
+      } catch (error) {}
+    } else {
+      navigate("/signin");
+    }
   };
   // Redirect for 3d view
   const viewIn3D = () => {
@@ -253,7 +266,11 @@ const ProductDetail = (isModel, modelName) => {
   return (
     <Box sx={{ background: "#fbfbfb" }}>
       <NavBar1 />
-      <Box sx={{ padding: { md: "0px 69px", xs: "0px 13px" } }}>
+      <Box
+        sx={{
+          padding: { md: "0px 69px", xs: "0px 0px" },
+        }}
+      >
         <Grid
           container
           spacing={3}
@@ -266,16 +283,18 @@ const ProductDetail = (isModel, modelName) => {
           }}
         >
           <Grid item md={4}>
-            <Box>
+            <Box sx={{ marginLeft: { md: "auto", xs: "8px" } }}>
               {/* <ReactImageZoom {...props} /> */}
-              <Magnifier
-                imageSrc={state1.image}
-                width={400}
-                height={400}
-                zoomFactor={2}
-              >
-                <img src={state1.image} alt='Image1' />
-              </Magnifier>
+              {state1?.image && (
+                <Magnifier
+                  imageSrc={state1?.image}
+                  width={400}
+                  height={400}
+                  zoomFactor={2}
+                >
+                  <img src={state1?.image} alt='Image1' />
+                </Magnifier>
+              )}
 
               {/* <div className='image-container'>
                 <MagnifierDiv
@@ -316,7 +335,13 @@ const ProductDetail = (isModel, modelName) => {
               >
                 <Button
                   onClick={() => {
-                    navigate("/camera");
+                    // navigate("");
+                    if (state1.name === "chair") {
+                      window.open(
+                        "http://127.0.0.1:5500/front-end/src/Assets/chair_3d/index.html",
+                        "_blank"
+                      );
+                    }
                   }}
                   sx={{
                     backgroundColor: "#ffd814",
@@ -337,9 +362,9 @@ const ProductDetail = (isModel, modelName) => {
           </Grid>
           <Grid item md={8}>
             <Grid container>
-              <Grid item md={7}>
+              <Grid item md={7} sx={{ marginLeft: { md: "auto", xs: "8px" } }}>
                 <Typography sx={{ fontSize: "24px", lineHeight: "32px" }}>
-                  {state1.name}
+                  {state1?.name}
                 </Typography>
                 <Typography
                   sx={{
@@ -351,7 +376,8 @@ const ProductDetail = (isModel, modelName) => {
                   }}
                 >
                   <Rating Rating={rateval} numReviews={reviews.length} />
-                  <FavoriteBorderIcon
+                  <span></span>
+                  {/* <FavoriteBorderIcon
                     sx={{
                       cursor: "pointer",
                       marginRight: "15px",
@@ -359,7 +385,7 @@ const ProductDetail = (isModel, modelName) => {
                         color: "red",
                       },
                     }}
-                  />
+                  /> */}
                 </Typography>
                 <div
                   style={{
@@ -370,7 +396,7 @@ const ProductDetail = (isModel, modelName) => {
                   }}
                 ></div>
                 <Typography sx={{ fontSize: "30px", color: "#f85606" }}>
-                  Rs. {state1.price}
+                  Rs. {state1?.price}
                 </Typography>
                 {/* <div
                   style={{
@@ -735,18 +761,25 @@ const ProductDetail = (isModel, modelName) => {
                         {storename}
                       </Typography>
                     </Box>
+
                     <Typography
-                      onClick={() =>
-                        navigate(
-                          `/chat?userID=${state?.userInfo?.user?._id}&&vendorID=${state1.vendor}`,
-                          {
-                            state: {
-                              storename,
-                              username: state?.userInfo?.user?.name,
-                            },
-                          }
-                        )
-                      }
+                      onClick={() => {
+                        if (state?.userInfo?.user?._id) {
+                          navigate(
+                            `/chat?userID=${state?.userInfo?.user?._id}&&vendorID=${state1.vendor}`,
+                            {
+                              state: {
+                                storename,
+                                username: state?.userInfo?.user?.name,
+                              },
+                            }
+                          );
+                        } else if (state?.userInfo?.user?.status === "vendor") {
+                          window.alert("You can`t chat with yourself");
+                        } else {
+                          navigate("/signin");
+                        }
+                      }}
                       sx={{
                         color: "#1a9cb7",
                         fontSize: "13px",
@@ -827,7 +860,7 @@ const ProductDetail = (isModel, modelName) => {
             display: "flex",
             flexDirection: "column",
             background: "white",
-            marginLeft: "-23px",
+            marginLeft: { md: "-23px", xs: "-8px" },
             padding: "20px",
             marginTop: "17px",
           }}
@@ -844,46 +877,49 @@ const ProductDetail = (isModel, modelName) => {
           >
             Custom Questions & Answers
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              width: "100%",
-              alignItems: "center",
-            }}
-          >
-            <span style={{ width: "58%" }}>
-              <input
-                type='text'
-                value={comment.comment}
-                onChange={(event) => {
-                  setcomment({ ...comment, comment: event.target.value });
-                }}
-                placeholder='Ask your Question'
-                style={{
-                  width: " 96%",
-                  padding: "9px 0px 9px 14px",
-                  outline: "none",
-                  color: "#9e9e9e",
-                  border: "1px solid #cdc6c6",
-                }}
-              />
-            </span>
-            <Button
-              onClick={postComment}
+          {state?.userInfo?.user?.status === "user" && (
+            <Box
               sx={{
-                background: "#f0353b",
-                transition: "0.3s ease-in",
-                width: "146px",
-                color: "white",
-                "&:hover": {
-                  background: "#d90429",
-                },
+                display: "flex",
+                flexDirection: "row",
+                width: "100%",
+                alignItems: "center",
               }}
             >
-              Ask Question
-            </Button>
-          </Box>
+              <span style={{ width: "58%" }}>
+                <input
+                  type='text'
+                  value={comment.comment}
+                  onChange={(event) => {
+                    setcomment({ ...comment, comment: event.target.value });
+                  }}
+                  placeholder='Ask your Question'
+                  style={{
+                    width: " 96%",
+                    padding: "9px 0px 9px 14px",
+                    outline: "none",
+                    color: "#9e9e9e",
+                    border: "1px solid #cdc6c6",
+                  }}
+                />
+              </span>
+              <Button
+                onClick={postComment}
+                sx={{
+                  background: "#f0353b",
+                  transition: "0.3s ease-in",
+                  width: "146px",
+                  color: "white",
+                  "&:hover": {
+                    background: "#d90429",
+                  },
+                }}
+              >
+                Ask Question
+              </Button>
+            </Box>
+          )}
+
           {allcomment.map((item, i) => (
             <QA
               key={i}
@@ -895,7 +931,7 @@ const ProductDetail = (isModel, modelName) => {
         </Box>
       </Box>
       <ShopItems />
-      <Box sx={{ padding: { md: "60px 69px", xs: "40px 13px" } }}>
+      <Box sx={{ padding: { md: "0px 69px 60px", xs: "40px 13px" } }}>
         <Box
           sx={{
             display: "flex",

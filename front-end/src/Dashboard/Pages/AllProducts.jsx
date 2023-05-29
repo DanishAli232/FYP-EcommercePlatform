@@ -323,7 +323,7 @@ const AllProducts = () => {
       let result;
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        if (statuscheck === "vendor") {
+        if (state?.userInfo?.user?.status === "vendor") {
           let vl = state.userInfo.user._id;
           result = await axios.get(
             `/api/allvendorsproduct?q=${searchVal}&f=${vl}`

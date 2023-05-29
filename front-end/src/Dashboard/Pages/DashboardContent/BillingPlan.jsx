@@ -8,7 +8,7 @@ import { GlobalContext } from "../../../Context";
 
 const BillingPlan = () => {
   const navigate = useNavigate();
-  const { state } = useContext(GlobalContext);
+  const { state, dispatch: ctxDispatch } = useContext(GlobalContext);
   const [status, setstatus] = useState({
     basic: null,
     popular: null,
@@ -147,7 +147,8 @@ const BillingPlan = () => {
 
               let { data } = await axios.post("/api/updatepayment", payment);
               const successUrl = "https://localhost:3000/checkout-success";
-
+              ctxDispatch({ type: "USER_SIGNIN", payload: data });
+              localStorage.setItem("userInfo", JSON.stringify(data));
               window.location.href = `https://buy.stripe.com/test_3cs02F4lEaW44GA8wy?success_url=${encodeURIComponent(
                 successUrl
               )}`;
@@ -295,11 +296,13 @@ const BillingPlan = () => {
                 vendor: state?.userInfo?.user?._id,
               };
               let { data } = await axios.post("/api/updatepayment", payment);
+              ctxDispatch({ type: "USER_SIGNIN", payload: data });
+              localStorage.setItem("userInfo", JSON.stringify(data));
               const successUrl = "https://localhost:3000/checkout-success";
 
-              // window.location.href = `https://buy.stripe.com/test_3csg1D9FY2py0qk5kl?success_url=${encodeURIComponent(
-              //   successUrl
-              // )}`;
+              window.location.href = `https://buy.stripe.com/test_3csg1D9FY2py0qk5kl?success_url=${encodeURIComponent(
+                successUrl
+              )}`;
               setstatus({ ...status, popular: false });
             }}
             sx={{
@@ -446,7 +449,8 @@ const BillingPlan = () => {
 
               let { data } = await axios.post("/api/updatepayment", payment);
               const successUrl = "https://localhost:3000/checkout-success";
-
+              ctxDispatch({ type: "USER_SIGNIN", payload: data });
+              localStorage.setItem("userInfo", JSON.stringify(data));
               window.location.href = `https://buy.stripe.com/test_4gwaHj9FYfckb4YbII?success_url=${encodeURIComponent(
                 successUrl
               )}`;

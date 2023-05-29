@@ -38,13 +38,13 @@ export const options = {
 };
 
 const labels1 = [
-  { year: "January", amount: 10000 },
-  { year: "February", amount: 20000 },
-  { year: "March", amount: 30000 },
-  { year: "April", amount: 40000 },
-  { year: "May", amount: 50000 },
-  { year: "June", amount: 24000 },
-  { year: "July", amount: 80000 },
+  { year: "January", amount: 1 },
+  { year: "February", amount: 2 },
+  { year: "March", amount: 3 },
+  { year: "April", amount: 4 },
+  { year: "May", amount: 5 },
+  { year: "June", amount: 6 },
+  { year: "July", amount: 7 },
 ];
 
 const labels = ["J", "F", "M", "A", "M", "J", "J"];

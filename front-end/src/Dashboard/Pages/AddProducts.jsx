@@ -168,184 +168,188 @@ const Addproducts = () => {
         <Grid item md={2}></Grid>
         <Grid item md={10}>
           <Navbar />
-          <Box
-            sx={{
-              backgroundColor: "white",
-              minHeight: "599px",
-
-              marginTop: "89px",
-              marginLeft: { md: "33px", xs: "4px" },
-              width: { md: "auto", xs: "110%" },
-              marginRight: { md: "35px", xs: "0px" },
-              marginBottom: "10px",
-              borderRadius: "0.75rem",
-              boxShadow:
-                "rgba(255, 255, 255, 0.9) 0rem 0rem 0.0625rem 0.0625rem inset, rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem",
-              border: "1px solid rgba(224,224, 224, 1)",
-              // marginBottom: "10px",
-            }}
-          >
+          {state?.userInfo?.user?.billingPlan !== "" ? (
             <Box
               sx={{
-                paddingLeft: { md: "17px", xs: "9px" },
-                paddingTop: "20px",
-                paddingRight: { md: "17px", xs: "9px" },
-                paddingBottom: "10px",
+                backgroundColor: "white",
+                minHeight: "599px",
+
+                marginTop: "89px",
+                marginLeft: { md: "33px", xs: "4px" },
+                width: { md: "auto", xs: "110%" },
+                marginRight: { md: "35px", xs: "0px" },
+                marginBottom: "10px",
+                borderRadius: "0.75rem",
+                boxShadow:
+                  "rgba(255, 255, 255, 0.9) 0rem 0rem 0.0625rem 0.0625rem inset, rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem",
+                border: "1px solid rgba(224,224, 224, 1)",
+                // marginBottom: "10px",
               }}
             >
-              <form
-                action=''
-                method='post'
-                className='create-1'
-                onSubmit={handlesubmit}
+              <Box
+                sx={{
+                  paddingLeft: { md: "17px", xs: "9px" },
+                  paddingTop: "20px",
+                  paddingRight: { md: "17px", xs: "9px" },
+                  paddingBottom: "10px",
+                }}
               >
-                <Box
-                  className='create-2 a'
-                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                <form
+                  action=''
+                  method='post'
+                  className='create-1'
+                  onSubmit={handlesubmit}
                 >
-                  <TextField
-                    id='outlined-required'
-                    label='Product Name'
-                    className='title'
-                    value={values.name}
-                    onChange={handleChange}
-                    name='name'
-                    helperText={error.name}
-                    error={!!error.name}
-                    sx={{ width: { md: "400px", xs: "100%" } }}
-                  />
-                </Box>
-                <br></br>
-                <Box
-                  className='create-2 a'
-                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
-                >
-                  <TextField
-                    id='outlined-required'
-                    className='price'
-                    label='Price'
-                    type='number'
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='start'>pkr</InputAdornment>
-                      ),
-                    }}
-                    placeholder='00'
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={values.price}
-                    onChange={handleChange}
-                    name='price'
-                    helperText={error.price}
-                    error={!!error.price}
-                    sx={{ width: { md: "400px", xs: "100%" } }}
-                  />
-                </Box>
-                <br></br>
-                <Box
-                  className='create-2 a'
-                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
-                >
-                  <TextField
-                    className='countinstock'
-                    id='outlined-required'
-                    label='CountInStock'
-                    placeholder='00'
-                    helperText={error.countinstock}
-                    error={!!error.countinstock}
-                    type='number'
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={values.countinstock}
-                    onChange={handleChange}
-                    name='countinstock'
-                    sx={{ width: { md: "400px", xs: "100%" } }}
-                  />
-                </Box>
-                <br></br>{" "}
-                <Box
-                  className='create-2 a'
-                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
-                >
-                  {categoryOpen === false ? (
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
-                      <Select
-                        className='category'
-                        name='category'
-                        sx={{
-                          width: { md: "399px", xs: "185%" },
-                          color: "#888",
-                          // background: "#f7f6f6",
-                          cursor: "pointer",
-                          height: "50px",
-                          marginLeft: "-7px",
-                          outline: "none",
-                        }}
-                        value={category}
-                        onChange={handleChange2}
-                        displayEmpty
-                        inputProps={{ "aria-label": "Without label" }}
-                      >
-                        <MenuItem value=''>Select Category</MenuItem>
-
-                        <MenuItem value={"Shoes"}>Shoes</MenuItem>
-                        <MenuItem value={"Shirts"}>Shirts</MenuItem>
-                        <MenuItem value={"Pictures"}>Pictures</MenuItem>
-                        <MenuItem
-                          value={"add"}
-                          onClick={() => {
-                            console.log("okk");
-                            setcategoryOpen(true);
-                          }}
-                        >
-                          <Button
-                            sx={{
-                              margin: 0,
-                              padding: 0,
-                              background: "transparent",
-                              color: "black",
-                            }}
-                          >
-                            Add Category
-                          </Button>
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
-                  ) : (
+                  <Box
+                    className='create-2 a'
+                    sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                  >
                     <TextField
                       id='outlined-required'
-                      className='category'
-                      label='Enter new Category'
-                      value={category}
-                      onChange={handleChange2}
-                      name='category'
-                      // helperText={error.brand}
-                      // error={!!error.brand}
+                      label='Product Name'
+                      className='title'
+                      value={values.name}
+                      onChange={handleChange}
+                      name='name'
+                      helperText={error.name}
+                      error={!!error.name}
                       sx={{ width: { md: "400px", xs: "100%" } }}
                     />
-                  )}
-                </Box>
-                <br></br>{" "}
-                <Box
-                  className='create-2 a'
-                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
-                >
-                  <TextField
-                    className='brand'
-                    id='outlined-required'
-                    label='Brand'
-                    value={values.brand}
-                    onChange={handleChange}
-                    name='brand'
-                    helperText={error.brand}
-                    error={!!error.brand}
-                    sx={{ width: { md: "400px", xs: "100%" } }}
-                  />
-                </Box>
-                <br></br>{" "}
-                {/* <Box className='create-2 a'>
+                  </Box>
+                  <br></br>
+                  <Box
+                    className='create-2 a'
+                    sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                  >
+                    <TextField
+                      id='outlined-required'
+                      className='price'
+                      label='Price'
+                      type='number'
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position='start'>pkr</InputAdornment>
+                        ),
+                      }}
+                      placeholder='00'
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={values.price}
+                      onChange={handleChange}
+                      name='price'
+                      helperText={error.price}
+                      error={!!error.price}
+                      sx={{ width: { md: "400px", xs: "100%" } }}
+                    />
+                  </Box>
+                  <br></br>
+                  <Box
+                    className='create-2 a'
+                    sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                  >
+                    <TextField
+                      className='countinstock'
+                      id='outlined-required'
+                      label='CountInStock'
+                      placeholder='00'
+                      helperText={error.countinstock}
+                      error={!!error.countinstock}
+                      type='number'
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={values.countinstock}
+                      onChange={handleChange}
+                      name='countinstock'
+                      sx={{ width: { md: "400px", xs: "100%" } }}
+                    />
+                  </Box>
+                  <br></br>{" "}
+                  <Box
+                    className='create-2 a'
+                    sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                  >
+                    {categoryOpen === false ? (
+                      <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <Select
+                          className='category'
+                          name='category'
+                          sx={{
+                            width: { md: "399px", xs: "185%" },
+                            color: "#888",
+                            // background: "#f7f6f6",
+                            cursor: "pointer",
+                            height: "50px",
+                            marginLeft: "-7px",
+                            outline: "none",
+                          }}
+                          value={category}
+                          onChange={handleChange2}
+                          displayEmpty
+                          inputProps={{ "aria-label": "Without label" }}
+                        >
+                          <MenuItem value=''>Select Category</MenuItem>
+
+                          <MenuItem value={"Shoes"}>Shoes</MenuItem>
+                          <MenuItem value={"Shirts"}>Shirts</MenuItem>
+                          <MenuItem value={"Pictures"}>Hats</MenuItem>
+                          <MenuItem value={"Accessories"}>Accessories</MenuItem>
+                          <MenuItem value={"Watches"}>Watches</MenuItem>
+                          <MenuItem value={"Others"}>Others</MenuItem>
+                          <MenuItem
+                            value={"add"}
+                            onClick={() => {
+                              console.log("okk");
+                              setcategoryOpen(true);
+                            }}
+                          >
+                            <Button
+                              sx={{
+                                margin: 0,
+                                padding: 0,
+                                background: "transparent",
+                                color: "black",
+                              }}
+                            >
+                              Add Category
+                            </Button>
+                          </MenuItem>
+                        </Select>
+                      </FormControl>
+                    ) : (
+                      <TextField
+                        id='outlined-required'
+                        className='category'
+                        label='Enter new Category'
+                        value={category}
+                        onChange={handleChange2}
+                        name='category'
+                        // helperText={error.brand}
+                        // error={!!error.brand}
+                        sx={{ width: { md: "400px", xs: "100%" } }}
+                      />
+                    )}
+                  </Box>
+                  <br></br>{" "}
+                  <Box
+                    className='create-2 a'
+                    sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                  >
+                    <TextField
+                      className='brand'
+                      id='outlined-required'
+                      label='Brand'
+                      value={values.brand}
+                      onChange={handleChange}
+                      name='brand'
+                      helperText={error.brand}
+                      error={!!error.brand}
+                      sx={{ width: { md: "400px", xs: "100%" } }}
+                    />
+                  </Box>
+                  <br></br>{" "}
+                  {/* <Box className='create-2 a'>
                     <TextField
                       id='outlined-required'
                       label='Short Description'
@@ -356,119 +360,124 @@ const Addproducts = () => {
                     />
                   </Box>
                   <br></br> */}
-                <br></br>
-                <Typography
-                  className='description'
-                  sx={{
-                    fontSize: "15px",
-                    fontWeight: "500",
-                    color: "rgb(2,2,2,0.65)",
-                  }}
-                >
-                  Description
-                </Typography>
-                <Box
-                  className='create-2 a'
-                  sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
-                >
-                  <TextareaAutosize
-                    maxRows={4}
-                    maxcolumns={4}
-                    className='textArea'
-                    label='description'
-                    aria-label='maximum height'
-                    value={values.description}
-                    name='description'
-                    helperText={error.description}
-                    error={!!error.description}
-                    onChange={handleChange}
-                    style={{
-                      maxWidth: "100%",
-                      width: "100%",
-                      minHeight: "139px",
+                  <br></br>
+                  <Typography
+                    className='description'
+                    sx={{
                       fontSize: "15px",
+                      fontWeight: "500",
+                      color: "rgb(2,2,2,0.65)",
                     }}
-                  />
-                </Box>
-                <br></br>
-                <Box sx={{ marginBottom: "15px" }}>
-                  <Input
-                    sx={{ display: "none" }}
-                    accept='image/*'
-                    fullWidth={true}
-                    id='contained-button-file'
-                    onChange={onFileChange}
-                    type='file'
-                    name='image'
-                  />
+                  >
+                    Description
+                  </Typography>
+                  <Box
+                    className='create-2 a'
+                    sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
+                  >
+                    <TextareaAutosize
+                      maxRows={4}
+                      maxcolumns={4}
+                      className='textArea'
+                      label='description'
+                      aria-label='maximum height'
+                      value={values.description}
+                      name='description'
+                      helperText={error.description}
+                      error={!!error.description}
+                      onChange={handleChange}
+                      style={{
+                        maxWidth: "100%",
+                        width: "100%",
+                        minHeight: "139px",
+                        fontSize: "15px",
+                      }}
+                    />
+                  </Box>
+                  <br></br>
+                  <Box sx={{ marginBottom: "15px" }}>
+                    <Input
+                      sx={{ display: "none" }}
+                      accept='image/*'
+                      fullWidth={true}
+                      id='contained-button-file'
+                      onChange={onFileChange}
+                      type='file'
+                      name='image'
+                    />
 
-                  <label htmlFor='contained-button-file'>
-                    <Button
-                      sx={{
-                        border: "1px solid #f0353b",
-                        color: "#f0353b",
-                        background: "white",
-                        "&:hover": {
+                    <label htmlFor='contained-button-file'>
+                      <Button
+                        sx={{
+                          border: "1px solid #f0353b",
+                          color: "#f0353b",
                           background: "white",
+                          "&:hover": {
+                            background: "white",
+                          },
+                        }}
+                        variant='contained'
+                        component='span'
+                      >
+                        Upload Image
+                      </Button>
+                    </label>
+                    <Typography
+                      sx={{
+                        fontSize: "0.75rem",
+                        color: "#d32f2f",
+                        marginLeft: "14px",
+                        marginRight: "14px",
+                        marginTop: "0px",
+                      }}
+                    >
+                      {error.image}
+                    </Typography>
+                  </Box>
+                  {values.image && (
+                    <Grid item>
+                      <Box>
+                        <img
+                          alt='not found'
+                          width={"250px"}
+                          src={URL.createObjectURL(values.image)}
+                        />
+                      </Box>
+                    </Grid>
+                  )}
+                  <Box className='submit'>
+                    <Button
+                      type='submit'
+                      variant='outlined'
+                      // color='secondary'
+                      sx={{
+                        background: "#f0353b",
+                        color: "white",
+                        border: "1px solid #f0353b",
+                        "&:hover": {
+                          background: "#f0353b",
+                          border: "1px solid #f0353b",
                         },
                       }}
-                      variant='contained'
-                      component='span'
                     >
-                      Upload Image
+                      Add Product
+                      {status === "loading" && (
+                        <CircularProgress
+                          sx={{ ml: 1 }}
+                          size='16px'
+                          color='secondary'
+                        />
+                      )}{" "}
                     </Button>
-                  </label>
-                  <Typography
-                    sx={{
-                      fontSize: "0.75rem",
-                      color: "#d32f2f",
-                      marginLeft: "14px",
-                      marginRight: "14px",
-                      marginTop: "0px",
-                    }}
-                  >
-                    {error.image}
-                  </Typography>
-                </Box>
-                {values.image && (
-                  <Grid item>
-                    <Box>
-                      <img
-                        alt='not found'
-                        width={"250px"}
-                        src={URL.createObjectURL(values.image)}
-                      />
-                    </Box>
-                  </Grid>
-                )}
-                <Box className='submit'>
-                  <Button
-                    type='submit'
-                    variant='outlined'
-                    // color='secondary'
-                    sx={{
-                      background: "#f0353b",
-                      color: "white",
-                      border: "1px solid #f0353b",
-                      "&:hover": {
-                        background: "#f0353b",
-                        border: "1px solid #f0353b",
-                      },
-                    }}
-                  >
-                    Add Product
-                    {status === "loading" && (
-                      <CircularProgress
-                        sx={{ ml: 1 }}
-                        size='16px'
-                        color='secondary'
-                      />
-                    )}{" "}
-                  </Button>
-                </Box>
-              </form>
+                  </Box>
+                </form>
+              </Box>
             </Box>
-          </Box>
+          ) : (
+            <Box sx={{ margin: "101px 42px" }}>
+              <h4>No Billing PLan Yet</h4>
+            </Box>
+          )}
         </Grid>
       </Grid>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

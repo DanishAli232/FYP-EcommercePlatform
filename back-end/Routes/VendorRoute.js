@@ -3,6 +3,7 @@ import {
   allvendors,
   allvendorsproducts,
   deletevendor,
+  Emailverify3,
   getallvendors,
   getVendorData,
   postPayment,
@@ -20,6 +21,7 @@ VendorRouter.get("/allvendor", allvendors);
 VendorRouter.patch("/statusupdate/:id", statusupdate);
 VendorRouter.get("/allvendorsproduct", allvendorsproducts);
 VendorRouter.post("/postvendor", postvendor);
+VendorRouter.get("/:id/verify3/:token", Emailverify3);
 VendorRouter.get("/storeName/:id", storeName);
 VendorRouter.post("/vendorlogin", Vendorlogin);
 VendorRouter.post("/postpayment", postPayment);

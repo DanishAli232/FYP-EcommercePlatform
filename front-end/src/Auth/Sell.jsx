@@ -1,5 +1,14 @@
 import { Close } from "@mui/icons-material";
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 
 import React, { useState, useContext, useEffect } from "react";
@@ -51,7 +60,10 @@ const Sell = () => {
       }
     }
   }, []);
-
+  const [severity, setseverity] = useState("error");
+  const [open, setOpen] = React.useState(false);
+  const [message, setmessage] = useState("");
+  const [status, setStatus] = useState(null);
   const [error, setError] = useState({});
   const [values, setValues] = useState({
     email: "",
@@ -75,7 +87,16 @@ const Sell = () => {
     setError({});
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setStatus(null);
+    setOpen(false);
+  };
+
   const handleSubmit = async () => {
+    setStatus("loading");
     try {
       const { data } = await axios.post("/api/postvendor", {
         values,
@@ -84,14 +105,16 @@ const Sell = () => {
         await SignOut("sell");
         ctxDispatch({ type: "USER_SIGNIN", payload: data });
         localStorage.setItem("userInfo", JSON.stringify(data));
-        navigate("/products");
+        navigate("/emailconfirmation", { state: values.email });
       }
     } catch (err) {
       if (err.response.data.errors) {
         setError(err.response.data.errors);
+        setStatus(false);
+        setseverity("error");
+        setOpen(true);
+        setmessage(err.response.data.errors.message);
       }
-      console.log(err.response.data.errors);
-      console.log("Sorry Not data send");
     }
   };
 
@@ -308,7 +331,13 @@ const Sell = () => {
                   },
                 }}
               >
-                Register Now
+                Register Now{" "}
+                {status === "loading" && (
+                  <CircularProgress
+                    sx={{ ml: 1, color: "white" }}
+                    size='16px'
+                  />
+                )}
               </Button>
 
               <Box
@@ -323,6 +352,11 @@ const Sell = () => {
           </Box>
         </Box>
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
       <Footer1 />
     </Box>
   );

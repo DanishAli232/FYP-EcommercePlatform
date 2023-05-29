@@ -118,14 +118,6 @@ const CouponFields = ({
       minDate={new Date()}
       filterDate={isDateDisabled}
     /> */}
-      <label for='date'>Date:</label>
-      <input
-        type='date'
-        id='date'
-        name='expire'
-        onChange={handleChange}
-      ></input>
-      <br></br>
       <Box
         className='create-2 a'
         sx={{ marginBottom: { md: "-12px", xs: "0px" } }}
@@ -158,6 +150,20 @@ const CouponFields = ({
           </Select>
         </FormControl>
       </Box>
+      <br></br>
+      <label for='date'>ExpireDate:</label>
+      <input
+        style={{
+          width: "131px",
+          height: "31px",
+          marginLeft: "10px",
+          marginBottom: "10px",
+        }}
+        type='date'
+        id='date'
+        name='expire'
+        onChange={handleChange}
+      ></input>
       <br></br>
       <Box sx={{}}>
         {" "}

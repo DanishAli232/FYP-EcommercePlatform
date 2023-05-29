@@ -19,6 +19,7 @@ import queryString from "query-string";
 import Slider from "@mui/material/Slider";
 import { pink } from "@mui/material/colors";
 import shirt3 from "../../Assets/shirt3.jpg";
+import chair1 from "../../Assets/chair1.jpg";
 import AllProducts from "./Components/AllProducts";
 import Footer1 from "../../Components/Footer1";
 import RatingValue from "./Components/RatingValue";
@@ -106,9 +107,48 @@ const ProductsPage = () => {
     message: "Something Went Wrong",
     check: false,
   });
+
+  const [Objects, set3dobjects] = useState([
+    {
+      name: "chair",
+      price: "200",
+      image: chair1,
+      _id: "11",
+      brand: "nike",
+      description: "no",
+      vendor: "no",
+      rating: "12",
+    },
+    {
+      name: "",
+      price: "",
+      image: "",
+      _id: "",
+      brand: "",
+      description: "",
+      vendor: "",
+      rating: "",
+    },
+    {
+      name: "",
+      price: "",
+      image: "",
+      _id: "",
+      brand: "",
+      description: "",
+      vendor: "",
+      rating: "",
+    },
+  ]);
+
   let value11 =
     typeof value.category === "string" && value.category.length < 20;
   const [categories, setcategories] = useState([
+    {
+      title: "3D Objects",
+      qty: 14,
+      active: value11 && value.category === "3D Objects" ? true : false,
+    },
     {
       title: "Shirts",
       qty: 14,
@@ -133,6 +173,11 @@ const ProductsPage = () => {
       title: "Watches",
       qty: 34,
       active: value11 && value.category === "Watches" ? true : false,
+    },
+    {
+      title: "Others",
+      qty: 34,
+      active: value11 && value.category === "Others" ? true : false,
     },
   ]);
   const [page, setPage] = React.useState(1);
@@ -265,7 +310,11 @@ const ProductsPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchData();
+    if (filterQueries.category === "3D Objects") {
+      setproducts(Objects);
+    } else {
+      fetchData();
+    }
   }, [filterQueries, switchbtn]);
 
   // useEffect(() => {

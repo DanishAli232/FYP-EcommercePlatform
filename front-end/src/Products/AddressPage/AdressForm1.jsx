@@ -58,6 +58,21 @@ const AddressForm1 = ({ setStatus, setOpen, setmessage, setseverity }) => {
     setAddressForm({ ...AddressForm, [event.target.name]: event.target.value });
   };
   const SubmitAddress = async () => {
+    if (
+      !AddressForm.fullname ||
+      !AddressForm.address ||
+      !AddressForm.number ||
+      !AddressForm.landmark ||
+      !AddressForm.province ||
+      !AddressForm.city ||
+      !AddressForm.area
+    ) {
+      setOpen(true);
+      setStatus(null);
+      setmessage("Fields are empty");
+      setseverity("error");
+      return;
+    }
     if (state.shippingAddress) {
       if (newAddress) {
         setStatus("loading");
@@ -71,6 +86,7 @@ const AddressForm1 = ({ setStatus, setOpen, setmessage, setseverity }) => {
           setStatus(null);
           setmessage("New Address Added");
           setseverity("success");
+          window.location.reload();
         } catch (error) {
           setOpen(true);
           setStatus(null);
@@ -88,6 +104,7 @@ const AddressForm1 = ({ setStatus, setOpen, setmessage, setseverity }) => {
           setStatus(null);
           setmessage("Your Address Updated");
           setseverity("success");
+          window.location.reload();
         } catch (error) {
           setOpen(true);
           setStatus(null);

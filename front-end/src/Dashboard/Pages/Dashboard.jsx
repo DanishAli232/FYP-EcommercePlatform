@@ -541,7 +541,7 @@ const Dashboard = () => {
               </Grid>
             </Grid>
           </Box>
-
+          {state?.userInfo?.user?.status === "admin" && <LineChart />}
           {state?.userInfo?.user?.status === "vendor" && (
             <>
               {state?.userInfo?.user?.billingPlan !== "" && (
@@ -575,7 +575,7 @@ const Dashboard = () => {
                       <Box
                         sx={{
                           width: "300px",
-                          height: "160px",
+                          height: "114px",
                           // background: "white",
                           borderRadius: "7px",
                           padding: "20px",
@@ -626,7 +626,7 @@ const Dashboard = () => {
                         <Typography sx={{ fontSize: "15px" }}>
                           Due Date: {DateChange(vendorData.currentpaymentDate)}
                         </Typography>
-                        <Box
+                        {/* <Box
                           sx={{
                             display: "flex",
                             flexDirection: "row",
@@ -656,12 +656,12 @@ const Dashboard = () => {
                           >
                             Pay Now
                           </Button>
-                        </Box>
+                        </Box> */}
                       </Box>
                       <Box
                         sx={{
                           width: "300px",
-                          height: "160px",
+                          height: "114px",
                           // background: "white",
                           borderRadius: "7px",
                           padding: "20px",
@@ -711,7 +711,7 @@ const Dashboard = () => {
                         <Typography sx={{ fontSize: "15px" }}>
                           On {DateChange(vendorData.nextpayment)}
                         </Typography>
-                        <Box
+                        {/* <Box
                           sx={{
                             display: "flex",
                             flexDirection: "row",
@@ -732,7 +732,7 @@ const Dashboard = () => {
                           >
                             Manage Payment
                           </Button>
-                        </Box>
+                        </Box> */}
                       </Box>
                     </Box>
                   </Box>

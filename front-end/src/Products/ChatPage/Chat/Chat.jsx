@@ -38,9 +38,11 @@ const Chat = () => {
 
   const fetchChat = async () => {
     console.log(state.userID);
-    const { userID } = queryString.parse(location.search);
+    const { userID, vendorID } = queryString.parse(location.search);
     try {
-      let { data } = await axios.get(`/api/chatcustomersusers/${userID}`);
+      let { data } = await axios.get(
+        `/api/chatcustomersusers/${userID}/${vendorID}`
+      );
       setMessages(data[0].chat);
     } catch (error) {
       console.log("error");

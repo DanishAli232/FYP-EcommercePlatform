@@ -186,12 +186,6 @@ export const DashboardContext = ({ children }) => {
       active: false,
       icon: <FeedIcon />,
     },
-    {
-      link: "/allquestions",
-      title: "All Questions",
-      active: false,
-      icon: <QuestionAnswerIcon />,
-    },
 
     {
       link: "/addproduct",

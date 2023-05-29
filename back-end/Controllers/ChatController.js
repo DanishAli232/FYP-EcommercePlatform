@@ -15,7 +15,10 @@ export const chatCustomer = async (req, res) => {
 export const chatCustomerUsers = async (req, res) => {
   console.log(req.params.id);
   try {
-    let data = await Chat.find({ customer: req.params.id }).select("chat");
+    let data = await Chat.find({
+      customer: req.params.id,
+      vendor: req.params.vid,
+    }).select("chat");
     res.send(data);
     console.log(data);
   } catch (error) {

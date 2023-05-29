@@ -15,27 +15,30 @@ const ReviewList = ({ image, name, product, setOpen, setmessage }) => {
   const [value, setValue] = useState(0);
   const [answer, setanswer] = useState("");
 
-  useEffect(() => {
-    console.log(value);
-  }, [value]);
-
   const postReview = async () => {
-    setstatus(true);
+    if (answer === "" || value === 0) {
+      setstatus(true);
+      setOpen(true);
+      setmessage("Field shoud not be empty");
+      return;
+    }
     try {
+      setstatus(true);
       let data0 = { username: state?.userInfo?.user?.name, answer, value };
       let data = await axios.post(
         `/api/postreview?id=${product}&&uid=${state?.userInfo?.user?._id}`,
         data0
       );
-      if (data) {
-        setstatus(false);
-        setOpen(true);
-        setmessage("Review Submitted");
-      }
+      console.log(data);
+      setOpen(true);
+      setmessage("Review Submitted");
+      setstatus(false);
     } catch (error) {
       setstatus(false);
       setOpen(true);
       setmessage("Something Went Wrong");
+    } finally {
+      setstatus(false);
     }
   };
 

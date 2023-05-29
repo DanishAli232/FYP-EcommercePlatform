@@ -186,11 +186,15 @@ const About = () => {
               fontFamily: '"Kumbh Sans", sans-serif',
             }}
           >
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatum
-            amet sunt perferendis, iste impedit debitis corrupti nostrum
-            doloribus id sed quam atque dignissimos commodi quae cupiditate
-            exercitationem nihil expedita, ab laudantium voluptatem sit quaerat.
-            Magni molestiae quod inventore accusamus repudiandae.
+            The AR based multivendor ecommerce platform enables multiple vendors
+            to sell their products on the platform. Users can create accounts,
+            browse product listings, and make purchases. The AR functionality
+            allows users to visualize and experience products virtually before
+            buying. Vendors have access to inventory management tools and order
+            fulfillment features. The website includes secure payment options
+            and provides customer support for inquiries. Overall, the project
+            combines ecommerce, AR, and multivendor capabilities to enhance the
+            online shopping experience.
           </Typography>
         </Box>
         <Box sx={{ margin: "60px 0px" }}>
@@ -207,7 +211,8 @@ const About = () => {
                 <Div1>
                   <GroupsIcon sx={{ fontSize: "37px" }} />
                 </Div1>
-                <Para> {number}</Para>
+                {/* <Para> {number}</Para> */}
+                <Para>0</Para>
                 <Para1>Happy Clients</Para1>
               </Div>
             </Grid>
@@ -223,7 +228,8 @@ const About = () => {
                 <Div1>
                   <GroupsIcon sx={{ fontSize: "37px" }} />
                 </Div1>
-                <Para>{number1}</Para>
+                {/* <Para>{number1}</Para> */}
+                <Para>0</Para>
                 <Para1>Hard Workers</Para1>
               </Div>
             </Grid>
@@ -239,8 +245,9 @@ const About = () => {
                 <Div1>
                   <GroupsIcon sx={{ fontSize: "37px" }} />
                 </Div1>
-                <Para>{number2}</Para>
-                <Para1>Projects</Para1>
+                {/* <Para>{number2}</Para> */}
+                <Para>0</Para>
+                <Para1>Sold Products</Para1>
               </Div>
             </Grid>
             <Grid
@@ -255,7 +262,9 @@ const About = () => {
                 <Div1>
                   <GroupsIcon sx={{ fontSize: "37px" }} />
                 </Div1>
-                <Para>{number3}</Para>
+                {/* <Para>{number3}</Para> */}
+                <Para>0</Para>
+
                 <Para1>Hours Of Support</Para1>
               </Div>
             </Grid>

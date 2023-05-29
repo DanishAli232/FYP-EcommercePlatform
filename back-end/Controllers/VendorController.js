@@ -1,6 +1,10 @@
 import Product from "../Models/productModel.js";
 import Vendor from "../Models/VendorModel.js";
+import { sendEmail } from "../Utils/sendEmail.js";
+
 import bcrypt from "bcryptjs";
+import Token from "../Models/TokenModel.js";
+import crypto from "crypto";
 
 import {
   validateVendorInput,
@@ -32,9 +36,12 @@ export const updatePayments = async (req, res) => {
       },
       { new: true }
     );
-    console.log(vendor);
+    const vendor0 = await Vendor.findOne({ _id: payment.vendor });
 
-    res.status(200).json(vendor);
+    console.log(vendor0);
+
+    const token = generateToken(vendor0);
+    res.json({ user: { ...vendor0._doc, password: null }, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
@@ -127,15 +134,15 @@ export const postvendor = async (req, res) => {
     //   $or: [{ email: values.email }, { handle: values.handle }],
     // });
 
-    // let user = await Vendor.findOne({
-    //   email: values.email,
-    // });
+    let user = await Vendor.findOne({
+      email: values.email,
+    });
 
-    // if (user) {
-    //   return res.status(401).json({
-    //     errors: { message: "A Vendor with that email address already exists" },
-    //   });
-    // }
+    if (user) {
+      return res.status(401).json({
+        errors: { message: "A Vendor with that email address already exists" },
+      });
+    }
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(values.password, salt);
@@ -149,24 +156,84 @@ export const postvendor = async (req, res) => {
       currentpaymentDate: null,
     });
     console.log(newUser);
-    // const token = await new Token({
-    //   userId: newUser._id,
-    //   token: crypto.randomBytes(32).toString("hex"),
-    // }).save();
+    const token = await new Token({
+      userId: newUser._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    }).save();
+    const url = `${process.env.BASE_URL}email/${newUser._id}/verify/${token.token}`;
+    console.log(url);
+    let email = await sendEmail(newUser.email, "Verify Email", url);
 
-    // const url = `${process.env.BASE_URL}email/${newUser._id}/verify/${token.token}`;
-    // console.log(url);
-    // await sendEmail(newUser.email, "Verify Email", url);
-
-    // if ((email.message = "error")) {
-    //   res.send({ message: "Not Email Send" });
-    // }
-    // res.send({ message: "An Email sent to your account please verify" });
-    const token = generateToken(newUser);
-    res.json({ user: { ...newUser._doc, password: null }, token });
+    if (email.message === "error") {
+      console.log("errorrr");
+      await Vendor.deleteOne({ _id: newUser._id });
+      res.send({
+        errors: { message: "Sorry Not Email Send" },
+      });
+    } else {
+      const token = generateToken(newUser);
+      res.json({ user: { ...newUser._doc, password: null }, token });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Not Email " });
+  }
+};
+
+export const Emailverify3 = async (req, res) => {
+  try {
+    let user;
+
+    user = await Vendor.findOne({ _id: req.params.id });
+
+    console.log(req.params.id);
+    console.log(req.params.token);
+    console.log(user);
+    if (!user) {
+      console.log("user not found");
+      return res.status(400).send({ message: "Invalid link" });
+    }
+
+    try {
+      const token = await Token.findOne({
+        token: req.params.token,
+      });
+      console.log(token);
+      if (token) {
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(400).send({ message: "Invalid link" });
+    }
+
+    const _id = req.params.id;
+    const newUser = await Vendor.findByIdAndUpdate(
+      _id,
+      { verified: true },
+      {
+        new: true,
+      }
+    );
+    // let newUser = await Vendor.updateOne({ _id: user._id, verified: true });
+    console.log(newUser);
+    await Token.deleteMany({});
+
+    // res.status(200).send({ message: "Email verified successfully", user: {
+
+    // }});
+    console.log({
+      message: "Email verified successfully",
+      user: { ...newUser._doc, password: null },
+    });
+    if (newUser) {
+      return res.status(201).json({
+        message: "Email verified successfully",
+        user: { ...newUser._doc, password: null },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
