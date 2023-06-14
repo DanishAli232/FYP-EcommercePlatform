@@ -18,8 +18,14 @@ import Navbar2 from "../../Components/Navbar2";
 import queryString from "query-string";
 import Slider from "@mui/material/Slider";
 import { pink } from "@mui/material/colors";
-import shirt3 from "../../Assets/shirt3.jpg";
 import chair1 from "../../Assets/chair1.jpg";
+import chair2 from "../../Assets/chair_3d/assets/chair2.jpg";
+import chair3 from "../../Assets/chair_3d/assets/chair3.jpg";
+import chair4 from "../../Assets/chair_3d/assets/chair4.jpg";
+import chair5 from "../../Assets/chair_3d/assets/chair5.jpg";
+import chair6 from "../../Assets/chair_3d/assets/chair6.jpg";
+// import chair5 from "../../Assets/chair5.jpg";
+
 import AllProducts from "./Components/AllProducts";
 import Footer1 from "../../Components/Footer1";
 import RatingValue from "./Components/RatingValue";
@@ -110,34 +116,64 @@ const ProductsPage = () => {
 
   const [Objects, set3dobjects] = useState([
     {
-      name: "chair",
-      price: "200",
+      name: "chair1",
+      price: "4797",
       image: chair1,
-      _id: "11",
+      _id: "6474a98d0eff2772335d8ad5",
       brand: "nike",
       description: "no",
-      vendor: "no",
+      vendor: "64661058581275b60bb04cc7",
       rating: "12",
     },
     {
-      name: "",
-      price: "",
-      image: "",
-      _id: "",
-      brand: "",
-      description: "",
-      vendor: "",
-      rating: "",
+      name: "chair2",
+      price: "4797",
+      image: chair2,
+      _id: "6474a98d0eff2772335d8ad5",
+      brand: "nike",
+      description: "no",
+      vendor: "64661058581275b60bb04cc7",
+      rating: "12",
     },
     {
-      name: "",
-      price: "",
-      image: "",
-      _id: "",
-      brand: "",
-      description: "",
-      vendor: "",
-      rating: "",
+      name: "chair3",
+      price: "4797",
+      image: chair3,
+      _id: "6474a98d0eff2772335d8ad5",
+      brand: "nike",
+      description: "no",
+      vendor: "64661058581275b60bb04cc7",
+      rating: "12",
+    },
+    {
+      name: "chair4",
+      price: "4797",
+      image: chair4,
+      _id: "6474a98d0eff2772335d8ad5",
+      brand: "nike",
+      description: "no",
+      vendor: "64661058581275b60bb04cc7",
+      rating: "12",
+    },
+    {
+      name: "chair5",
+      price: "4797",
+      image: chair5,
+      _id: "6474a98d0eff2772335d8ad5",
+      brand: "nike",
+      description: "no",
+      vendor: "64661058581275b60bb04cc7",
+      rating: "12",
+    },
+    {
+      name: "chair6",
+      price: "4797",
+      image: chair6,
+      _id: "6474a98d0eff2772335d8ad5",
+      brand: "nike",
+      description: "no",
+      vendor: "64661058581275b60bb04cc7",
+      rating: "12",
     },
   ]);
 

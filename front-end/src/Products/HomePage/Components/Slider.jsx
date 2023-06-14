@@ -7,6 +7,7 @@ import { Box, Typography } from "@mui/material";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   height: 60vh;
@@ -113,6 +114,7 @@ const Arrow = styled.div`
 `;
 
 export const Slider = () => {
+  const navigate = useNavigate();
   const [slideIndex, setSlideIndex] = useState(0);
   const Clickhandler = (direction) => {
     if (direction === "left") {
@@ -157,7 +159,11 @@ export const Slider = () => {
                 {/* <Title>{item.title}</Title> */}
                 <Title>Mid Season Sale 70%</Title>
                 <Desc>Final Clearence: Take 20% Off 'Sale must haves'</Desc>
-                <Button>
+                <Button
+                  onClick={() => {
+                    navigate("/products");
+                  }}
+                >
                   Start Shopping <ArrowRightAltIcon />
                 </Button>
               </InfoContainer>

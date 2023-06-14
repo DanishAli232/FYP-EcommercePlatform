@@ -24,7 +24,7 @@ import CheckoutList from "./Components/CheckoutList";
 import AddressForm from "../AddressPage/Address";
 import { GlobalContext } from "../../Context";
 import AddressForm1 from "../AddressPage/AdressForm1";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoadingBox from "../../Components/LoadingBox";
 import NavBar1 from "../../Components/NavBar1";
@@ -49,6 +49,7 @@ const Checkout = () => {
   const [status, setStatus] = useState(null);
   const [message, setmessage] = useState("");
   const [severity, setseverity] = useState("success");
+  const navigate = useNavigate();
 
   const {
     AddressBoxOpen,
@@ -56,12 +57,12 @@ const Checkout = () => {
     setCartPrice,
     state,
     allprice,
+    DefaultAddress,
     setbuyNow,
     setallprice,
     buyNow,
     cartitems,
     dispatch: ctxDispatch,
-
     setcartitems,
     setdashboardOpen,
   } = useContext(GlobalContext);
@@ -369,7 +370,6 @@ const Checkout = () => {
                     : buyNow.price + 149}
                 </Typography>
               </Box>
-
               <Box
                 sx={{
                   display: "flex",
@@ -386,22 +386,29 @@ const Checkout = () => {
                     ? allprice.withdelivery
                     : buyNow.price + 149}
                 </Typography>
-              </Box>
-              <Link to='/payment'>
-                {" "}
-                <Button
-                  sx={{
-                    backgroundColor: "#f0353b",
-                    color: "white",
-                    width: "100%",
-                    "&:hover": {
-                      backgroundColor: "#d90429",
-                    },
-                  }}
-                >
-                  PLACEHOLDER
-                </Button>
-              </Link>
+              </Box>{" "}
+              <Button
+                onClick={() => {
+                  if (DefaultAddress.length === 0) {
+                    setOpen(true);
+                    setmessage("Please Provide Address");
+                    setseverity("error");
+                    return;
+                  } else {
+                    navigate("/payment");
+                  }
+                }}
+                sx={{
+                  backgroundColor: "#f0353b",
+                  color: "white",
+                  width: "100%",
+                  "&:hover": {
+                    backgroundColor: "#d90429",
+                  },
+                }}
+              >
+                PLACEHOLDER
+              </Button>
             </Box>
           </Grid>
         </Grid>

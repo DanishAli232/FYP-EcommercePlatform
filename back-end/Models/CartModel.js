@@ -41,6 +41,10 @@ import { CART_ITEM_STATUS } from "../constants/index.js";
 
 const CartSchema = new mongoose.Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User1",
+    },
     products: [
       {
         product: {
@@ -77,10 +81,6 @@ const CartSchema = new mongoose.Schema(
         },
       },
     ],
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User1",
-    },
   },
   { timestamps: true }
 );

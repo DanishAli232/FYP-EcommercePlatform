@@ -222,6 +222,7 @@ export const ContextState = ({ children }) => {
     withoutdelivery: 0,
     itemstotal: 0,
   });
+  const [state1, setproductDetail] = useState({});
   const [dashboardOpen, setdashboardOpen] = useState(false);
   const [buyNow, setbuyNow] = useState({});
   const [AddressBoxOpen, setAddressBoxOpen] = useState(false);
@@ -398,6 +399,8 @@ export const ContextState = ({ children }) => {
         setAddressBoxOpen,
         AddressFormOpen,
         newAddress,
+        state1,
+        setproductDetail,
         setnewAddress,
         setAddressFormOpen,
         totalprice,

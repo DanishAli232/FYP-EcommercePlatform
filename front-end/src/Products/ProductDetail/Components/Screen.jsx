@@ -34,16 +34,16 @@ const ProductDetail = (isModel, modelName) => {
   const [quantity, setquantity] = useState(1);
   const [storename, setstorename] = useState("");
   const [allcomment, setallcomment] = useState([]);
-  const { state: state1 } = useLocation();
-
-  console.log(state1);
+  const { state: state11 } = useLocation();
 
   const navigate = useNavigate();
   const {
     state,
     setbuyNow,
+    setproductDetail,
     dispatch: ctxDispatch,
     DefaultAddress,
+    state1,
     fetchAddresses,
     switchbtn,
     setswitchbtn,
@@ -51,6 +51,10 @@ const ProductDetail = (isModel, modelName) => {
     fetchcartItems,
   } = useContext(GlobalContext);
   const { cart, userInfo } = state;
+
+  useEffect(() => {
+    setproductDetail(state11);
+  }, []);
 
   useEffect(() => {
     setdashboardOpen(false);
@@ -73,7 +77,7 @@ const ProductDetail = (isModel, modelName) => {
   });
 
   const storeName = async () => {
-    const { data } = await axios.get(`/api/storeName/${state1.vendor}`);
+    const { data } = await axios.get(`/api/storeName/${state1?.vendor}`);
     setstorename(data.storename);
   };
 
@@ -98,9 +102,9 @@ const ProductDetail = (isModel, modelName) => {
     //   return;
     // }
     const products = {
-      productid: state1._id,
+      productid: state1?._id,
       quantity: quantity,
-      totalprice: state1.price,
+      totalprice: state1?.price,
     };
     const _id = userInfo?.user?._id;
     console.log(_id);
@@ -190,7 +194,7 @@ const ProductDetail = (isModel, modelName) => {
   ];
   const allComment = async () => {
     try {
-      let { data } = await axios.get(`/api/allcomment/${state1._id}`);
+      let { data } = await axios.get(`/api/allcomment/${state1?._id}`);
       setallcomment(data.comments);
       const total = data?.reviews?.reduce(
         (sum, rating) => sum + rating.rating,
@@ -204,7 +208,7 @@ const ProductDetail = (isModel, modelName) => {
     }
   };
   useEffect(() => {
-    console.log(state1.image);
+    console.log(state1?.image);
     allComment();
   }, []);
 
@@ -218,7 +222,7 @@ const ProductDetail = (isModel, modelName) => {
       setcomment({
         user: userInfo.user._id,
         username: userInfo.user.name,
-        productid: state1._id,
+        productid: state1?._id,
         comment: "",
       });
     }
@@ -229,11 +233,11 @@ const ProductDetail = (isModel, modelName) => {
     const _id = userInfo?.user?._id;
     if (_id) {
       setbuyNow({
-        id: state1._id,
-        title: state1.name,
-        brand: state1.brand,
-        price: state1.price,
-        image: state1.image,
+        id: state1?._id,
+        title: state1?.name,
+        brand: state1?.brand,
+        price: state1?.price,
+        image: state1?.image,
         quantity: quantity,
       });
       navigate("/checkout");
@@ -325,39 +329,70 @@ const ProductDetail = (isModel, modelName) => {
                 src={img}
                 alt='product_img'
               /> */}
-
-              <Typography
-                sx={{
-                  textAlign: "center",
-                  cursor: "pointer",
-                  color: "#565959",
-                }}
-              >
-                <Button
-                  onClick={() => {
-                    // navigate("");
-                    if (state1.name === "chair") {
-                      window.open(
-                        "http://127.0.0.1:5500/front-end/src/Assets/chair_3d/index.html",
-                        "_blank"
-                      );
-                    }
-                  }}
+              {(state1?.name === "chair1" ||
+                state1?.name === "chair2" ||
+                state1?.name === "chair3" ||
+                state1?.name === "chair4" ||
+                state1?.name === "chair5" ||
+                state1?.name === "chair6") && (
+                <Typography
                   sx={{
-                    backgroundColor: "#ffd814",
-                    width: "79%",
-                    color: "#0F1111",
-                    fontSize: "13px",
-                    borderRadius: "20px",
-                    marginTop: "18px",
-                    "&:hover": {
-                      backgroundColor: "#ebce01",
-                    },
+                    textAlign: "center",
+                    cursor: "pointer",
+                    color: "#565959",
                   }}
                 >
-                  3D View
-                </Button>
-              </Typography>
+                  <Button
+                    onClick={() => {
+                      // navigate("");
+                      if (state1?.name === "chair1") {
+                        window.open(
+                          "http://127.0.0.1:5500/front-end/src/Assets/chair_3d/index.html",
+                          "_blank"
+                        );
+                      } else if (state1?.name === "chair2") {
+                        window.open(
+                          "http://127.0.0.1:5500/front-end/src/Assets/chair_3d/index0.html",
+                          "_blank"
+                        );
+                      } else if (state1?.name === "chair3") {
+                        window.open(
+                          "http://127.0.0.1:5500/front-end/src/Assets/chair_3d/index1.html",
+                          "_blank"
+                        );
+                      } else if (state1?.name === "chair4") {
+                        window.open(
+                          "http://127.0.0.1:5500/front-end/src/Assets/chair_3d/index2.html",
+                          "_blank"
+                        );
+                      } else if (state1?.name === "chair5") {
+                        window.open(
+                          "http://127.0.0.1:5500/front-end/src/Assets/chair_3d/index3.html",
+                          "_blank"
+                        );
+                      } else if (state1?.name === "chair6") {
+                        window.open(
+                          "http://127.0.0.1:5500/front-end/src/Assets/chair_3d/index4.html",
+                          "_blank"
+                        );
+                      }
+                    }}
+                    sx={{
+                      backgroundColor: "#ffd814",
+                      width: "79%",
+                      color: "#0F1111",
+                      fontSize: "13px",
+                      borderRadius: "20px",
+                      marginTop: "18px",
+                      "&:hover": {
+                        backgroundColor: "#ebce01",
+                      },
+                    }}
+                  >
+                    3D View
+                  </Button>
+                </Typography>
+              )}
             </Box>
           </Grid>
           <Grid item md={8}>
@@ -766,7 +801,7 @@ const ProductDetail = (isModel, modelName) => {
                       onClick={() => {
                         if (state?.userInfo?.user?._id) {
                           navigate(
-                            `/chat?userID=${state?.userInfo?.user?._id}&&vendorID=${state1.vendor}`,
+                            `/chat?userID=${state?.userInfo?.user?._id}&&vendorID=${state1?.vendor}`,
                             {
                               state: {
                                 storename,
@@ -833,7 +868,7 @@ const ProductDetail = (isModel, modelName) => {
                   <Typography
                     onClick={() => {
                       setswitchbtn(0);
-                      navigate(`/products?vendorid=${state1.vendor}`);
+                      navigate(`/products?vendorid=${state1?.vendor}`);
                     }}
                     sx={{
                       textAlign: "center",
@@ -924,13 +959,13 @@ const ProductDetail = (isModel, modelName) => {
             <QA
               key={i}
               {...item}
-              productid={state1._id}
+              productid={state1?._id}
               fetchComments={allComment}
             />
           ))}
         </Box>
       </Box>
-      <ShopItems />
+      <ShopItems val={"screen"} />
       <Box sx={{ padding: { md: "0px 69px 60px", xs: "40px 13px" } }}>
         <Box
           sx={{
@@ -953,9 +988,12 @@ const ProductDetail = (isModel, modelName) => {
           >
             Top Reviews
           </Typography>
-          {reviews.map((item, i) => (
-            <Reviews key={i} {...item} />
-          ))}
+          {reviews.length !== 0 ? (
+            reviews.map((item, i) => <Reviews key={i} {...item} />)
+          ) : (
+            <>No Reviews</>
+          )}
+          {}
         </Box>
       </Box>
 

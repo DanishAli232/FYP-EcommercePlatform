@@ -33,14 +33,21 @@ const productitems = [
     title: "Checkered Casual Shirt",
   },
 ];
-const ShopItems = () => {
+const ShopItems = ({ val }) => {
   const [loading, setloading] = useState(false);
   const [product, setproduct] = useState([]);
   useEffect(() => {
     const fetchdata = async () => {
       setloading(true);
-      const { data } = await axios.get("/api/getproducts");
+      let { data } = await axios.get("/api/getproducts");
       setloading(false);
+      console.log(val);
+      if (val === "screen") {
+        const shuffledProducts = data.sort(() => {
+          return 0.5 - Math.random();
+        });
+        data = shuffledProducts.slice(0, 4);
+      }
       setproduct(data);
     };
     fetchdata();

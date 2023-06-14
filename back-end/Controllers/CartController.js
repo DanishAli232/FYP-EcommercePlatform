@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import { Cart } from "../Models/CartModel.js";
 
 export const addcartitems = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
-    const user = req.body._id;
+    const user = req.body.id;
     const items = req.body.products;
 
     // const products = store.caculateItemsSalesTax(items);

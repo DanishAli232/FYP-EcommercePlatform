@@ -49,9 +49,6 @@ export const postorder = async (req, res) => {
 export const getorders = async (req, res) => {
   const searchVal = req.query.sval;
   const userId = req.query.uid;
-
-  console.log(q);
-
   // const searchVal = req.query.sval;
   // let filter = {};
   // if (searchVal) {
@@ -74,9 +71,10 @@ export const getorders = async (req, res) => {
       // "countinstock",
     ];
     const search = (data) => {
-      return data.filter((item) =>
-        keys.some((key) => item[key].toLowerCase().includes(q))
-      );
+      return data;
+      // .filter((item) =>
+      // keys.some((key) => item[key].toLowerCase().includes(searchVal))
+      // );
     };
     // console.log(q);
     const order = await Order.find({ user: userId }).populate("user");

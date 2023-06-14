@@ -41,6 +41,7 @@ const ShopItemsDes = ({
       totalprice: price,
     };
     const id = userInfo?.user?._id;
+    console.log(cart.cartId);
     if (id) {
       if (cart.cartid) {
         const { data } = await axios.patch(
@@ -64,14 +65,14 @@ const ShopItemsDes = ({
             products,
           },
         });
-        navigate("/cartpage");
 
-        // ctxDispatch({
-        //   type: "CART_ID",
-        //   payload: {
-        //     data,
-        //   },
-        // });
+        ctxDispatch({
+          type: "CART_ID",
+          payload: {
+            data,
+          },
+        });
+        navigate("/cartpage");
       }
     } else {
       console.log("okk");

@@ -94,7 +94,7 @@ const CheckoutList = ({
               color: "#212121",
             }}
           >
-            {title}
+            {title.slice(0, 20)}...
           </Typography>
         </Box>
         <Box

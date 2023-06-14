@@ -4,6 +4,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { vendorItems } from "../../data";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -108,6 +109,7 @@ const Button1 = styled.button`
 `;
 
 const Vendors = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Wrapper>
@@ -118,7 +120,11 @@ const Vendors = () => {
           <Transparent></Transparent>
           <InfoContainer>
             <Title>KHAADI</Title>
-            <Button1>
+            <Button1
+              onClick={() => {
+                navigate("/products");
+              }}
+            >
               Shop Now
               <ArrowForwardIcon sx={{ marginLeft: "13px" }} />
             </Button1>
@@ -136,7 +142,11 @@ const Vendors = () => {
           <Transparent></Transparent>
           <InfoContainer>
             <Title>LIME LIGHT</Title>
-            <Button1>
+            <Button1
+              onClick={() => {
+                navigate("/products");
+              }}
+            >
               Shop Now <ArrowForwardIcon sx={{ marginLeft: "13px" }} />
             </Button1>
           </InfoContainer>

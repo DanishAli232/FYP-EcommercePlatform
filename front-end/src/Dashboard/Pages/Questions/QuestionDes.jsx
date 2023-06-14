@@ -30,7 +30,7 @@ const QuestionDes = ({
             objectPosition: "center",
           }}
         />
-        <Typography>{name}</Typography>
+        <Typography>{name?.slice(0, 20)}...</Typography>
       </Box>
       {comments.map((item1, i) => (
         <QuestionDes1

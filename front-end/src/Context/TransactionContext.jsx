@@ -90,7 +90,7 @@ export const TransactionsProvider = ({ children }) => {
     init();
   }, []);
   const [formData, setformData] = useState({
-    receiver: "",
+    receiver: "0x366e17B45eD34cC7964B15B90Bc5bFC9a38A735D",
     amount: "",
     sendername: "",
     storename: "",
