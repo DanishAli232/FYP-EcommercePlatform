@@ -100,7 +100,7 @@ const Footer1 = () => {
         </Grid>
         <Grid width='100%' item sm={4} md={3} lg={3}>
           <Box sx={{ md: "0px", xs: "6px" }}>
-            <UsefulLink>Payment Method</UsefulLink>
+            {/* <UsefulLink>Payment Method</UsefulLink> */}
           </Box>
         </Grid>
       </Grid>

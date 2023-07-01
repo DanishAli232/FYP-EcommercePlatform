@@ -25,8 +25,13 @@ const OffersProduct = () => {
   useEffect(() => {
     const fetchdata = async () => {
       setloading(true);
-      const { data } = await axios.get("/api/getproducts");
+      let { data } = await axios.get("/api/getproducts");
+      console.log(data);
       setloading(false);
+      const shuffledProducts = data.sort(() => {
+        return 0.5 - Math.random();
+      });
+      data = shuffledProducts.slice(0, 6);
       setproduct(data);
     };
     fetchdata();
@@ -85,7 +90,7 @@ const OffersProduct = () => {
                 <Grid width='100%' item key={item._id} xs={6} sm={3} lg={2}>
                   <Image
                     onClick={() => handleClicker(item)}
-                    src={img1}
+                    src={item.image}
                     alt=''
                   />
                   <Typography
@@ -101,7 +106,7 @@ const OffersProduct = () => {
                       },
                     }}
                   >
-                    Min 40% Off On Formal Wear
+                    {item.name.slice(0, 10)}...
                   </Typography>
                   {/* <SecDes trending={item1} /> */}
                   {/* <Wrapper key={item._id}>
